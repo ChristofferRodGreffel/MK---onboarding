@@ -4,11 +4,13 @@ import Header from "../components/Header";
 import { PulseLoader } from "react-spinners";
 import CustomButton from "../components/CustomButton";
 import { useNavigate } from "react-router-dom";
+import PointsBox from "../components/PointsBox";
 
 const Cart = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [priceFromBasket, setPriceFromBasket] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,9 +29,10 @@ const Cart = () => {
       basketFromStorage.forEach((subData) => (totalPriceFromBasket += subData.price * subData.amount));
       basketFromStorage.forEach((subData) => (totalAmountFromBasket += subData.amount));
 
-      console.log(totalPriceFromBasket);
-      if (totalPriceFromBasket > 200) {
-        totalPriceFromBasket - 39;
+      if (totalPriceFromBasket < 200) {
+        setTotalPrice(totalPriceFromBasket + 29);
+      } else {
+        setTotalPrice(totalPriceFromBasket);
       }
 
       setAllProducts(basketFromStorage);
@@ -69,6 +72,11 @@ const Cart = () => {
     updateFromLocalStorage();
   };
 
+  const handleApplyDiscount = (savingsAmount) => {
+    console.log(savingsAmount);
+    setTotalPrice((prevTotalPrice) => prevTotalPrice - savingsAmount);
+  };
+
   const formatter = new Intl.NumberFormat("da-DK", {
     style: "currency",
     currency: "DKK",
@@ -92,7 +100,7 @@ const Cart = () => {
                   return (
                     <div key={key} className="relative">
                       <div className="flex justify-between items-center">
-                        <img src={product.src} alt={product.title} className="w-16 h-16 aspect-square" />
+                        <img src={product.src} alt={product.title} className="w-16 h-16 aspect-square" loading="lazy" />
                         <p className="text-xs w-1/2 line-clamp-3">{product.title}</p>
                         <div className="flex flex-col">
                           <p>{product.amount} stk.</p>
@@ -115,7 +123,7 @@ const Cart = () => {
                         </div>
                         <button
                           onClick={() => handleDeleteProduct(key)}
-                          className="bg-customRed text-white py-1 px-2 text-sm font-medium rounded-sm absolute right-0"
+                          className="bg-customRed text-white py-1 px-2 text-sm font-medium rounded-md absolute right-0"
                         >
                           Fjern
                         </button>
@@ -123,6 +131,7 @@ const Cart = () => {
                     </div>
                   );
                 })}
+                <PointsBox orderValue={priceFromBasket} function={handleApplyDiscount} />
                 <div>
                   <div className="flex justify-between items-center">
                     <h1 className="font-semibold">Subtotal</h1>
@@ -146,12 +155,11 @@ const Cart = () => {
                   )}
                   <div className="flex justify-between items-center mt-8 border-b-2 border-primaryGrey">
                     <h1 className="text-xl font-bold">I alt.</h1>
-                    {priceFromBasket > 400 ? (
-                      <p className="text-xl font-bold">{formatter.format(priceFromBasket)}</p>
-                    ) : (
-                      <p className="text-xl font-bold">{formatter.format(priceFromBasket + 29)}</p>
-                    )}
+                    <p className="text-xl font-bold">{formatter.format(totalPrice)}</p>
                   </div>
+                  <button className="bg-customGreen w-full p-2 rounded-md text-white font-bold text-lg mt-10">
+                    Gennemfør ordre
+                  </button>
                 </div>
               </>
             )}

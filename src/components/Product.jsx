@@ -24,7 +24,7 @@ const Product = (props) => {
 
   return (
     <div className="w-36 flex flex-col">
-      <img src={props.imgSrc} alt={props.altText} className="w-28 aspect-square place-self-center" />
+      <img src={props.imgSrc} alt={props.altText} className="w-28 aspect-square place-self-center" loading="lazy" />
       <p className="text-xs mt-3 line-clamp-4">{props.productTitle}</p>
       <p className="font-bold mt-3">{formatter.format(props.productPrice)}</p>
       <button

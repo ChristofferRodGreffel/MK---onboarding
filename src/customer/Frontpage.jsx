@@ -28,14 +28,14 @@ const Frontpage = () => {
   return (
     <PageWrapper>
       <Header />
-      <h1 className="mt-8 text-lg">Se vores store udvalg af mobiltilbehør herunder!</h1>
-      <div className="mt-10 grid m-auto grid-cols-2 grid-flow-row gap-12 gap-y-12">
-        {loading ? (
-          <div className="m-auto">
-            <PulseLoader color="#343434" size={11} />
-          </div>
-        ) : (
-          <>
+      <h1 className="mt-8 text-xl font-semibold">Se vores store udvalg af mobiltilbehør herunder!</h1>
+      {loading ? (
+        <div className="m-auto mt-14">
+          <PulseLoader color="#343434" size={11} />
+        </div>
+      ) : (
+        <>
+          <div className="mt-10 grid m-auto grid-cols-2 grid-flow-row gap-12 gap-y-12">
             {allProducts.length != 0 &&
               allProducts.map((product, key) => {
                 return (
@@ -49,9 +49,9 @@ const Frontpage = () => {
                   />
                 );
               })}
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
     </PageWrapper>
   );
 };
