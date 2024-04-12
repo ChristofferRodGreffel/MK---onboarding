@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import CustomButton from "../components/CustomButton";
-import PageWrapper from "../PageWrapper";
+import PageWrapper from "../components/PageWrapper";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
@@ -57,10 +57,10 @@ const SignIn = () => {
     const eyeIcon = document.querySelector("#eyeIcon");
     if (passwordInput.type === "password") {
       passwordInput.type = "text";
-      eyeIcon.setAttribute("class", "fa-solid fa-eye-slash absolute right-5 top-2.5 text-xl text-primaryGrey");
+      eyeIcon.setAttribute("class", "fa-solid fa-eye absolute right-5 top-2.5 text-xl text-primaryGrey");
     } else {
       passwordInput.type = "password";
-      eyeIcon.setAttribute("class", "fa-solid fa-eye absolute right-5 top-2.5 text-xl text-primaryGrey");
+      eyeIcon.setAttribute("class", "fa-solid fa-eye-slash absolute right-5 top-2.5 text-xl text-primaryGrey");
     }
   };
 
@@ -82,7 +82,7 @@ const SignIn = () => {
                 <i
                   id="eyeIcon"
                   onClick={handleShowPassword}
-                  className="fa-solid fa-eye absolute right-5 top-2.5 text-xl text-primaryGrey"
+                  className="fa-solid fa-eye-slash absolute right-5 top-2.5 text-xl text-primaryGrey"
                 ></i>
               </div>
             </div>

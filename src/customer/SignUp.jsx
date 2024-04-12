@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import CustomButton from "../components/CustomButton";
-import PageWrapper from "../PageWrapper";
+import PageWrapper from "../components/PageWrapper";
 import { Link, useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { firebaseErrorsCodes } from "../../firebaseErrorCodes";
