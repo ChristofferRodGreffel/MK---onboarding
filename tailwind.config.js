@@ -5,7 +5,11 @@ export default {
     fontFamily: {
       sans: ["Montserrat", "sans-serif"],
     },
-    extend: {},
+    extend: {
+      colors: {
+        primaryGrey: "#343434",
+      },
+    },
   },
   plugins: [],
 };
