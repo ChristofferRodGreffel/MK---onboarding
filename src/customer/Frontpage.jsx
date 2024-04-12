@@ -25,13 +25,11 @@ const Frontpage = () => {
     getAllProducts();
   }, []);
 
-  console.log(allProducts);
-
   return (
     <PageWrapper>
       <Header />
       <h1 className="mt-8 text-lg">Se vores store udvalg af mobiltilbehør herunder!</h1>
-      <div className="mt-10 flex justify-center gap-12 flex-wrap">
+      <div className="mt-10 grid m-auto grid-cols-2 grid-flow-row gap-12 gap-y-12">
         {loading ? (
           <div className="m-auto">
             <PulseLoader color="#343434" size={11} />
@@ -42,11 +40,12 @@ const Frontpage = () => {
               allProducts.map((product, key) => {
                 return (
                   <Product
+                    id={product.id}
                     key={key}
                     productTitle={product.title}
                     imgSrc={product.imageSource}
                     altText={product.title}
-                    productPrice={product.price}
+                    productPrice={product.price.toLocaleString("da-DK")}
                   />
                 );
               })}

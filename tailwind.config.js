@@ -9,6 +9,7 @@ export default {
       colors: {
         primaryGrey: "#343434",
         customGreen: "#09B009",
+        customRed: "#970000",
       },
     },
   },
