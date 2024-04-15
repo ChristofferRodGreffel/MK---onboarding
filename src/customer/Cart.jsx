@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import PointsBox from "../components/PointsBox";
 import { doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig";
+import { toast } from "react-toastify";
+import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
 
 const Cart = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -14,7 +16,6 @@ const Cart = () => {
   const [loading, setLoading] = useState(true);
   const [subTotal, setSubTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [discount, setDiscount] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +30,11 @@ const Cart = () => {
 
     if (basketFromStorage) {
       let orderTotal = basketFromStorage.orderTotal;
-      setSubTotal(orderTotal);
+      let subTotal = 0;
+      basketFromStorage.products.forEach((product) => {
+        subTotal += product.price;
+      });
+      setSubTotal(subTotal);
 
       if (orderTotal < 400) {
         setTotalPrice(orderTotal + 29);
@@ -74,24 +79,54 @@ const Cart = () => {
     localStorageBasket.orderTotal -= product.price * product.amount;
     newBasket.splice(index, 1);
     localStorageBasket.products = newBasket;
+
     localStorage.setItem("customerOrder", JSON.stringify(localStorageBasket));
     setAllProducts(newBasket);
     updateFromLocalStorage();
+
+    if (newBasket.length === 0) {
+      const reinsertPoints = async (points) => {
+        const userRef = doc(db, "users", auth.currentUser.uid);
+
+        await updateDoc(userRef, {
+          points: points,
+        });
+      };
+      reinsertPoints(localStorageBasket.pointsUsed);
+
+      localStorage.clear();
+    }
   };
 
-  const handleApplyDiscount = async (savingsAmount) => {
+  const handleApplyDiscount = async (
+    savingsAmount,
+    remainingPoints,
+    pointsUsed
+  ) => {
+    if (savingsAmount === 0) {
+      toast.error("Du har ingen point", DefaultToastifySettings);
+      return;
+    }
     if (savingsAmount > totalPrice) {
-      let remainingAmount = savingsAmount - totalPrice;
-      let remainingPoints = remainingAmount * 0.1;
+      setTotalPrice(0);
+      localStorageBasket.orderTotal = 0;
+    } else {
+      setTotalPrice((prevTotalPrice) => prevTotalPrice - savingsAmount);
+      localStorageBasket.orderTotal -= savingsAmount;
     }
 
-    setTotalPrice((prevTotalPrice) => prevTotalPrice - savingsAmount);
-    setDiscount(savingsAmount);
+    const userRef = doc(db, "users", auth.currentUser.uid);
 
-    // const userRef = doc(db, "users", auth.currentUser.uid);
-    // await updateDoc(userRef, {
-    //   points:
-    // })
+    await updateDoc(userRef, {
+      points: remainingPoints,
+    });
+
+    localStorageBasket.discountApplied = true;
+    localStorageBasket.discount = savingsAmount;
+    localStorageBasket.pointsUsed = pointsUsed;
+    localStorage.setItem("customerOrder", JSON.stringify(localStorageBasket));
+
+    updateFromLocalStorage();
   };
 
   const formatter = new Intl.NumberFormat("da-DK", {
@@ -132,7 +167,7 @@ const Cart = () => {
                         </div>
                       </div>
                       <div className="flex">
-                        <div className="flex items-center justify-between min-w-[95px] select-none mt-1">
+                        <div className="flex items-center justify-between min-w-[80px] select-none mt-1">
                           <i
                             onClick={() => decreaseAmount(product)}
                             className={`fa-solid fa-circle-minus text-primaryGrey text-lg cursor-pointer ${
@@ -160,6 +195,7 @@ const Cart = () => {
                 <PointsBox
                   orderValue={totalPrice}
                   function={handleApplyDiscount}
+                  discountApplied={localStorageBasket?.discountApplied}
                 />
                 <div>
                   <div className="flex justify-between items-center">
@@ -185,11 +221,11 @@ const Cart = () => {
                       gratis fragt!
                     </p>
                   )}
-                  {discount != null && (
+                  {localStorageBasket?.discountApplied && (
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold">Rabat</h1>
                       <p className="font-medium text-customGreen">
-                        -{formatter.format(discount)}
+                        -{formatter.format(localStorageBasket?.discount)}
                       </p>
                     </div>
                   )}

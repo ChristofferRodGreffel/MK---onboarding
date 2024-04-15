@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { PulseLoader } from "react-spinners";
 
 const PointsBox = (props) => {
@@ -11,6 +11,9 @@ const PointsBox = (props) => {
   const [userId, setUserId] = useState();
   const [loading, setLoading] = useState(true);
   const [totalSavings, setTotalSavings] = useState();
+  const [remainingPoints, setRemainingPoints] = useState();
+  const [pointsUsed, setPointsUsed] = useState();
+  const [exchangeRate, setExchangeRate] = useState(0.25);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,11 +34,7 @@ const PointsBox = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       if (userId) {
-        const usersRef = collection(db, "users");
-        const q = query(usersRef, where("id", "==", userId));
-
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
+        const unsub = onSnapshot(doc(db, "users", userId), (doc) => {
           setUserData(doc.data());
         });
       }
@@ -60,9 +59,11 @@ const PointsBox = (props) => {
         break;
       case "silver":
         exchangeRate = 0.3;
+        setExchangeRate(0.3);
         break;
       case "gold":
         exchangeRate = 0.35;
+        setExchangeRate(0.35);
         break;
 
       default:
@@ -71,8 +72,14 @@ const PointsBox = (props) => {
     let savingsAmount = points * exchangeRate;
 
     if (props.orderValue < savingsAmount) {
-      setTotalSavings(savingsAmount);
+      let pointsAmount = props.orderValue / exchangeRate;
+      setRemainingPoints(points - pointsAmount);
+    } else {
+      setRemainingPoints(0);
     }
+
+    setTotalSavings(savingsAmount);
+    setPointsUsed(savingsAmount / exchangeRate);
   };
 
   const formatter = new Intl.NumberFormat("da-DK", {
@@ -96,7 +103,20 @@ const PointsBox = (props) => {
                   <p className="text-5xl font-bold text-primaryGrey">
                     {userData?.points}
                   </p>
-                  <p>Spar {formatter.format(totalSavings)} med point</p>
+                  {props.discountApplied !== true ? (
+                    <>
+                      {totalSavings < props.orderValue ? (
+                        <p>Spar {formatter.format(totalSavings)} med point</p>
+                      ) : (
+                        <p>
+                          Du har point nok til at få denne ordre gratis! (
+                          {props.orderValue / exchangeRate} point)
+                        </p>
+                      )}
+                    </>
+                  ) : (
+                    <p>Du har allerede anvendt point på denne ordre.</p>
+                  )}
                 </>
               ) : (
                 <>
@@ -115,12 +135,20 @@ const PointsBox = (props) => {
           )}
         </div>
         {loggedIn && (
-          <button
-            onClick={() => props.function(totalSavings)}
-            className="bg-primaryGrey text-white w-full mt-2 rounded-md py-2 font-semibold"
-          >
-            Anvend point
-          </button>
+          <>
+            {props.discountApplied !== true && (
+              <>
+                <button
+                  onClick={() =>
+                    props.function(totalSavings, remainingPoints, pointsUsed)
+                  }
+                  className="bg-primaryGrey text-white w-full mt-2 rounded-md py-2 font-semibold"
+                >
+                  Anvend point
+                </button>
+              </>
+            )}
+          </>
         )}
       </div>
     </>

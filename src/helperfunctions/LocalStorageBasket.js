@@ -9,7 +9,7 @@ export default function localStorageBasket(newProduct) {
       if (entry.id == newProduct.id) {
         entry.amount++;
         productExists = true;
-      } 
+      }
     });
 
     currentBasket.orderTotal += newProduct.price;
@@ -20,7 +20,11 @@ export default function localStorageBasket(newProduct) {
 
     localStorage.setItem("customerOrder", JSON.stringify(currentBasket));
   } else {
-    let newBasket = { orderTotal: Number(newProduct.price), products: [newProduct] };
+    let newBasket = {
+      orderTotal: Number(newProduct.price),
+      discountApplied: false,
+      products: [newProduct],
+    };
     localStorage.setItem("customerOrder", JSON.stringify(newBasket));
   }
 }
