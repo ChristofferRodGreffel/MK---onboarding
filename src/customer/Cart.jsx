@@ -11,6 +11,7 @@ const Cart = () => {
   const [loading, setLoading] = useState(true);
   const [priceFromBasket, setPriceFromBasket] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [discount, setDiscount] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -73,8 +74,8 @@ const Cart = () => {
   };
 
   const handleApplyDiscount = (savingsAmount) => {
-    console.log(savingsAmount);
     setTotalPrice((prevTotalPrice) => prevTotalPrice - savingsAmount);
+    setDiscount(savingsAmount);
   };
 
   const formatter = new Intl.NumberFormat("da-DK", {
@@ -153,6 +154,13 @@ const Cart = () => {
                       Køb for <b>{formatter.format(400 - priceFromBasket)}</b> mere for gratis fragt!
                     </p>
                   )}
+                  {discount != null && (
+                    <div className="flex justify-between items-center">
+                      <h1 className="font-semibold">Rabat</h1>
+                      <p className="font-medium text-customGreen">-{formatter.format(discount)}</p>
+                    </div>
+                  )}
+
                   <div className="flex justify-between items-center mt-8 border-b-2 border-primaryGrey">
                     <h1 className="text-xl font-bold">I alt.</h1>
                     <p className="text-xl font-bold">{formatter.format(totalPrice)}</p>

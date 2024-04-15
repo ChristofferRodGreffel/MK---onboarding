@@ -6,8 +6,6 @@ export default function localStorageBasket(newProduct) {
     let currentBasket = JSON.parse(basketFromStorage);
     let productExists = false;
 
-    console.log(currentBasket);
-
     currentBasket.forEach((entry) => {
       if (entry.id == newProduct.id) {
         entry.amount++;

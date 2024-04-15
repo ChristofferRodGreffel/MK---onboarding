@@ -7,21 +7,26 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 const PointsBox = (props) => {
   const [loggedIn, setLoggedIn] = useState();
   const [userData, setUserData] = useState();
+  const [userId, setUserId] = useState();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const currentUser = auth.currentUser;
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        setUserId(user.uid);
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
       }
     });
+  }, []);
 
-    if (currentUser) {
+  useEffect(() => {
+    if (userId) {
       const getUserData = async () => {
-        const q = query(collection(db, "users"), where("id", "==", currentUser.uid));
+        const usersRef = collection(db, "users");
+        const q = query(usersRef, where("id", "==", userId));
 
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
@@ -30,7 +35,8 @@ const PointsBox = (props) => {
       };
       getUserData();
     }
-  }, []);
+    setLoading(false);
+  }, [userId]);
 
   const calculatePointSavings = () => {
     let points = userData?.points;
@@ -50,7 +56,6 @@ const PointsBox = (props) => {
         break;
     }
     let savingsAmount = points * exchangeRate;
-
     return savingsAmount;
   };
 
@@ -60,33 +65,37 @@ const PointsBox = (props) => {
   });
 
   return (
-    <div>
-      <p className="font-bold">Dine maulund point</p>
-      <div className="border-2 rounded-md border-primaryGrey px-5 py-5 mt-2">
-        {loggedIn && loggedIn == true ? (
-          <>
-            <p className="text-5xl font-bold text-primaryGrey">{userData?.points}</p>
-            <p>Spar {formatter.format(calculatePointSavings())} med point</p>
-          </>
-        ) : (
-          <>
-            <p>Log ind for at anvende point og spare penge på din ordre!</p>
-            <button
-              onClick={() => navigate("/signin")}
-              className="bg-primaryGrey text-white py-1.5 px-10 rounded-sm font-semibold mt-3"
-            >
-              Log ind
-            </button>
-          </>
-        )}
-      </div>
-      <button
-        onClick={() => props.function(calculatePointSavings())}
-        className="bg-primaryGrey text-white w-full mt-2 rounded-md py-2 font-semibold"
-      >
-        Anvend point
-      </button>
-    </div>
+    <>
+      {!loading && (
+        <div>
+          <p className="font-bold">Dine maulund point</p>
+          <div className="border-2 rounded-md border-primaryGrey px-5 py-5 mt-2">
+            {loggedIn && loggedIn == true ? (
+              <>
+                <p className="text-5xl font-bold text-primaryGrey">{userData?.points}</p>
+                <p>Spar {formatter.format(calculatePointSavings())} med point</p>
+              </>
+            ) : (
+              <>
+                <p>Log ind for at anvende point og spare penge på din ordre!</p>
+                <button
+                  onClick={() => navigate("/signin")}
+                  className="bg-primaryGrey text-white py-1.5 px-10 rounded-sm font-semibold mt-3"
+                >
+                  Log ind
+                </button>
+              </>
+            )}
+          </div>
+          <button
+            onClick={() => props.function(calculatePointSavings())}
+            className="bg-primaryGrey text-white w-full mt-2 rounded-md py-2 font-semibold"
+          >
+            Anvend point
+          </button>
+        </div>
+      )}
+    </>
   );
 };
 
