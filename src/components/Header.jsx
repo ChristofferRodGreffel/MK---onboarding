@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import MaulundLogo from "../assets/maulund-logo.webp";
 import { Link } from "react-router-dom";
+import { useGlobalState } from "./GlobalStateProvider";
 
 const Header = () => {
-  const [amountFromBasket, setAmountFromBasket] = useState(0);
+  const { globalState, setGlobalState } = useGlobalState();
 
   // Sætter antallet af produkter i kurven
   useEffect(() => {
@@ -11,10 +12,8 @@ const Header = () => {
 
     if (basketFromStorage) {
       let totalAmountFromBasket = 0;
-      basketFromStorage.products.forEach(
-        (subData) => (totalAmountFromBasket += subData.amount)
-      );
-      setAmountFromBasket(totalAmountFromBasket);
+      basketFromStorage.products.forEach((subData) => (totalAmountFromBasket += subData.amount));
+      setGlobalState(totalAmountFromBasket);
     }
   }, []);
 
@@ -29,9 +28,9 @@ const Header = () => {
         </Link>
         <Link to={"/cart"} className="relative">
           <i className="fa-solid fa-cart-shopping text-2xl px-3 text-primaryGrey"></i>
-          {amountFromBasket !== 0 && (
+          {globalState !== 0 && (
             <div className="absolute -top-2 right-0 bg-primaryGrey border-[2.5px] border-white text-white font-semibold w-6 h-6 flex justify-center items-center rounded-full animate-popOut">
-              <p className="text-sm text-center">{amountFromBasket}</p>
+              <p className="text-sm text-center">{globalState}</p>
             </div>
           )}
         </Link>

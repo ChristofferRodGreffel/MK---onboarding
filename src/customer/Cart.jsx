@@ -9,6 +9,7 @@ import { arrayUnion, doc, increment, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig";
 import { toast } from "react-toastify";
 import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
+import { useGlobalState } from "../components/GlobalStateProvider";
 
 const Cart = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -16,6 +17,8 @@ const Cart = () => {
   const [loading, setLoading] = useState(true);
   const [subTotal, setSubTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const { globalState, setGlobalState } = useGlobalState();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,6 +54,7 @@ const Cart = () => {
   // fra CheckoutProduct.jsx og øger værdien med 1. Derefter opdateres localStorage.
   const increaseAmount = (product) => {
     product.amount += 1;
+    setGlobalState((prevState) => prevState + 1);
     const newBasket = [...allProducts];
     localStorageBasket.products = newBasket;
     localStorageBasket.orderTotal += product.price;
@@ -64,6 +68,7 @@ const Cart = () => {
   const decreaseAmount = (product) => {
     let current = product.amount;
     if (current > 1) {
+      setGlobalState((prevState) => prevState - 1);
       product.amount -= 1;
       const newBasket = [...allProducts];
       localStorageBasket.products = newBasket;
@@ -77,6 +82,7 @@ const Cart = () => {
   const handleDeleteProduct = (index, product) => {
     const newBasket = [...allProducts];
     localStorageBasket.orderTotal -= product.price * product.amount;
+    setGlobalState((prevState) => prevState - product.amount);
     newBasket.splice(index, 1);
     localStorageBasket.products = newBasket;
 
@@ -98,11 +104,7 @@ const Cart = () => {
     }
   };
 
-  const handleApplyDiscount = async (
-    savingsAmount,
-    remainingPoints,
-    pointsUsed
-  ) => {
+  const handleApplyDiscount = async (savingsAmount, remainingPoints, pointsUsed) => {
     if (savingsAmount === 0) {
       toast.error("Du har ingen point", DefaultToastifySettings);
       return;
@@ -190,15 +192,8 @@ const Cart = () => {
                   return (
                     <div key={key} className="relative">
                       <div className="flex justify-between items-center">
-                        <img
-                          src={product.src}
-                          alt={product.title}
-                          className="w-16 h-16 aspect-square"
-                          loading="lazy"
-                        />
-                        <p className="text-xs w-1/2 line-clamp-3">
-                          {product.title}
-                        </p>
+                        <img src={product.src} alt={product.title} className="w-16 h-16 aspect-square" loading="lazy" />
+                        <p className="text-xs w-1/2 line-clamp-3">{product.title}</p>
                         <div className="flex flex-col">
                           <p>{product.amount} stk.</p>
                           <p className="font-bold">{product.price} kr.</p>
@@ -212,9 +207,7 @@ const Cart = () => {
                               product.amount === 1 && `text-zinc-500`
                             }`}
                           ></i>
-                          <p className="font-bold text-xl text-primaryGrey">
-                            {product.amount}
-                          </p>
+                          <p className="font-bold text-xl text-primaryGrey">{product.amount}</p>
                           <i
                             onClick={() => increaseAmount(product)}
                             className="fa-solid fa-circle-plus text-lg text-primaryGrey cursor-pointer"
@@ -244,9 +237,7 @@ const Cart = () => {
                     <h1 className="font-semibold">Fragt</h1>
                     {totalPrice > 400 ? (
                       <div className="flex gap-2 items-center">
-                        <p className="font-medium line-through text-sm text-primaryGrey">
-                          {formatter.format(29)}
-                        </p>
+                        <p className="font-medium line-through text-sm text-primaryGrey">{formatter.format(29)}</p>
                         <p className="font-medium">{formatter.format(0)}</p>
                       </div>
                     ) : (
@@ -255,23 +246,18 @@ const Cart = () => {
                   </div>
                   {subTotal < 400 && (
                     <p className="text-sm text-right">
-                      Køb for <b>{formatter.format(400 - subTotal)}</b> mere for
-                      gratis fragt!
+                      Køb for <b>{formatter.format(400 - subTotal)}</b> mere for gratis fragt!
                     </p>
                   )}
                   {localStorageBasket?.discountApplied && (
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold">Rabat</h1>
-                      <p className="font-medium text-customGreen">
-                        -{formatter.format(localStorageBasket?.discount)}
-                      </p>
+                      <p className="font-medium text-customGreen">-{formatter.format(localStorageBasket?.discount)}</p>
                     </div>
                   )}
                   <div className="flex justify-between items-center mt-8 border-b-2 border-primaryGrey">
                     <h1 className="text-xl font-bold">I alt.</h1>
-                    <p className="text-xl font-bold">
-                      {formatter.format(totalPrice)}
-                    </p>
+                    <p className="text-xl font-bold">{formatter.format(totalPrice)}</p>
                   </div>
                   <button
                     onClick={handlePlaceOrder}
@@ -286,11 +272,7 @@ const Cart = () => {
         ) : (
           <div>
             <p className="my-5">Ingen varer i kurven...</p>
-            <CustomButton
-              title="Shop videre"
-              function={() => navigate("/")}
-              customWidth="w-full"
-            />
+            <CustomButton title="Shop videre" function={() => navigate("/")} customWidth="w-full" />
           </div>
         )}
       </div>
