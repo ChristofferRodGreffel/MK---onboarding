@@ -5,11 +5,14 @@ import { PulseLoader } from "react-spinners";
 import CustomButton from "../components/CustomButton";
 import { useNavigate } from "react-router-dom";
 import PointsBox from "../components/PointsBox";
+import { doc, updateDoc } from "firebase/firestore";
+import { auth, db } from "../../firebaseConfig";
 
 const Cart = () => {
   const [allProducts, setAllProducts] = useState([]);
+  const [localStorageBasket, setLocalStorageBasket] = useState();
   const [loading, setLoading] = useState(true);
-  const [priceFromBasket, setPriceFromBasket] = useState(0);
+  const [subTotal, setSubTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [discount, setDiscount] = useState();
   const navigate = useNavigate();
@@ -21,23 +24,20 @@ const Cart = () => {
   // Funktionen kigger efter "customerCheckout" i localStorage of henter den.
   // Vores states sættes ud fra indholdet af kurven i localStorage.
   const updateFromLocalStorage = () => {
-    const basketFromStorage = JSON.parse(localStorage.getItem("customerCheckout"));
+    const basketFromStorage = JSON.parse(localStorage.getItem("customerOrder"));
+    setLocalStorageBasket(basketFromStorage);
 
     if (basketFromStorage) {
-      let totalPriceFromBasket = 0;
-      let totalAmountFromBasket = 0;
+      let orderTotal = basketFromStorage.orderTotal;
+      setSubTotal(orderTotal);
 
-      basketFromStorage.forEach((subData) => (totalPriceFromBasket += subData.price * subData.amount));
-      basketFromStorage.forEach((subData) => (totalAmountFromBasket += subData.amount));
-
-      if (totalPriceFromBasket < 200) {
-        setTotalPrice(totalPriceFromBasket + 29);
+      if (orderTotal < 400) {
+        setTotalPrice(orderTotal + 29);
       } else {
-        setTotalPrice(totalPriceFromBasket);
+        setTotalPrice(orderTotal);
       }
 
-      setAllProducts(basketFromStorage);
-      setPriceFromBasket(totalPriceFromBasket);
+      setAllProducts(basketFromStorage.products);
       setLoading(false);
     }
   };
@@ -47,7 +47,9 @@ const Cart = () => {
   const increaseAmount = (product) => {
     product.amount += 1;
     const newBasket = [...allProducts];
-    localStorage.setItem("customerCheckout", JSON.stringify(newBasket));
+    localStorageBasket.products = newBasket;
+    localStorageBasket.orderTotal += product.price;
+    localStorage.setItem("customerOrder", JSON.stringify(localStorageBasket));
     setAllProducts(newBasket);
     updateFromLocalStorage();
   };
@@ -59,23 +61,37 @@ const Cart = () => {
     if (current > 1) {
       product.amount -= 1;
       const newBasket = [...allProducts];
-      localStorage.setItem("customerCheckout", JSON.stringify(newBasket));
+      localStorageBasket.products = newBasket;
+      localStorageBasket.orderTotal -= product.price;
+      localStorage.setItem("customerOrder", JSON.stringify(localStorageBasket));
       setAllProducts(newBasket);
       updateFromLocalStorage();
     }
   };
 
-  const handleDeleteProduct = (index) => {
+  const handleDeleteProduct = (index, product) => {
     const newBasket = [...allProducts];
+    localStorageBasket.orderTotal -= product.price * product.amount;
     newBasket.splice(index, 1);
-    localStorage.setItem("customerCheckout", JSON.stringify(newBasket));
+    localStorageBasket.products = newBasket;
+    localStorage.setItem("customerOrder", JSON.stringify(localStorageBasket));
     setAllProducts(newBasket);
     updateFromLocalStorage();
   };
 
-  const handleApplyDiscount = (savingsAmount) => {
+  const handleApplyDiscount = async (savingsAmount) => {
+    if (savingsAmount > totalPrice) {
+      let remainingAmount = savingsAmount - totalPrice;
+      let remainingPoints = remainingAmount * 0.1;
+    }
+
     setTotalPrice((prevTotalPrice) => prevTotalPrice - savingsAmount);
     setDiscount(savingsAmount);
+
+    // const userRef = doc(db, "users", auth.currentUser.uid);
+    // await updateDoc(userRef, {
+    //   points:
+    // })
   };
 
   const formatter = new Intl.NumberFormat("da-DK", {
@@ -101,8 +117,15 @@ const Cart = () => {
                   return (
                     <div key={key} className="relative">
                       <div className="flex justify-between items-center">
-                        <img src={product.src} alt={product.title} className="w-16 h-16 aspect-square" loading="lazy" />
-                        <p className="text-xs w-1/2 line-clamp-3">{product.title}</p>
+                        <img
+                          src={product.src}
+                          alt={product.title}
+                          className="w-16 h-16 aspect-square"
+                          loading="lazy"
+                        />
+                        <p className="text-xs w-1/2 line-clamp-3">
+                          {product.title}
+                        </p>
                         <div className="flex flex-col">
                           <p>{product.amount} stk.</p>
                           <p className="font-bold">{product.price} kr.</p>
@@ -116,15 +139,17 @@ const Cart = () => {
                               product.amount === 1 && `text-zinc-500`
                             }`}
                           ></i>
-                          <p className="font-bold text-xl text-primaryGrey">{product.amount}</p>
+                          <p className="font-bold text-xl text-primaryGrey">
+                            {product.amount}
+                          </p>
                           <i
                             onClick={() => increaseAmount(product)}
                             className="fa-solid fa-circle-plus text-lg text-primaryGrey cursor-pointer"
                           ></i>
                         </div>
                         <button
-                          onClick={() => handleDeleteProduct(key)}
-                          className="bg-customRed text-white py-1 px-2 text-sm font-medium rounded-md absolute right-0"
+                          onClick={() => handleDeleteProduct(key, product)}
+                          className="bg-customRed text-white py-1 px-2 text-sm font-medium rounded-sm absolute right-0"
                         >
                           Fjern
                         </button>
@@ -132,38 +157,47 @@ const Cart = () => {
                     </div>
                   );
                 })}
-                <PointsBox orderValue={priceFromBasket} function={handleApplyDiscount} />
+                <PointsBox
+                  orderValue={totalPrice}
+                  function={handleApplyDiscount}
+                />
                 <div>
                   <div className="flex justify-between items-center">
                     <h1 className="font-semibold">Subtotal</h1>
-                    <p className="font-medium">{formatter.format(priceFromBasket)}</p>
+                    <p className="font-medium">{formatter.format(subTotal)}</p>
                   </div>
                   <div className="flex justify-between items-center mt-1">
                     <h1 className="font-semibold">Fragt</h1>
-                    {priceFromBasket > 400 ? (
+                    {totalPrice > 400 ? (
                       <div className="flex gap-2 items-center">
-                        <p className="font-medium line-through text-sm text-primaryGrey">{formatter.format(39)}</p>
+                        <p className="font-medium line-through text-sm text-primaryGrey">
+                          {formatter.format(29)}
+                        </p>
                         <p className="font-medium">{formatter.format(0)}</p>
                       </div>
                     ) : (
                       <p className="font-medium">{formatter.format(29)}</p>
                     )}
                   </div>
-                  {priceFromBasket < 400 && (
+                  {subTotal < 400 && (
                     <p className="text-sm text-right">
-                      Køb for <b>{formatter.format(400 - priceFromBasket)}</b> mere for gratis fragt!
+                      Køb for <b>{formatter.format(400 - subTotal)}</b> mere for
+                      gratis fragt!
                     </p>
                   )}
                   {discount != null && (
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold">Rabat</h1>
-                      <p className="font-medium text-customGreen">-{formatter.format(discount)}</p>
+                      <p className="font-medium text-customGreen">
+                        -{formatter.format(discount)}
+                      </p>
                     </div>
                   )}
-
                   <div className="flex justify-between items-center mt-8 border-b-2 border-primaryGrey">
                     <h1 className="text-xl font-bold">I alt.</h1>
-                    <p className="text-xl font-bold">{formatter.format(totalPrice)}</p>
+                    <p className="text-xl font-bold">
+                      {formatter.format(totalPrice)}
+                    </p>
                   </div>
                   <button className="bg-customGreen w-full p-2 rounded-md text-white font-bold text-lg mt-10">
                     Gennemfør ordre
@@ -175,7 +209,11 @@ const Cart = () => {
         ) : (
           <div>
             <p className="my-5">Ingen varer i kurven...</p>
-            <CustomButton title="Shop videre" function={() => navigate("/")} customWidth="w-full" />
+            <CustomButton
+              title="Shop videre"
+              function={() => navigate("/")}
+              customWidth="w-full"
+            />
           </div>
         )}
       </div>

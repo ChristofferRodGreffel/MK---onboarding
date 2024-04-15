@@ -1,25 +1,26 @@
 export default function localStorageBasket(newProduct) {
-  const basketFromStorage = localStorage.getItem("customerCheckout");
+  const currentOrder = localStorage.getItem("customerOrder");
 
-  // Hvis brugeren allerede har produkter i kurven eller ej
-  if (basketFromStorage) {
-    let currentBasket = JSON.parse(basketFromStorage);
+  if (currentOrder) {
+    let currentBasket = JSON.parse(currentOrder);
     let productExists = false;
 
-    currentBasket.forEach((entry) => {
+    currentBasket.products.forEach((entry) => {
       if (entry.id == newProduct.id) {
         entry.amount++;
         productExists = true;
-      }
+      } 
     });
 
+    currentBasket.orderTotal += newProduct.price;
+
     if (!productExists) {
-      currentBasket.push(newProduct);
+      currentBasket.products.push(newProduct);
     }
 
-    // Tilføjer det nye produkt til kurven
-    localStorage.setItem("customerCheckout", JSON.stringify(currentBasket));
+    localStorage.setItem("customerOrder", JSON.stringify(currentBasket));
   } else {
-    localStorage.setItem("customerCheckout", JSON.stringify([newProduct]));
+    let newBasket = { orderTotal: Number(newProduct.price), products: [newProduct] };
+    localStorage.setItem("customerOrder", JSON.stringify(newBasket));
   }
 }

@@ -3,7 +3,9 @@ import React from "react";
 const CustomButton = (props) => {
   return (
     <button
-      className={`flex cursor-pointer justify-center items-center gap-2 bg-primaryGrey text-white text-lg outline-none rounded-md p-2.5 md:p-2 font-bold ${
+      className={`flex cursor-pointer justify-center items-center gap-2 ${
+        props.customColor ? props.customColor : "bg-primaryGrey"
+      } text-white text-lg outline-none rounded-md p-2 md:p-2 font-bold ${
         props.customWidth && props.customWidth
       }`}
       onClick={props.function}

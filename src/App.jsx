@@ -10,6 +10,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { ToastContainer } from "react-toastify";
 import ControlPanel from "./admin/ControlPanel";
 import "react-toastify/dist/ReactToastify.css";
+import Profile from "./customer/Profile";
 
 function App() {
   const [admin, setAdmin] = useState(false);
@@ -34,7 +35,7 @@ function App() {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer stacked />
       <Routes>
         {admin && (
           <>
@@ -42,6 +43,7 @@ function App() {
           </>
         )}
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/" element={<Frontpage />} />

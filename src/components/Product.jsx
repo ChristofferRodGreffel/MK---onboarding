@@ -8,7 +8,7 @@ const Product = (props) => {
     const completeProduct = {
       id: id,
       title: props.productTitle,
-      price: props.productPrice,
+      price: Number(props.productPrice),
       src: props.imgSrc,
       amount: 1,
     };

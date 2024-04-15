@@ -5,19 +5,13 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const [amountFromBasket, setAmountFromBasket] = useState(0);
 
-  window.addEventListener("storage", () => {
-    // When local storage changes, dump the list to
-    // the console.
-    console.log(JSON.parse(window.localStorage.getItem("sampleList")));
-  });
-
   // Sætter antallet af produkter i kurven
   useEffect(() => {
-    const basketFromStorage = JSON.parse(localStorage.getItem("customerCheckout"));
+    const basketFromStorage = JSON.parse(localStorage.getItem("customerOrder"));
 
     if (basketFromStorage) {
       let totalAmountFromBasket = 0;
-      basketFromStorage.forEach((subData) => (totalAmountFromBasket += subData.amount));
+      basketFromStorage.products.forEach((subData) => (totalAmountFromBasket += subData.amount));
       setAmountFromBasket(totalAmountFromBasket);
     }
   }, []);

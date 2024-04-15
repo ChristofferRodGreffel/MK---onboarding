@@ -7,7 +7,7 @@ import { firebaseErrorsCodes } from "../../firebaseErrorCodes";
 import { toast } from "react-toastify";
 import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
 import { auth, db } from "../../firebaseConfig";
-import { setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import maulundLogo from "../assets/maulund-logo.webp";
 
@@ -40,7 +40,7 @@ const SignUp = () => {
     createUserWithEmailAndPassword(auth, userEmail, userPassword)
       .then((userCredential) => {
         // Signed up
-        const user = userCredential.user.uid;
+        const user = userCredential.user;
         addUserData(user);
       })
       .then(() => {
@@ -60,7 +60,11 @@ const SignUp = () => {
     const username = formRef.current.name.value;
     const tel = formRef.current.phone.value;
 
-    await setDoc(doc(db, "users", user), {
+    await setDoc(doc(db, "users", user.uid), {
+      history: [],
+      id: user.uid,
+      level: "bronze",
+      points: 200,
       name: username,
       phone: tel,
     });
