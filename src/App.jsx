@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import ControlPanel from "./admin/ControlPanel";
 import "react-toastify/dist/ReactToastify.css";
 import Profile from "./customer/Profile";
+import OrderRecieved from "./customer/OrderRecieved";
 
 function App() {
   const [admin, setAdmin] = useState(false);
@@ -45,6 +46,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/orderrecieved" element={<OrderRecieved />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/" element={<Frontpage />} />
         <Route path="*" element={<Frontpage />} />

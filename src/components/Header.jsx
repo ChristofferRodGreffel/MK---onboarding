@@ -11,7 +11,9 @@ const Header = () => {
 
     if (basketFromStorage) {
       let totalAmountFromBasket = 0;
-      basketFromStorage.products.forEach((subData) => (totalAmountFromBasket += subData.amount));
+      basketFromStorage.products.forEach(
+        (subData) => (totalAmountFromBasket += subData.amount)
+      );
       setAmountFromBasket(totalAmountFromBasket);
     }
   }, []);
@@ -28,7 +30,7 @@ const Header = () => {
         <Link to={"/cart"} className="relative">
           <i className="fa-solid fa-cart-shopping text-2xl px-3 text-primaryGrey"></i>
           {amountFromBasket !== 0 && (
-            <div className="absolute -top-2 right-0 bg-primaryGrey border-[2.5px] border-white text-white font-semibold w-6 h-6 flex justify-center items-center rounded-full animate-slowZoom">
+            <div className="absolute -top-2 right-0 bg-primaryGrey border-[2.5px] border-white text-white font-semibold w-6 h-6 flex justify-center items-center rounded-full animate-popOut">
               <p className="text-sm text-center">{amountFromBasket}</p>
             </div>
           )}

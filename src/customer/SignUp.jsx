@@ -23,10 +23,16 @@ const SignUp = () => {
     const eyeIcon = document.querySelector("#eyeIcon");
     if (passwordInput.type === "password") {
       passwordInput.type = "text";
-      eyeIcon.setAttribute("class", "fa-solid fa-eye absolute right-5 top-3.5 text-primaryGrey");
+      eyeIcon.setAttribute(
+        "class",
+        "fa-solid fa-eye absolute right-5 top-3.5 text-primaryGrey"
+      );
     } else {
       passwordInput.type = "password";
-      eyeIcon.setAttribute("class", "fa-solid fa-eye-slash absolute right-5 top-3.5 text-primaryGrey");
+      eyeIcon.setAttribute(
+        "class",
+        "fa-solid fa-eye-slash absolute right-5 top-3.5 text-primaryGrey"
+      );
     }
   };
 
@@ -65,6 +71,7 @@ const SignUp = () => {
       id: user.uid,
       level: "bronze",
       points: 200,
+      memberPoints: 0,
       name: username,
       phone: tel,
     });
@@ -74,11 +81,21 @@ const SignUp = () => {
     <>
       <PageWrapper>
         <div className="mt-10">
-          <img src={maulundLogo} alt="Maulund Kundeklub logo" className="w-52 m-auto" />
+          <img
+            src={maulundLogo}
+            alt="Maulund Kundeklub logo"
+            className="w-52 m-auto"
+          />
           <div className="mb-5 mt-8">
-            <h1 className="font-bold text-2xl">Opret en konto i Maulund kundeklub</h1>
+            <h1 className="font-bold text-2xl">
+              Opret en konto i Maulund kundeklub
+            </h1>
           </div>
-          <form ref={formRef} onSubmit={userSignUp} className="flex flex-col gap-3">
+          <form
+            ref={formRef}
+            onSubmit={userSignUp}
+            className="flex flex-col gap-3"
+          >
             <div className="flex flex-col">
               <label htmlFor="name">Dit navn</label>
               <input type="text" required name="name" />
@@ -106,7 +123,12 @@ const SignUp = () => {
             </div>
             {loading ? (
               <>
-                <CustomButton title={<PulseLoader color="#FFFFFF" size={11} className="p-1" />} function={userSignUp} />
+                <CustomButton
+                  title={
+                    <PulseLoader color="#FFFFFF" size={11} className="p-1" />
+                  }
+                  function={userSignUp}
+                />
               </>
             ) : (
               <>

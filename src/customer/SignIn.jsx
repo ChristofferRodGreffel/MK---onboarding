@@ -4,6 +4,7 @@ import PageWrapper from "../components/PageWrapper";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
+import BackButtonWithArrow from "../components/BackButtonWithArrow";
 import { firebaseErrorsCodes } from "../../firebaseErrorCodes";
 import { toast } from "react-toastify";
 import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
@@ -57,10 +58,16 @@ const SignIn = () => {
     const eyeIcon = document.querySelector("#eyeIcon");
     if (passwordInput.type === "password") {
       passwordInput.type = "text";
-      eyeIcon.setAttribute("class", "fa-solid fa-eye absolute right-5 top-2.5 text-xl text-primaryGrey");
+      eyeIcon.setAttribute(
+        "class",
+        "fa-solid fa-eye absolute right-5 top-2.5 text-xl text-primaryGrey"
+      );
     } else {
       passwordInput.type = "password";
-      eyeIcon.setAttribute("class", "fa-solid fa-eye-slash absolute right-5 top-2.5 text-xl text-primaryGrey");
+      eyeIcon.setAttribute(
+        "class",
+        "fa-solid fa-eye-slash absolute right-5 top-2.5 text-xl text-primaryGrey"
+      );
     }
   };
 
@@ -68,17 +75,38 @@ const SignIn = () => {
     <>
       <PageWrapper>
         <div className="mt-10">
-          <img src={maulundLogo} alt="Maulund Kundeklub logo" className="w-52 m-auto" />
-          <h1 className="font-bold text-2xl mb-10 mt-14">Velkommen tilbage i Maulund kundeklub</h1>
-          <form ref={formRef} onSubmit={userSignIn} className="flex flex-col gap-5">
+          <img
+            src={maulundLogo}
+            alt="Maulund Kundeklub logo"
+            className="w-52 m-auto mb-12"
+          />
+          <BackButtonWithArrow linkTo="/" linkText="Fortsæt uden log ind" />
+          <h1 className="font-bold text-2xl mb-10">
+            Velkommen tilbage i Maulund kundeklub
+          </h1>
+          <form
+            ref={formRef}
+            onSubmit={userSignIn}
+            className="flex flex-col gap-5"
+          >
             <div className="flex flex-col">
               <label htmlFor="email">Email</label>
-              <input type="text" required name="email" placeholder="Din e-mail..." />
+              <input
+                type="text"
+                required
+                name="email"
+                placeholder="Din e-mail..."
+              />
             </div>
             <div className="flex flex-col">
               <label htmlFor="password">Adgangskode</label>
               <div className="flex flex-col relative">
-                <input type="password" required name="password" placeholder="Din adgangskode..." />
+                <input
+                  type="password"
+                  required
+                  name="password"
+                  placeholder="Din adgangskode..."
+                />
                 <i
                   id="eyeIcon"
                   onClick={handleShowPassword}
@@ -90,7 +118,9 @@ const SignIn = () => {
               <>
                 <CustomButton
                   disabled={true}
-                  title={<PulseLoader color="#FFFFFF" size={11} className="p-1" />}
+                  title={
+                    <PulseLoader color="#FFFFFF" size={11} className="p-1" />
+                  }
                   function={userSignIn}
                 />
               </>

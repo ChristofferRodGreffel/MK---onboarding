@@ -106,7 +106,15 @@ const PointsBox = (props) => {
                   {props.discountApplied !== true ? (
                     <>
                       {totalSavings < props.orderValue ? (
-                        <p>Spar {formatter.format(totalSavings)} med point</p>
+                        <>
+                          {userData.points !== 0 ? (
+                            <p>
+                              Spar {formatter.format(totalSavings)} med point
+                            </p>
+                          ) : (
+                            <p>Du har ingen point...</p>
+                          )}
+                        </>
                       ) : (
                         <p>
                           Du har point nok til at få denne ordre gratis! (

@@ -5,7 +5,7 @@ import { PulseLoader } from "react-spinners";
 import CustomButton from "../components/CustomButton";
 import { useNavigate } from "react-router-dom";
 import PointsBox from "../components/PointsBox";
-import { doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, increment, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig";
 import { toast } from "react-toastify";
 import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
@@ -115,7 +115,7 @@ const Cart = () => {
       localStorageBasket.orderTotal -= savingsAmount;
     }
 
-    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userRef = doc(db, "users", auth.currentUser?.uid);
 
     await updateDoc(userRef, {
       points: remainingPoints,
@@ -133,6 +133,44 @@ const Cart = () => {
     style: "currency",
     currency: "DKK",
   });
+
+  const handlePlaceOrder = async () => {
+    // Do this if the order has an active discount
+    if (localStorageBasket.discountApplied) {
+      let historyObject = {
+        date: Date(),
+        type: "used",
+        amount: localStorageBasket.pointsUsed,
+      };
+
+      const userRef = doc(db, "users", auth.currentUser?.uid);
+      let pointsEarned = totalPrice * 0.1;
+
+      await updateDoc(userRef, {
+        history: arrayUnion(historyObject),
+        points: increment(Math.floor(pointsEarned)),
+        memberPoints: increment(Math.floor(totalPrice / 2)),
+      });
+
+      localStorage.clear();
+
+      navigate("/");
+    }
+    // If not then do this
+    else {
+      const userRef = doc(db, "users", auth.currentUser?.uid);
+      let pointsEarned = totalPrice * 0.1;
+
+      await updateDoc(userRef, {
+        points: increment(Math.floor(pointsEarned)),
+        memberPoints: increment(Math.floor(totalPrice / 2)),
+      });
+
+      localStorage.clear();
+
+      navigate("/");
+    }
+  };
 
   return (
     <PageWrapper>
@@ -235,7 +273,10 @@ const Cart = () => {
                       {formatter.format(totalPrice)}
                     </p>
                   </div>
-                  <button className="bg-customGreen w-full p-2 rounded-md text-white font-bold text-lg mt-10">
+                  <button
+                    onClick={handlePlaceOrder}
+                    className="bg-customGreen w-full p-2 rounded-md text-white font-bold text-lg mt-10"
+                  >
                     Gennemfør ordre
                   </button>
                 </div>
