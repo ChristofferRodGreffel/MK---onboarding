@@ -12,6 +12,7 @@ import ControlPanel from "./admin/ControlPanel";
 import "react-toastify/dist/ReactToastify.css";
 import Profile from "./customer/Profile";
 import OrderRecieved from "./customer/OrderRecieved";
+import PointHistory from "./customer/PointHistory";
 
 function App() {
   const [admin, setAdmin] = useState(false);
@@ -51,6 +52,7 @@ function App() {
           element={<OrderRecieved />}
         />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/history" element={<PointHistory />} />
         <Route path="/" element={<Frontpage />} />
         <Route path="*" element={<Frontpage />} />
       </Routes>

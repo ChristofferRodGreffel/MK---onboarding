@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import MaulundLogo from "../assets/maulund-logo.webp";
 import { Link } from "react-router-dom";
 import { useGlobalState } from "./GlobalStateProvider";
+import { auth } from "../../firebaseConfig";
 
 const Header = () => {
   const { globalState, setGlobalState } = useGlobalState();
@@ -26,13 +27,18 @@ const Header = () => {
       </Link>
       <div className="flex gap-3">
         <Link to={"/profile"}>
-          <i className="fa-solid fa-user text-2xl px-3 text-primaryGrey"></i>
+          {auth.currentUser ? (
+            <i className="fa-solid fa-user-lock text-2xl px-3 text-primaryGrey"></i>
+          ) : (
+            <i className="fa-solid fa-user text-2xl px-3 text-primaryGrey"></i>
+          )}
         </Link>
+
         <Link to={"/cart"} className="relative">
           <i className="fa-solid fa-cart-shopping text-2xl px-3 text-primaryGrey"></i>
           {globalState !== 0 && (
-            <div className="absolute -top-3 -right-1 bg-primaryGrey border-[2.5px] border-white text-white font-semibold h-7 w-7 flex justify-center items-center rounded-full animate-popOut">
-              <p className="text-sm text-center">{globalState}</p>
+            <div className="absolute -top-2 right-0 bg-white border-[2.5px] border-primaryGrey text-primaryGrey font-semibold h-[22px] w-[22px] flex justify-center items-center rounded-full animate-popOut">
+              <p className="text-sm text-center font-bold">{globalState}</p>
             </div>
           )}
         </Link>

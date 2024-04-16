@@ -14,7 +14,6 @@ const PointsBox = (props) => {
   const [remainingPoints, setRemainingPoints] = useState();
   const [pointsUsed, setPointsUsed] = useState();
   const [exchangeRate, setExchangeRate] = useState(0.25);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const getUser = () => {
@@ -90,7 +89,6 @@ const PointsBox = (props) => {
   return (
     <>
       <div>
-        <p className="font-bold">Dine maulund point</p>
         <div className="border-2 rounded-md border-primaryGrey px-5 py-5 mt-2">
           {loading ? (
             <>
@@ -101,29 +99,36 @@ const PointsBox = (props) => {
               {loggedIn && loggedIn == true ? (
                 <>
                   <p className="text-5xl font-bold text-primaryGrey">
-                    {userData?.points}
+                    {userData?.points.toLocaleString()}
                   </p>
-                  {props.discountApplied !== true ? (
+                  {!props?.profileText ? (
                     <>
-                      {totalSavings < props.orderValue ? (
+                      {props.discountApplied !== true ? (
                         <>
-                          {userData.points !== 0 ? (
-                            <p>
-                              Spar {formatter.format(totalSavings)} med point
-                            </p>
+                          {totalSavings < props.orderValue ? (
+                            <>
+                              {userData.points !== 0 ? (
+                                <p>
+                                  Spar {formatter.format(totalSavings)} med
+                                  point
+                                </p>
+                              ) : (
+                                <p>Du har ingen point...</p>
+                              )}
+                            </>
                           ) : (
-                            <p>Du har ingen point...</p>
+                            <p>
+                              Du har point nok til at få denne ordre gratis! (
+                              {props.orderValue / exchangeRate} point)
+                            </p>
                           )}
                         </>
                       ) : (
-                        <p>
-                          Du har point nok til at få denne ordre gratis! (
-                          {props.orderValue / exchangeRate} point)
-                        </p>
+                        <p>Du har allerede anvendt point på denne ordre.</p>
                       )}
                     </>
                   ) : (
-                    <p>Du har allerede anvendt point på denne ordre.</p>
+                    <p className="font-semibold">Maulund Point</p>
                   )}
                 </>
               ) : (
@@ -143,7 +148,7 @@ const PointsBox = (props) => {
         </div>
         {loggedIn && (
           <>
-            {props.discountApplied !== true && (
+            {props.discountApplied !== true && props.buttonActive && (
               <>
                 <button
                   onClick={() =>

@@ -11,7 +11,7 @@ const OrderRecieved = () => {
       <Header />
       <div className="h-[80vh] flex justify-center items-center">
         <div>
-          <h1 className="font-bold text-xl text-center flex flex-col items-center mb-5">
+          <h1 className="font-bold text-xl text-center flex flex-col items-center mb-5 lg:text-3xl">
             Din ordre er modtaget!
           </h1>
           <p className="text-center mb-2">

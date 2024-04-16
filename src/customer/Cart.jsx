@@ -17,6 +17,7 @@ const Cart = () => {
   const [loading, setLoading] = useState(true);
   const [subTotal, setSubTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [savingsAmount, setSavingsAmount] = useState();
   const { globalState, setGlobalState } = useGlobalState();
 
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Cart = () => {
       let orderTotal = basketFromStorage.orderTotal;
       let subTotal = 0;
       basketFromStorage.products.forEach((product) => {
-        subTotal += product.price;
+        subTotal += product.price * product.amount;
       });
       setSubTotal(subTotal);
 
@@ -111,12 +112,14 @@ const Cart = () => {
     remainingPoints,
     pointsUsed
   ) => {
+    setSavingsAmount(savingsAmount);
     if (savingsAmount === 0) {
       toast.error("Du har ingen point", DefaultToastifySettings);
       return;
     }
     if (savingsAmount > totalPrice) {
       setTotalPrice(0);
+      setSavingsAmount(localStorageBasket.orderTotal);
       localStorageBasket.orderTotal = 0;
     } else {
       setTotalPrice((prevTotalPrice) => prevTotalPrice - savingsAmount);
@@ -149,6 +152,7 @@ const Cart = () => {
         date: Date(),
         type: "used",
         amount: localStorageBasket.pointsUsed,
+        amountSaved: savingsAmount,
       };
 
       const userRef = doc(db, "users", auth.currentUser?.uid);
@@ -194,7 +198,7 @@ const Cart = () => {
     <PageWrapper>
       <Header />
       <h1 className="font-bold text-xl mt-10">Din kurv</h1>
-
+      <hr className="border-b-[1.5px] border-primaryGrey rounded-sm mt-1.5" />
       <div className="mt-5 flex flex-col justify-center gap-10">
         {allProducts && allProducts.length != 0 ? (
           <>
@@ -211,15 +215,17 @@ const Cart = () => {
                         <img
                           src={product.src}
                           alt={product.title}
-                          className="w-16 h-16 aspect-square"
+                          className="w-16 h-16 aspect-square lg:w-20 lg:h-20"
                           loading="lazy"
                         />
-                        <p className="text-xs w-1/2 line-clamp-3">
+                        <p className="text-xs w-1/2 line-clamp-3 lg:text-base">
                           {product.title}
                         </p>
                         <div className="flex flex-col">
-                          <p>{product.amount} stk.</p>
-                          <p className="font-bold">{product.price} kr.</p>
+                          <p className="lg:text-lg">{product.amount} stk.</p>
+                          <p className="font-bold lg:text-lg">
+                            {product.price} kr.
+                          </p>
                         </div>
                       </div>
                       <div className="flex">
@@ -240,7 +246,7 @@ const Cart = () => {
                         </div>
                         <button
                           onClick={() => handleDeleteProduct(key, product)}
-                          className="bg-customRed text-white py-1 px-2 text-sm font-medium rounded-sm absolute right-0"
+                          className="bg-customRed text-white py-1 px-2 text-sm font-medium rounded-sm absolute right-0 lg:py-1.5 lg:px-5 lg:font-semibold"
                         >
                           Fjern
                         </button>
@@ -248,11 +254,15 @@ const Cart = () => {
                     </div>
                   );
                 })}
-                <PointsBox
-                  orderValue={totalPrice}
-                  function={handleApplyDiscount}
-                  discountApplied={localStorageBasket?.discountApplied}
-                />
+                <div>
+                  <p className="font-bold">Dine maulund point</p>
+                  <PointsBox
+                    orderValue={totalPrice}
+                    function={handleApplyDiscount}
+                    discountApplied={localStorageBasket?.discountApplied}
+                    buttonActive={true}
+                  />
+                </div>
                 <div>
                   <div className="flex justify-between items-center">
                     <h1 className="font-semibold">Subtotal</h1>
@@ -281,7 +291,7 @@ const Cart = () => {
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold">Rabat</h1>
                       <p className="font-medium text-customGreen">
-                        -{formatter.format(localStorageBasket?.discount)}
+                        -{formatter.format(savingsAmount)}
                       </p>
                     </div>
                   )}

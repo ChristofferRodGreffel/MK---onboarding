@@ -12,7 +12,7 @@ import maulundLogo from "../assets/maulund-logo.webp";
 import { collection, getDocs } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig";
 
-const SignIn = (props) => {
+const SignIn = () => {
   const formRef = useRef(null);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -47,6 +47,9 @@ const SignIn = (props) => {
       } else {
         if (state?.prevPath && state?.prevPath === "/cart") {
           navigate("/cart");
+          setLoading(false);
+        } else if (state?.prevPath && state?.prevPath === "/profile") {
+          navigate("/profile");
           setLoading(false);
         } else {
           navigate("/");
