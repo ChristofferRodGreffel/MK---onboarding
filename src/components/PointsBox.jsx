@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -131,12 +131,11 @@ const PointsBox = (props) => {
                   <p>
                     Log ind for at anvende point og spare penge på din ordre!
                   </p>
-                  <button
-                    onClick={() => navigate("/signin")}
-                    className="bg-primaryGrey text-white py-1.5 px-10 rounded-sm font-semibold mt-3"
-                  >
-                    Log ind
-                  </button>
+                  <Link to={"/signin"} state={{ prevPath: location.pathname }}>
+                    <button className="bg-primaryGrey text-white py-1.5 px-10 rounded-sm font-semibold mt-3">
+                      Log ind
+                    </button>
+                  </Link>
                 </>
               )}
             </>

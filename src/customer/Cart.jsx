@@ -79,6 +79,7 @@ const Cart = () => {
     }
   };
 
+  // This functions runs when deleting a product
   const handleDeleteProduct = (index, product) => {
     const newBasket = [...allProducts];
     localStorageBasket.orderTotal -= product.price * product.amount;
@@ -90,7 +91,8 @@ const Cart = () => {
     setAllProducts(newBasket);
     updateFromLocalStorage();
 
-    if (newBasket.length === 0) {
+    // If the last items is deleted, the used points are reinstated
+    if (newBasket.length === 0 && localStorageBasket.pointsUsed) {
       const reinsertPoints = async (points) => {
         const userRef = doc(db, "users", auth.currentUser.uid);
 
@@ -104,7 +106,11 @@ const Cart = () => {
     }
   };
 
-  const handleApplyDiscount = async (savingsAmount, remainingPoints, pointsUsed) => {
+  const handleApplyDiscount = async (
+    savingsAmount,
+    remainingPoints,
+    pointsUsed
+  ) => {
     if (savingsAmount === 0) {
       toast.error("Du har ingen point", DefaultToastifySettings);
       return;
@@ -148,29 +154,39 @@ const Cart = () => {
       const userRef = doc(db, "users", auth.currentUser?.uid);
       let pointsEarned = totalPrice * 0.1;
 
+      navigate(
+        `/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(
+          totalPrice / 2
+        )}`
+      );
+
       await updateDoc(userRef, {
         history: arrayUnion(historyObject),
         points: increment(Math.floor(pointsEarned)),
         memberPoints: increment(Math.floor(totalPrice / 2)),
       });
 
+      setGlobalState(0);
       localStorage.clear();
-
-      navigate("/");
     }
     // If not then do this
     else {
       const userRef = doc(db, "users", auth.currentUser?.uid);
       let pointsEarned = totalPrice * 0.1;
 
+      navigate(
+        `/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(
+          totalPrice / 2
+        )}`
+      );
+
       await updateDoc(userRef, {
         points: increment(Math.floor(pointsEarned)),
         memberPoints: increment(Math.floor(totalPrice / 2)),
       });
 
+      setGlobalState(0);
       localStorage.clear();
-
-      navigate("/");
     }
   };
 
@@ -192,8 +208,15 @@ const Cart = () => {
                   return (
                     <div key={key} className="relative">
                       <div className="flex justify-between items-center">
-                        <img src={product.src} alt={product.title} className="w-16 h-16 aspect-square" loading="lazy" />
-                        <p className="text-xs w-1/2 line-clamp-3">{product.title}</p>
+                        <img
+                          src={product.src}
+                          alt={product.title}
+                          className="w-16 h-16 aspect-square"
+                          loading="lazy"
+                        />
+                        <p className="text-xs w-1/2 line-clamp-3">
+                          {product.title}
+                        </p>
                         <div className="flex flex-col">
                           <p>{product.amount} stk.</p>
                           <p className="font-bold">{product.price} kr.</p>
@@ -207,7 +230,9 @@ const Cart = () => {
                               product.amount === 1 && `text-zinc-500`
                             }`}
                           ></i>
-                          <p className="font-bold text-xl text-primaryGrey">{product.amount}</p>
+                          <p className="font-bold text-xl text-primaryGrey">
+                            {product.amount}
+                          </p>
                           <i
                             onClick={() => increaseAmount(product)}
                             className="fa-solid fa-circle-plus text-lg text-primaryGrey cursor-pointer"
@@ -237,27 +262,34 @@ const Cart = () => {
                     <h1 className="font-semibold">Fragt</h1>
                     {totalPrice > 400 ? (
                       <div className="flex gap-2 items-center">
-                        <p className="font-medium line-through text-sm text-primaryGrey">{formatter.format(29)}</p>
+                        <p className="font-medium line-through text-sm text-primaryGrey">
+                          {formatter.format(29)}
+                        </p>
                         <p className="font-medium">{formatter.format(0)}</p>
                       </div>
                     ) : (
                       <p className="font-medium">{formatter.format(29)}</p>
                     )}
                   </div>
-                  {subTotal < 400 && (
+                  {totalPrice < 429 && (
                     <p className="text-sm text-right">
-                      Køb for <b>{formatter.format(400 - subTotal)}</b> mere for gratis fragt!
+                      Køb for <b>{formatter.format(429 - totalPrice)}</b> mere
+                      for gratis fragt!
                     </p>
                   )}
                   {localStorageBasket?.discountApplied && (
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold">Rabat</h1>
-                      <p className="font-medium text-customGreen">-{formatter.format(localStorageBasket?.discount)}</p>
+                      <p className="font-medium text-customGreen">
+                        -{formatter.format(localStorageBasket?.discount)}
+                      </p>
                     </div>
                   )}
                   <div className="flex justify-between items-center mt-8 border-b-2 border-primaryGrey">
                     <h1 className="text-xl font-bold">I alt.</h1>
-                    <p className="text-xl font-bold">{formatter.format(totalPrice)}</p>
+                    <p className="text-xl font-bold">
+                      {formatter.format(totalPrice)}
+                    </p>
                   </div>
                   <button
                     onClick={handlePlaceOrder}
@@ -272,7 +304,11 @@ const Cart = () => {
         ) : (
           <div>
             <p className="my-5">Ingen varer i kurven...</p>
-            <CustomButton title="Shop videre" function={() => navigate("/")} customWidth="w-full" />
+            <CustomButton
+              title="Shop videre"
+              function={() => navigate("/")}
+              customWidth="w-full"
+            />
           </div>
         )}
       </div>

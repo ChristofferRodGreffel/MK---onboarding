@@ -125,7 +125,7 @@ const SignUp = () => {
               <>
                 <CustomButton
                   title={
-                    <PulseLoader color="#FFFFFF" size={11} className="p-1" />
+                    <PulseLoader color="#FFFFFF" size={11} className="p-2" />
                   }
                   function={userSignUp}
                 />

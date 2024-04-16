@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import CustomButton from "../components/CustomButton";
 import PageWrapper from "../components/PageWrapper";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import BackButtonWithArrow from "../components/BackButtonWithArrow";
 import { firebaseErrorsCodes } from "../../firebaseErrorCodes";
@@ -12,10 +12,11 @@ import maulundLogo from "../assets/maulund-logo.webp";
 import { collection, getDocs } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig";
 
-const SignIn = () => {
+const SignIn = (props) => {
   const formRef = useRef(null);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  let { state } = useLocation();
 
   const userSignIn = async (e) => {
     e.preventDefault();
@@ -31,8 +32,6 @@ const SignIn = () => {
       .catch((error) => {
         setLoading(false);
         const errorCode = error.code;
-        // Finder den korresponderende fejlkode og viser den tilhørende
-        // tekst til brugeren med en toast.
         const errorMessage = firebaseErrorsCodes[errorCode];
         toast.error(errorMessage, DefaultToastifySettings);
       });
@@ -46,8 +45,13 @@ const SignIn = () => {
         navigate("/admin");
         setLoading(false);
       } else {
-        navigate("/");
-        setLoading(false);
+        if (state?.prevPath && state?.prevPath === "/cart") {
+          navigate("/cart");
+          setLoading(false);
+        } else {
+          navigate("/");
+          setLoading(false);
+        }
       }
     });
   };
@@ -119,7 +123,7 @@ const SignIn = () => {
                 <CustomButton
                   disabled={true}
                   title={
-                    <PulseLoader color="#FFFFFF" size={11} className="p-1" />
+                    <PulseLoader color="#FFFFFF" size={11} className="p-2" />
                   }
                   function={userSignIn}
                 />
