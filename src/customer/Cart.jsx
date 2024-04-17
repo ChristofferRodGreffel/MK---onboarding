@@ -40,14 +40,14 @@ const Cart = () => {
       });
       setSubTotal(subTotal);
 
-      if (orderTotal < 400) {
+      if (orderTotal < 400 && !basketFromStorage.discountApplied) {
         setTotalPrice(orderTotal + 29);
       } else {
         setTotalPrice(orderTotal);
       }
 
       if (basketFromStorage.discountApplied) {
-        setSavingsAmount(basketFromStorage.discount);
+        setSavingsAmount(basketFromStorage.discount + 29);
       }
 
       setAllProducts(basketFromStorage.products);
@@ -97,8 +97,10 @@ const Cart = () => {
     updateFromLocalStorage();
 
     // If the last items is deleted, the used points are reinstated
-    if (newBasket.length === 0 && localStorageBasket.pointsUsed) {
-      reinsertPoints(localStorageBasket.pointsUsed);
+    if (newBasket.length === 0) {
+      if (localStorageBasket.discountApplied) {
+        reinsertPoints(localStorageBasket.pointsUsed);
+      }
 
       localStorage.clear();
     }
@@ -117,10 +119,12 @@ const Cart = () => {
     if (savingsAmount > totalPrice) {
       setTotalPrice(0);
       setSavingsAmount(localStorageBasket.orderTotal);
+      localStorageBasket.discount = localStorageBasket.orderTotal;
       localStorageBasket.orderTotal = 0;
     } else {
       setTotalPrice((prevTotalPrice) => prevTotalPrice - savingsAmount);
       localStorageBasket.orderTotal -= savingsAmount;
+      localStorageBasket.discount = savingsAmount;
     }
 
     const userRef = doc(db, "users", auth.currentUser?.uid);
@@ -130,13 +134,13 @@ const Cart = () => {
     });
 
     localStorageBasket.discountApplied = true;
-    localStorageBasket.discount = savingsAmount;
     localStorageBasket.pointsUsed = pointsUsed;
     localStorage.setItem("customerOrder", JSON.stringify(localStorageBasket));
 
     updateFromLocalStorage();
   };
 
+  // Function to reinsert points in the users account
   const reinsertPoints = async (points) => {
     const userRef = doc(db, "users", auth.currentUser.uid);
     let pointsUsed = localStorageBasket.pointsUsed;
@@ -151,10 +155,12 @@ const Cart = () => {
       });
     }
 
-    localStorageBasket.discountApplied = false;
-    localStorageBasket.orderTotal += savingsAmount;
-    localStorage.setItem("customerOrder", JSON.stringify(localStorageBasket));
-    updateFromLocalStorage();
+    if (localStorageBasket.products.length !== 0) {
+      localStorageBasket.discountApplied = false;
+      localStorageBasket.orderTotal += savingsAmount;
+      localStorage.setItem("customerOrder", JSON.stringify(localStorageBasket));
+      updateFromLocalStorage();
+    }
   };
 
   const formatter = new Intl.NumberFormat("da-DK", {
@@ -163,7 +169,10 @@ const Cart = () => {
   });
 
   const handlePlaceOrder = async () => {
-    // Do this if the order has an active discount
+    const userRef = doc(db, "users", auth.currentUser?.uid);
+    let pointsEarned = totalPrice * 0.1;
+
+    // If discount is applied add object to history
     if (localStorageBasket.discountApplied) {
       let historyObject = {
         date: new Date(),
@@ -172,36 +181,16 @@ const Cart = () => {
         amountSaved: savingsAmount,
       };
 
-      const userRef = doc(db, "users", auth.currentUser?.uid);
-      let pointsEarned = totalPrice * 0.1;
-
-      navigate(
-        `/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(
-          totalPrice / 2
-        )}`
-      );
-
       await updateDoc(userRef, {
         history: arrayUnion(historyObject),
-        points: increment(Math.floor(pointsEarned)),
-        memberPoints: increment(Math.floor(totalPrice / 2)),
       });
-
-      setGlobalState(0);
-      localStorage.clear();
     }
-    let pointsEarned = totalPrice * 0.1;
-    const userRef = doc(db, "users", auth.currentUser?.uid);
 
     let historyObject = {
       date: new Date(),
       type: "earned",
       amount: Math.floor(pointsEarned),
     };
-
-    navigate(
-      `/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(totalPrice / 2)}`
-    );
 
     await updateDoc(userRef, {
       history: arrayUnion(historyObject),
@@ -211,6 +200,10 @@ const Cart = () => {
 
     setGlobalState(0);
     localStorage.clear();
+
+    navigate(
+      `/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(totalPrice / 2)}`
+    );
   };
 
   return (
@@ -276,7 +269,7 @@ const Cart = () => {
                 <div>
                   <p className="font-bold">Dine maulund point</p>
                   <PointsBox
-                    orderValue={subTotal}
+                    orderValue={totalPrice}
                     function={handleApplyDiscount}
                     discountApplied={localStorageBasket?.discountApplied}
                     buttonActive={true}
@@ -290,7 +283,7 @@ const Cart = () => {
                   </div>
                   <div className="flex justify-between items-center mt-1">
                     <h1 className="font-semibold">Fragt</h1>
-                    {totalPrice > 400 ? (
+                    {totalPrice > 400 || localStorageBasket.discountApplied ? (
                       <div className="flex gap-2 items-center">
                         <p className="font-medium line-through text-sm text-primaryGrey">
                           {formatter.format(29)}
@@ -301,7 +294,7 @@ const Cart = () => {
                       <p className="font-medium">{formatter.format(29)}</p>
                     )}
                   </div>
-                  {totalPrice < 429 && (
+                  {totalPrice < 429 && !localStorageBasket.discountApplied && (
                     <p className="text-sm text-right">
                       Køb for <b>{formatter.format(429 - totalPrice)}</b> mere
                       for gratis fragt!

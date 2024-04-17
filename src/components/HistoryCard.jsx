@@ -6,13 +6,13 @@ const HistoryCard = (props) => {
     let formattedType = "";
     switch (type) {
       case "used":
-        formattedType = "Benyttet ved køb";
+        formattedType = "Køb af varer";
         break;
       case "donated":
         formattedType = "Point donation";
         break;
       case "earned":
-        formattedType = "Optjent ved køb";
+        formattedType = "Køb af varer";
         break;
       default:
         break;
@@ -21,21 +21,28 @@ const HistoryCard = (props) => {
   };
 
   return (
-    <div className="flex items-center justify-between bg-primaryGrey w-full text-white py-2.5 px-3 rounded-md">
-      <div className="flex flex-col">
-        <p className="text-sm font-light leading-tight">
-          {timestampConvert(props.object.date.seconds, "stampToPreciseDate")}
-        </p>
-        <p className="font-medium leading-tight">
-          {formatType(props.object?.type)}
-        </p>
+    <>
+      <div className="flex items-center justify-between  w-full text-primaryGrey py-2.5 rounded-md">
+        <div className="flex flex-col">
+          <p className="text-sm font-medium leading-tight">
+            {timestampConvert(props.object.date.seconds, "stampToPreciseDate")}
+          </p>
+          <p className="font-bold leading-tight">
+            {formatType(props.object?.type)}
+          </p>
+        </div>
+        {props.object.type === "used" ? (
+          <p className="font-semibold text-customRed">
+            -{Math.floor(props.object.amount)} point
+          </p>
+        ) : (
+          <p className="font-semibold text-customGreen">
+            +{Math.floor(props.object.amount)} point
+          </p>
+        )}
       </div>
-      {props.object.type === "used" ? (
-        <p>-{props.object.amount} point</p>
-      ) : (
-        <p>+{props.object.amount} point</p>
-      )}
-    </div>
+      <hr className="border-b-[0.5px] border-gray-400 border-dashed rounded-sm mt-1.5" />
+    </>
   );
 };
 

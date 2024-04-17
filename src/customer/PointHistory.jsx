@@ -43,12 +43,13 @@ const PointHistory = () => {
       <div className="mt-8">
         <BackButtonWithArrow linkText="Tilbage til profil" linkTo="/profile" />
         <h1 className="font-bold text-lg mb-2">Din point historik</h1>
+        <hr className="border-b-[1.5px] border-primaryGrey rounded-sm mt-1.5" />
         {loading ? (
           <div className="flex justify-center mt-10">
             <PulseLoader color="#343434" size={11} />
           </div>
         ) : (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 mt-5">
             {userData?.history?.toReversed().map((entry, key) => {
               return (
                 <div key={key}>
