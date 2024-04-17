@@ -37,7 +37,7 @@ const Header = () => {
         <Link to={"/cart"} className="relative">
           <i className="fa-solid fa-cart-shopping text-2xl px-3 text-primaryGrey"></i>
           {globalState !== 0 && (
-            <div className="absolute -top-2 right-0 bg-white border-[2.5px] border-primaryGrey text-primaryGrey font-semibold h-[22px] w-[22px] flex justify-center items-center rounded-full animate-popOut">
+            <div className="absolute -top-2 right-0 bg-white border-[2.5px] border-primaryGrey text-primaryGrey font-semibold h-[22px] w-[22px] flex justify-center items-center rounded-full">
               <p className="text-sm text-center font-bold">{globalState}</p>
             </div>
           )}

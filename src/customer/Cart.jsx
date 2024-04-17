@@ -46,6 +46,10 @@ const Cart = () => {
         setTotalPrice(orderTotal);
       }
 
+      if (basketFromStorage.discountApplied) {
+        setSavingsAmount(basketFromStorage.discount);
+      }
+
       setAllProducts(basketFromStorage.products);
       setLoading(false);
     }
@@ -94,13 +98,6 @@ const Cart = () => {
 
     // If the last items is deleted, the used points are reinstated
     if (newBasket.length === 0 && localStorageBasket.pointsUsed) {
-      const reinsertPoints = async (points) => {
-        const userRef = doc(db, "users", auth.currentUser.uid);
-
-        await updateDoc(userRef, {
-          points: points,
-        });
-      };
       reinsertPoints(localStorageBasket.pointsUsed);
 
       localStorage.clear();
@@ -140,6 +137,26 @@ const Cart = () => {
     updateFromLocalStorage();
   };
 
+  const reinsertPoints = async (points) => {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    let pointsUsed = localStorageBasket.pointsUsed;
+
+    if (points) {
+      await updateDoc(userRef, {
+        points: points,
+      });
+    } else {
+      await updateDoc(userRef, {
+        points: pointsUsed,
+      });
+    }
+
+    localStorageBasket.discountApplied = false;
+    localStorageBasket.orderTotal += savingsAmount;
+    localStorage.setItem("customerOrder", JSON.stringify(localStorageBasket));
+    updateFromLocalStorage();
+  };
+
   const formatter = new Intl.NumberFormat("da-DK", {
     style: "currency",
     currency: "DKK",
@@ -149,7 +166,7 @@ const Cart = () => {
     // Do this if the order has an active discount
     if (localStorageBasket.discountApplied) {
       let historyObject = {
-        date: Date(),
+        date: new Date(),
         type: "used",
         amount: localStorageBasket.pointsUsed,
         amountSaved: savingsAmount,
@@ -173,25 +190,27 @@ const Cart = () => {
       setGlobalState(0);
       localStorage.clear();
     }
-    // If not then do this
-    else {
-      const userRef = doc(db, "users", auth.currentUser?.uid);
-      let pointsEarned = totalPrice * 0.1;
+    let pointsEarned = totalPrice * 0.1;
+    const userRef = doc(db, "users", auth.currentUser?.uid);
 
-      navigate(
-        `/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(
-          totalPrice / 2
-        )}`
-      );
+    let historyObject = {
+      date: new Date(),
+      type: "earned",
+      amount: Math.floor(pointsEarned),
+    };
 
-      await updateDoc(userRef, {
-        points: increment(Math.floor(pointsEarned)),
-        memberPoints: increment(Math.floor(totalPrice / 2)),
-      });
+    navigate(
+      `/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(totalPrice / 2)}`
+    );
 
-      setGlobalState(0);
-      localStorage.clear();
-    }
+    await updateDoc(userRef, {
+      history: arrayUnion(historyObject),
+      points: increment(Math.floor(pointsEarned)),
+      memberPoints: increment(Math.floor(totalPrice / 2)),
+    });
+
+    setGlobalState(0);
+    localStorage.clear();
   };
 
   return (
@@ -257,10 +276,11 @@ const Cart = () => {
                 <div>
                   <p className="font-bold">Dine maulund point</p>
                   <PointsBox
-                    orderValue={totalPrice}
+                    orderValue={subTotal}
                     function={handleApplyDiscount}
                     discountApplied={localStorageBasket?.discountApplied}
                     buttonActive={true}
+                    reinsertPoints={reinsertPoints}
                   />
                 </div>
                 <div>

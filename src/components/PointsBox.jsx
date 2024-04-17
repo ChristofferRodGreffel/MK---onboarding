@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { auth, db } from "../../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -72,7 +72,7 @@ const PointsBox = (props) => {
 
     if (props.orderValue < savingsAmount) {
       let pointsAmount = props.orderValue / exchangeRate;
-      setRemainingPoints(points - pointsAmount);
+      setRemainingPoints(Math.floor(points - pointsAmount));
     } else {
       setRemainingPoints(0);
     }
@@ -119,7 +119,8 @@ const PointsBox = (props) => {
                           ) : (
                             <p>
                               Du har point nok til at få denne ordre gratis! (
-                              {props.orderValue / exchangeRate} point)
+                              {Math.floor(props.orderValue / exchangeRate)}{" "}
+                              point)
                             </p>
                           )}
                         </>
@@ -157,6 +158,16 @@ const PointsBox = (props) => {
                   className="bg-primaryGrey text-white w-full mt-2 rounded-md py-2 font-semibold"
                 >
                   Anvend point
+                </button>
+              </>
+            )}
+            {props.discountApplied === true && props.buttonActive && (
+              <>
+                <button
+                  onClick={() => props.reinsertPoints()}
+                  className="bg-primaryGrey text-white w-full mt-2 rounded-md py-2 font-semibold"
+                >
+                  Træk point tilbage
                 </button>
               </>
             )}

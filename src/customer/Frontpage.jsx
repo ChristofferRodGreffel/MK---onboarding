@@ -33,8 +33,6 @@ const Frontpage = () => {
     setGlobalState((prevState) => prevState + 1);
   };
 
-  console.log(location.pathname);
-
   return (
     <PageWrapper>
       <Header />

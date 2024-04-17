@@ -49,7 +49,7 @@ const PointHistory = () => {
           </div>
         ) : (
           <div className="flex flex-col gap-3">
-            {userData?.history?.map((entry, key) => {
+            {userData?.history?.toReversed().map((entry, key) => {
               return (
                 <div key={key}>
                   <HistoryCard object={entry} />

@@ -1,4 +1,5 @@
 import React from "react";
+import { timestampConvert } from "../helperfunctions/TimestampConvert";
 
 const HistoryCard = (props) => {
   const formatType = (type) => {
@@ -22,7 +23,9 @@ const HistoryCard = (props) => {
   return (
     <div className="flex items-center justify-between bg-primaryGrey w-full text-white py-2.5 px-3 rounded-md">
       <div className="flex flex-col">
-        <p className="text-sm font-light leading-tight">10/04-2024</p>
+        <p className="text-sm font-light leading-tight">
+          {timestampConvert(props.object.date.seconds, "stampToPreciseDate")}
+        </p>
         <p className="font-medium leading-tight">
           {formatType(props.object?.type)}
         </p>

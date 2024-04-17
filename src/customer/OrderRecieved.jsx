@@ -2,6 +2,7 @@ import React from "react";
 import PageWrapper from "../components/PageWrapper";
 import Header from "../components/Header";
 import { Link, useParams } from "react-router-dom";
+import ConfettiExplosion from "react-confetti-explosion";
 
 const OrderRecieved = () => {
   const { totalPoints, memberPoints } = useParams();
@@ -9,6 +10,12 @@ const OrderRecieved = () => {
   return (
     <PageWrapper>
       <Header />
+      <div className="m-auto">
+        <ConfettiExplosion
+          colors={["#FFD700", "#FF1493", "#00FF00", "#1E90FF"]}
+          zIndex={-1}
+        />
+      </div>
       <div className="h-[80vh] flex justify-center items-center">
         <div>
           <h1 className="font-bold text-xl text-center flex flex-col items-center mb-5 lg:text-3xl">
