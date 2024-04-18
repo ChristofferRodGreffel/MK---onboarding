@@ -160,37 +160,40 @@ const Cart = () => {
   });
 
   const handlePlaceOrder = async () => {
-    const userRef = doc(db, "users", auth.currentUser?.uid);
-    let pointsEarned = totalPrice * 0.1;
+    if (auth.currentUser) {
+      const userRef = doc(db, "users", auth.currentUser?.uid);
+      let pointsEarned = totalPrice * 0.1;
 
-    // If discount is applied add object to history
-    if (localStorageBasket.discountApplied) {
+      // If discount is applied add object to history
+      if (localStorageBasket.discountApplied) {
+        let historyObject = {
+          date: new Date(),
+          type: "used",
+          amount: localStorageBasket.pointsUsed,
+          amountSaved: savingsAmount,
+        };
+
+        await updateDoc(userRef, {
+          history: arrayUnion(historyObject),
+        });
+      }
+
       let historyObject = {
         date: new Date(),
-        type: "used",
-        amount: localStorageBasket.pointsUsed,
-        amountSaved: savingsAmount,
+        type: "earned",
+        amount: Math.floor(pointsEarned),
       };
+
+      navigate(`/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(totalPrice / 2)}`);
 
       await updateDoc(userRef, {
         history: arrayUnion(historyObject),
+        points: increment(Math.floor(pointsEarned)),
+        memberPoints: increment(Math.floor(totalPrice / 2)),
       });
+    } else {
+      navigate(`/orderrecieved`);
     }
-
-    let historyObject = {
-      date: new Date(),
-      type: "earned",
-      amount: Math.floor(pointsEarned),
-    };
-
-    navigate(`/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(totalPrice / 2)}`);
-
-    await updateDoc(userRef, {
-      history: arrayUnion(historyObject),
-      points: increment(Math.floor(pointsEarned)),
-      memberPoints: increment(Math.floor(totalPrice / 2)),
-    });
-
     setGlobalState(0);
     localStorage.clear();
   };
@@ -290,14 +293,17 @@ const Cart = () => {
                     <h1 className="text-xl font-bold">I alt.</h1>
                     <p className="text-xl font-bold">{formatter.format(totalPrice)}</p>
                   </div>
-                  {Math.floor(totalPrice * 0.1) > 0 ? (
-                    <p className="text-sm mt-2 text-right">
-                      (Optjen <b>{Math.floor(totalPrice * 0.1)} point</b> på denne ordre)
-                    </p>
-                  ) : (
-                    <p className="text-sm mt-2 text-right">(Du optjener ikke point på denne ordre)</p>
+                  {auth.currentUser && (
+                    <>
+                      {Math.floor(totalPrice * 0.1) > 0 ? (
+                        <p className="text-sm mt-2 text-right">
+                          (Optjen <b>{Math.floor(totalPrice * 0.1)} point</b> på denne ordre)
+                        </p>
+                      ) : (
+                        <p className="text-sm mt-2 text-right">(Du optjener ikke point på denne ordre)</p>
+                      )}
+                    </>
                   )}
-
                   <button
                     onClick={handlePlaceOrder}
                     className="bg-customGreen w-full p-2 rounded-md text-white font-bold text-lg mt-10"

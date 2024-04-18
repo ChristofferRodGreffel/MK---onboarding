@@ -27,21 +27,15 @@ const HistoryCard = (props) => {
           <p className="text-sm font-medium leading-tight">
             {timestampConvert(props.object.date.seconds, "stampToPreciseDate")}
           </p>
-          <p className="font-bold leading-tight">
-            {formatType(props.object?.type)}
-          </p>
+          <p className="font-bold leading-tight">{formatType(props.object?.type)}</p>
         </div>
         {props.object.type === "used" ? (
-          <p className="font-semibold text-customRed">
-            -{Math.floor(props.object.amount)} point
-          </p>
+          <p className="font-semibold text-customRed">-{Math.floor(props.object.amount)} point</p>
         ) : (
-          <p className="font-semibold text-customGreen">
-            +{Math.floor(props.object.amount)} point
-          </p>
+          <p className="font-semibold text-customGreen">+{Math.floor(props.object.amount)} point</p>
         )}
       </div>
-      <hr className="border-b-[0.5px] border-gray-400 border-dashed rounded-sm mt-1.5" />
+      <hr className="border-b-[1px] border-gray-400 border-dashed rounded-sm mt-1.5" />
     </>
   );
 };
