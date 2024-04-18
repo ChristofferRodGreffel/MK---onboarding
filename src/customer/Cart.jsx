@@ -26,8 +26,8 @@ const Cart = () => {
     updateFromLocalStorage();
   }, []);
 
-  // Funktionen kigger efter "customerCheckout" i localStorage of henter den.
-  // Vores states sættes ud fra indholdet af kurven i localStorage.
+  // Fetches the cart from localStorage and updates states.
+  // The funciton is called when changes are made to the cart (increase, decrease, discount, delete).
   const updateFromLocalStorage = () => {
     const basketFromStorage = JSON.parse(localStorage.getItem("customerOrder"));
     setLocalStorageBasket(basketFromStorage);
@@ -40,14 +40,15 @@ const Cart = () => {
       });
       setSubTotal(subTotal);
 
-      if (orderTotal < 400 && !basketFromStorage.discountApplied) {
+      if (orderTotal < 400) {
         setTotalPrice(orderTotal + 29);
       } else {
         setTotalPrice(orderTotal);
       }
 
       if (basketFromStorage.discountApplied) {
-        setSavingsAmount(basketFromStorage.discount + 29);
+        setSavingsAmount(basketFromStorage.discount);
+        setTotalPrice((totalPrice) => totalPrice - basketFromStorage.discount);
       }
 
       setAllProducts(basketFromStorage.products);
@@ -55,8 +56,6 @@ const Cart = () => {
     }
   };
 
-  // Bruges til at øge antallet af X produkt i kurven. Giver hele product objektet med videre
-  // fra CheckoutProduct.jsx og øger værdien med 1. Derefter opdateres localStorage.
   const increaseAmount = (product) => {
     product.amount += 1;
     setGlobalState((prevState) => prevState + 1);
@@ -68,8 +67,6 @@ const Cart = () => {
     updateFromLocalStorage();
   };
 
-  // Bruges til at mindske antallet af X produkt i kurven. Giver hele product objektet med videre
-  // fra CheckoutProduct.jsx og øger værdien med 1. Derefter opdateres localStorage.
   const decreaseAmount = (product) => {
     let current = product.amount;
     if (current > 1) {
@@ -119,7 +116,6 @@ const Cart = () => {
       localStorageBasket.orderTotal = 0;
     } else {
       setTotalPrice((prevTotalPrice) => prevTotalPrice - savingsAmount);
-      localStorageBasket.orderTotal -= savingsAmount;
       localStorageBasket.discount = savingsAmount;
     }
 
@@ -153,7 +149,6 @@ const Cart = () => {
 
     if (localStorageBasket.products.length !== 0) {
       localStorageBasket.discountApplied = false;
-      localStorageBasket.orderTotal += savingsAmount;
       localStorage.setItem("customerOrder", JSON.stringify(localStorageBasket));
       updateFromLocalStorage();
     }
@@ -188,6 +183,8 @@ const Cart = () => {
       amount: Math.floor(pointsEarned),
     };
 
+    navigate(`/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(totalPrice / 2)}`);
+
     await updateDoc(userRef, {
       history: arrayUnion(historyObject),
       points: increment(Math.floor(pointsEarned)),
@@ -196,8 +193,6 @@ const Cart = () => {
 
     setGlobalState(0);
     localStorage.clear();
-
-    navigate(`/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(totalPrice / 2)}`);
   };
 
   return (
@@ -271,7 +266,7 @@ const Cart = () => {
                   </div>
                   <div className="flex justify-between items-center mt-1">
                     <h1 className="font-semibold">Fragt</h1>
-                    {totalPrice > 400 || localStorageBasket.discountApplied ? (
+                    {subTotal > 400 ? (
                       <div className="flex gap-2 items-center">
                         <p className="font-medium line-through text-sm text-primaryGrey">{formatter.format(29)}</p>
                         <p className="font-medium">{formatter.format(0)}</p>
@@ -280,7 +275,7 @@ const Cart = () => {
                       <p className="font-medium">{formatter.format(29)}</p>
                     )}
                   </div>
-                  {totalPrice < 429 && !localStorageBasket.discountApplied && (
+                  {(totalPrice < 429 || (totalPrice < 429 && !localStorageBasket.discountApplied)) && (
                     <p className="text-sm text-right">
                       Køb for <b>{formatter.format(429 - totalPrice)}</b> mere for gratis fragt!
                     </p>
@@ -295,6 +290,14 @@ const Cart = () => {
                     <h1 className="text-xl font-bold">I alt.</h1>
                     <p className="text-xl font-bold">{formatter.format(totalPrice)}</p>
                   </div>
+                  {Math.floor(totalPrice * 0.1) > 0 ? (
+                    <p className="text-sm mt-2 text-right">
+                      (Optjen <b>{Math.floor(totalPrice * 0.1)} point</b> på denne ordre)
+                    </p>
+                  ) : (
+                    <p className="text-sm mt-2 text-right">(Du optjener ikke point på denne ordre)</p>
+                  )}
+
                   <button
                     onClick={handlePlaceOrder}
                     className="bg-customGreen w-full p-2 rounded-md text-white font-bold text-lg mt-10"
