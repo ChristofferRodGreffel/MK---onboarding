@@ -110,7 +110,9 @@ const PointsBox = (props) => {
             <>
               {loggedIn && loggedIn == true ? (
                 <>
-                  <p className="text-5xl font-bold text-primaryGrey">{userData?.points.toLocaleString()}</p>
+                  <p className="text-5xl font-bold text-primaryGrey">
+                    {userData?.points.toLocaleString()}
+                  </p>
                   {!props?.profileText ? (
                     <>
                       {props.discountApplied !== true ? (
@@ -118,7 +120,10 @@ const PointsBox = (props) => {
                           {totalSavings < props.orderValue ? (
                             <>
                               {userData.points !== 0 ? (
-                                <p>Spar {formatter.format(totalSavings)} med point</p>
+                                <p>
+                                  Spar {formatter.format(totalSavings)} med
+                                  point
+                                </p>
                               ) : (
                                 <p>Du har ingen point...</p>
                               )}
@@ -126,7 +131,8 @@ const PointsBox = (props) => {
                           ) : (
                             <p>
                               Du har point nok til at få denne ordre gratis! (
-                              {Math.floor(props.orderValue / exchangeRate)} point)
+                              {Math.floor(props.orderValue / exchangeRate)}{" "}
+                              point)
                             </p>
                           )}
                         </>
@@ -140,7 +146,9 @@ const PointsBox = (props) => {
                 </>
               ) : (
                 <>
-                  <p>Log ind for at anvende point og spare penge på din ordre!</p>
+                  <p>
+                    Log ind for at anvende point og spare penge på din ordre!
+                  </p>
                   <Link to={"/signin"} state={{ prevPath: location.pathname }}>
                     <button className="bg-primaryGrey text-white py-1.5 px-10 rounded-sm font-semibold mt-3">
                       Log ind
@@ -156,7 +164,9 @@ const PointsBox = (props) => {
             {props.discountApplied !== true && props.buttonActive && (
               <>
                 <button
-                  onClick={() => props.function(totalSavings, remainingPoints, pointsUsed)}
+                  onClick={() =>
+                    props.function(totalSavings, remainingPoints, pointsUsed)
+                  }
                   className="bg-primaryGrey text-white w-full mt-2 rounded-md py-2 font-semibold"
                 >
                   Anvend point

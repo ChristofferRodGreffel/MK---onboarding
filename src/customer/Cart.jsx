@@ -301,11 +301,11 @@ const Cart = () => {
                       <p className="font-medium">{formatter.format(29)}</p>
                     )}
                   </div>
-                  {(subTotal < 429 ||
-                    (subTotal < 429 &&
+                  {(subTotal < 400 ||
+                    (subTotal < 400 &&
                       !localStorageBasket.discountApplied)) && (
                     <p className="text-sm text-right">
-                      Køb for <b>{formatter.format(429 - subTotal)}</b> mere for
+                      Køb for <b>{formatter.format(400 - subTotal)}</b> mere for
                       gratis fragt!
                     </p>
                   )}

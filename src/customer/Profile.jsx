@@ -11,6 +11,7 @@ import PointsBox from "../components/PointsBox";
 import Header from "../components/Header";
 import { doc, onSnapshot } from "firebase/firestore";
 import BackButtonWithArrow from "../components/BackButtonWithArrow";
+import LevelBox from "../components/LevelBox";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -142,8 +143,40 @@ const Profile = () => {
                   <br /> {userData?.name}
                 </h1>
                 <p className="font-semibold mt-3">Dine point</p>
-                <PointsBox profileText={true} />
-                <div className="mt-3">
+                <div className="md:hidden">
+                  <PointsBox profileText={true} />
+                </div>
+                <div className="hidden md:flex gap-5">
+                  <div className="w-2/4">
+                    <PointsBox profileText={true} />
+                    <div className="mt-3">
+                      <div className="flex gap-2">
+                        <p className="font-bold">Niveau:</p>
+                        <div className="flex gap-1 items-center">
+                          <span
+                            className={`w-5 h-5 ${levelInfo.levelColor} inline-block rounded-full`}
+                          ></span>
+                          <p className="font-medium capitalize">
+                            {levelInfo.levelName}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="font-medium">
+                        <b>Medlemspoint:</b>{" "}
+                        {userData?.memberPoints.toLocaleString()} point
+                      </p>
+                      {levelInfo.nextLevelRequired && (
+                        <p className="font-medium">
+                          <b>Næste niveau:</b> {levelInfo.nextLevel} (om{" "}
+                          {levelInfo.nextLevelRequired - userData?.memberPoints}{" "}
+                          point)
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <LevelBox memberPoints={userData?.memberPoints} />
+                </div>
+                <div className="mt-3 md:hidden">
                   <div className="flex gap-2">
                     <p className="font-bold">Niveau:</p>
                     <div className="flex gap-1 items-center">
@@ -196,7 +229,7 @@ const Profile = () => {
                       Point historik
                     </button>
                   </Link>
-                  <Link to={"/donate"}>
+                  <Link to={"/statistics"}>
                     <button className="bg-primaryGrey text-white font-md w-full rounded-md mt-2 py-2">
                       Kundeklub Statistikker
                     </button>

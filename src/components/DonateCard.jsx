@@ -49,7 +49,7 @@ const DonateCard = (props) => {
   };
 
   return (
-    <div className="border-2 border-primaryGrey rounded-md p-3">
+    <div className="w-full border-2 border-primaryGrey rounded-md p-3">
       {/* <img
         src={props.logo}
         alt={`${props.organization} logo`}
