@@ -1,0 +1,27 @@
+[
+  {
+    "name": "WWF Verdensnaturfonden",
+    "description": "WWF arbejder for at bevare naturen og reducere klimaforandringer gennem projekter, politisk lobbyarbejde og bevidsthedskampagner.",
+    "logo_link": "https://upload.wikimedia.org/wikipedia/en/thumb/2/24/WWF_logo.svg/200px-WWF_logo.svg.png"
+  },
+  {
+    "name": "Danmarks Naturfredningsforening",
+    "description": "DN kæmper for at beskytte og bevare Danmarks natur gennem naturpleje, miljøprojekter og politisk påvirkning.",
+    "logo_link": "https://www.dn.dk/dist/images/logo.svg"
+  },
+  {
+    "name": "Greenpeace Danmark",
+    "description": "Greenpeace udfører direkte aktioner og kampagner for at beskytte miljøet og fremme bæredygtige løsninger globalt.",
+    "logo_link": "https://www.greenpeace.org/denmark/wp-content/themes/planet4-master-theme/images/gp-logo.svg"
+  },
+  {
+    "name": "CARE Danmark",
+    "description": "CARE bekæmper fattigdom og støtter kvinder og piger i udviklingslande gennem nødhjælp, sundhedsprogrammer og uddannelse.",
+    "logo_link": "https://secure.care.dk/forms/images/care_logo.png"
+  },
+  {
+    "name": "Verdens Skove",
+    "description": "Verdens Skove arbejder for at bevare og genoprette skove samt styrke lokale samfund og biodiversitet i hele verden.",
+    "logo_link": "https://www.verdensskove.org/img:740x148/files/page/276/company/verdensskove%20logo%20u%20tagline%20cmyk%202.png"
+  }
+]

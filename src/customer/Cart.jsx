@@ -40,7 +40,7 @@ const Cart = () => {
       });
       setSubTotal(subTotal);
 
-      if (orderTotal < 400) {
+      if (subTotal < 400 && !basketFromStorage.discountApplied) {
         setTotalPrice(orderTotal + 29);
       } else {
         setTotalPrice(orderTotal);
@@ -48,7 +48,15 @@ const Cart = () => {
 
       if (basketFromStorage.discountApplied) {
         setSavingsAmount(basketFromStorage.discount);
-        setTotalPrice((totalPrice) => totalPrice - basketFromStorage.discount);
+        if (subTotal < 400) {
+          setTotalPrice(
+            (totalPrice) => totalPrice - basketFromStorage.discount + 29
+          );
+        } else {
+          setTotalPrice(
+            (totalPrice) => totalPrice - basketFromStorage.discount
+          );
+        }
       }
 
       setAllProducts(basketFromStorage.products);
@@ -103,7 +111,11 @@ const Cart = () => {
     }
   };
 
-  const handleApplyDiscount = async (savingsAmount, remainingPoints, pointsUsed) => {
+  const handleApplyDiscount = async (
+    savingsAmount,
+    remainingPoints,
+    pointsUsed
+  ) => {
     setSavingsAmount(savingsAmount);
     if (savingsAmount === 0) {
       toast.error("Du har ingen point", DefaultToastifySettings);
@@ -113,7 +125,6 @@ const Cart = () => {
       setTotalPrice(0);
       setSavingsAmount(localStorageBasket.orderTotal);
       localStorageBasket.discount = localStorageBasket.orderTotal;
-      localStorageBasket.orderTotal = 0;
     } else {
       setTotalPrice((prevTotalPrice) => prevTotalPrice - savingsAmount);
       localStorageBasket.discount = savingsAmount;
@@ -184,7 +195,11 @@ const Cart = () => {
         amount: Math.floor(pointsEarned),
       };
 
-      navigate(`/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(totalPrice / 2)}`);
+      navigate(
+        `/orderrecieved/${Math.floor(pointsEarned)}/${Math.floor(
+          totalPrice / 2
+        )}`
+      );
 
       await updateDoc(userRef, {
         history: arrayUnion(historyObject),
@@ -222,10 +237,14 @@ const Cart = () => {
                           className="w-16 h-16 aspect-square lg:w-20 lg:h-20"
                           loading="lazy"
                         />
-                        <p className="text-xs w-1/2 line-clamp-3 lg:text-sm lg:w-fit">{product.title}</p>
+                        <p className="text-xs w-1/2 line-clamp-3 lg:text-sm lg:w-fit">
+                          {product.title}
+                        </p>
                         <div className="flex flex-col">
                           <p className="lg:text-lg">{product.amount} stk.</p>
-                          <p className="font-bold lg:text-lg">{product.price} kr.</p>
+                          <p className="font-bold lg:text-lg">
+                            {product.price} kr.
+                          </p>
                         </div>
                       </div>
                       <div className="flex">
@@ -236,7 +255,9 @@ const Cart = () => {
                               product.amount === 1 && `text-zinc-500`
                             }`}
                           ></i>
-                          <p className="font-bold text-xl text-primaryGrey">{product.amount}</p>
+                          <p className="font-bold text-xl text-primaryGrey">
+                            {product.amount}
+                          </p>
                           <i
                             onClick={() => increaseAmount(product)}
                             className="fa-solid fa-circle-plus text-lg text-primaryGrey cursor-pointer"
@@ -271,36 +292,48 @@ const Cart = () => {
                     <h1 className="font-semibold">Fragt</h1>
                     {subTotal > 400 ? (
                       <div className="flex gap-2 items-center">
-                        <p className="font-medium line-through text-sm text-primaryGrey">{formatter.format(29)}</p>
+                        <p className="font-medium line-through text-sm text-primaryGrey">
+                          {formatter.format(29)}
+                        </p>
                         <p className="font-medium">{formatter.format(0)}</p>
                       </div>
                     ) : (
                       <p className="font-medium">{formatter.format(29)}</p>
                     )}
                   </div>
-                  {(totalPrice < 429 || (totalPrice < 429 && !localStorageBasket.discountApplied)) && (
+                  {(subTotal < 429 ||
+                    (subTotal < 429 &&
+                      !localStorageBasket.discountApplied)) && (
                     <p className="text-sm text-right">
-                      Køb for <b>{formatter.format(429 - totalPrice)}</b> mere for gratis fragt!
+                      Køb for <b>{formatter.format(429 - subTotal)}</b> mere for
+                      gratis fragt!
                     </p>
                   )}
                   {localStorageBasket?.discountApplied && (
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold">Rabat</h1>
-                      <p className="font-medium text-customGreen">-{formatter.format(savingsAmount)}</p>
+                      <p className="font-medium text-customGreen">
+                        -{formatter.format(savingsAmount)}
+                      </p>
                     </div>
                   )}
                   <div className="flex justify-between items-center mt-8 border-b-2 border-primaryGrey">
                     <h1 className="text-xl font-bold">I alt.</h1>
-                    <p className="text-xl font-bold">{formatter.format(totalPrice)}</p>
+                    <p className="text-xl font-bold">
+                      {formatter.format(totalPrice)}
+                    </p>
                   </div>
                   {auth.currentUser && (
                     <>
                       {Math.floor(totalPrice * 0.1) > 0 ? (
                         <p className="text-sm mt-2 text-right">
-                          (Optjen <b>{Math.floor(totalPrice * 0.1)} point</b> på denne ordre)
+                          (Optjen <b>{Math.floor(totalPrice * 0.1)} point</b> på
+                          denne ordre)
                         </p>
                       ) : (
-                        <p className="text-sm mt-2 text-right">(Du optjener ikke point på denne ordre)</p>
+                        <p className="text-sm mt-2 text-right">
+                          (Du optjener ikke point på denne ordre)
+                        </p>
                       )}
                     </>
                   )}
@@ -317,7 +350,11 @@ const Cart = () => {
         ) : (
           <div>
             <p className="my-5">Ingen varer i kurven...</p>
-            <CustomButton title="Shop videre" function={() => navigate("/")} customWidth="w-full" />
+            <CustomButton
+              title="Shop videre"
+              function={() => navigate("/")}
+              customWidth="w-full"
+            />
           </div>
         )}
       </div>

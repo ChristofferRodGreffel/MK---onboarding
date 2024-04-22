@@ -35,32 +35,36 @@ const Frontpage = () => {
 
   return (
     <PageWrapper>
-      <Header />
-      <h1 className="mt-8 text-xl font-semibold">
-        Se vores store udvalg af mobiltilbehør herunder!
-      </h1>
-      {loading ? (
-        <div className="m-auto mt-14">
-          <PulseLoader color="#343434" size={11} />
-        </div>
-      ) : (
+      {!loading && (
         <>
-          <div className="mt-10 ml-0 grid grid-cols-2 gap-10 gap-y-12 md:grid-cols-3 lg:ml-0 lg:grid-cols-4 lg:gap-y-20 lg:gap-20">
-            {allProducts.length != 0 &&
-              allProducts.map((product, key) => {
-                return (
-                  <Product
-                    id={product.id}
-                    key={key}
-                    productTitle={product.title}
-                    imgSrc={product.imageSource}
-                    altText={product.title}
-                    productPrice={product.price.toLocaleString("da-DK")}
-                    function={incrementCart}
-                  />
-                );
-              })}
-          </div>
+          <Header />
+          <h1 className="mt-8 text-xl font-semibold">
+            Se vores store udvalg af mobiltilbehør herunder!
+          </h1>
+          {loading ? (
+            <div className="m-auto mt-14">
+              <PulseLoader color="#343434" size={11} />
+            </div>
+          ) : (
+            <>
+              <div className="mt-10 ml-0 grid grid-cols-2 gap-10 gap-y-12 md:grid-cols-3 lg:ml-0 lg:grid-cols-4 lg:gap-y-20 lg:gap-20">
+                {allProducts.length != 0 &&
+                  allProducts.map((product, key) => {
+                    return (
+                      <Product
+                        id={product.id}
+                        key={key}
+                        productTitle={product.title}
+                        imgSrc={product.imageSource}
+                        altText={product.title}
+                        productPrice={product.price.toLocaleString("da-DK")}
+                        function={incrementCart}
+                      />
+                    );
+                  })}
+              </div>
+            </>
+          )}
         </>
       )}
     </PageWrapper>

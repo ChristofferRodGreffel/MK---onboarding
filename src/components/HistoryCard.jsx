@@ -8,7 +8,7 @@ const HistoryCard = (props) => {
       case "used":
         formattedType = "Køb af varer";
         break;
-      case "donated":
+      case "donate":
         formattedType = "Point donation";
         break;
       case "earned":
@@ -27,12 +27,18 @@ const HistoryCard = (props) => {
           <p className="text-sm font-medium leading-tight">
             {timestampConvert(props.object.date.seconds, "stampToPreciseDate")}
           </p>
-          <p className="font-bold leading-tight">{formatType(props.object?.type)}</p>
+          <p className="font-bold leading-tight">
+            {formatType(props.object?.type)}
+          </p>
         </div>
-        {props.object.type === "used" ? (
-          <p className="font-semibold text-customRed">-{Math.floor(props.object.amount)} point</p>
+        {props.object.type === "used" || props.object.type === "donate" ? (
+          <p className="font-semibold text-customRed">
+            -{Math.floor(props.object.amount)} point
+          </p>
         ) : (
-          <p className="font-semibold text-customGreen">+{Math.floor(props.object.amount)} point</p>
+          <p className="font-semibold text-customGreen">
+            +{Math.floor(props.object.amount)} point
+          </p>
         )}
       </div>
       <hr className="border-b-[1px] border-gray-400 border-dashed rounded-sm mt-1.5" />

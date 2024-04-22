@@ -13,6 +13,10 @@ import "react-toastify/dist/ReactToastify.css";
 import Profile from "./customer/Profile";
 import OrderRecieved from "./customer/OrderRecieved";
 import PointHistory from "./customer/PointHistory";
+import Donate from "./customer/Donate";
+import DonateRecieved from "./customer/DonateRecieved";
+import Questions from "./customer/Questions";
+import ScrollToTop from "./helperfunctions/ScrollToTop";
 
 function App() {
   const [admin, setAdmin] = useState(false);
@@ -47,13 +51,23 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/orderrecieved/:totalPoints/:memberPoints" element={<OrderRecieved />} />
+        <Route path="/donate" element={<Donate />} />
+        <Route path="/questions" element={<Questions />} />
+        <Route
+          path="/orderrecieved/:totalPoints/:memberPoints"
+          element={<OrderRecieved />}
+        />
         <Route path="/orderrecieved" element={<OrderRecieved />} />
+        <Route
+          path="/donationrecieved/:organization/:amount"
+          element={<DonateRecieved />}
+        />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/history" element={<PointHistory />} />
         <Route path="/" element={<Frontpage />} />
         <Route path="*" element={<Frontpage />} />
       </Routes>
+      <ScrollToTop />
     </>
   );
 }
