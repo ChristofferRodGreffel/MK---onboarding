@@ -70,7 +70,7 @@ const SignUp = () => {
       history: [],
       id: user.uid,
       level: "bronze",
-      points: 200,
+      points: 0,
       memberPoints: 0,
       name: username,
       phone: tel,

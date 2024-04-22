@@ -40,12 +40,12 @@ const DonateCard = (props) => {
       amount: pointsAmount,
     };
 
+    navigate(`/donationrecieved/${props.organization}/${pointsAmount}`);
+
     await updateDoc(userRef, {
       history: arrayUnion(historyObject),
       points: remainingPoints,
     });
-
-    navigate(`/donationrecieved/${props.organization}/${pointsAmount}`);
   };
 
   return (

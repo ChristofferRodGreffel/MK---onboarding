@@ -70,7 +70,7 @@ const Donate = () => {
                 Du har <b>{points}</b> optjente point.
               </p>
               <p className="mt-2">1 point = 0,35 kr.</p>
-              <div className="mt-5 flex flex-col gap-6 md:grid md:grid-cols-2 xl:grid-cols-3">
+              <div className="mt-5 flex flex-col gap-6 md:grid md:grid-cols-2 2xl:grid-cols-3">
                 {organizations.map((org, key) => {
                   return (
                     <div key={key}>
