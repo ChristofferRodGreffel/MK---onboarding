@@ -10,6 +10,10 @@
   }
 }
 
+body {
+  position: relative;
+}
+
 .content-grid {
   --padding-inline: 1rem;
   --content-max-width: 90%;
@@ -76,4 +80,41 @@ input[type="tel"]:focus-within {
 input[type="checkbox"] {
   accent-color: var(--color-dark);
   width: 15px;
+}
+
+/* Styling for dots on the progress line */
+.lineDot::before {
+  content: attr(data-before-content);
+  display: flex;
+  position: absolute;
+  top: -22px;
+  font-weight: 500;
+  justify-content: left;
+  color: #343434;
+  height: 10px;
+  width: 10px;
+}
+.lineDot:nth-child(2)::before {
+  justify-content: center;
+}
+.lineDot:nth-child(3)::before {
+  justify-content: end;
+}
+
+.lineDot::after {
+  content: attr(data-after-content);
+  display: flex;
+  position: absolute;
+  top: 16px;
+  font-weight: 500;
+  justify-content: left;
+  color: #343434;
+  height: 10px;
+  width: 10px;
+}
+.lineDot:nth-child(2)::after {
+  justify-content: center;
+}
+.lineDot:nth-child(3)::after {
+  justify-content: end;
 }

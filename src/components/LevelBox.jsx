@@ -21,8 +21,8 @@ const LevelBox = (props) => {
         Jo flere medlems point jo højere status i kundeklubben. Du får bedre
         tilbud og dine point er mere værd.
       </p>
-      <div className="mt-5 flex justify-between items-center w-full relative">
-        <div className="flex flex-col items-start">
+      <div className="mt-8 flex justify-between items-center w-full relative mb-5">
+        {/* <div className="flex flex-col">
           <p>Bronze</p>
           <div className="bg-bronze w-4 h-4 rounded-full"></div>
           <p>0 point</p>
@@ -30,17 +30,34 @@ const LevelBox = (props) => {
         <div className="flex flex-col items-center">
           <p>Sølv</p>
           <div className="bg-silver w-4 h-4 rounded-full"></div>
-          <p>2000 point</p>
+          <p>2500 point</p>
         </div>
         <div className="flex flex-col items-end">
           <p>Guld</p>
           <div className="bg-gold w-4 h-4 rounded-full"></div>
           <p>5000 point</p>
+        </div> */}
+        <div className="flex justify-between w-full">
+          <div
+            className="bg-bronze w-4 h-4 rounded-full lineDot relative"
+            data-before-content="Bronze"
+            data-after-content="0"
+          ></div>
+          <div
+            className="bg-silver w-4 h-4 rounded-full lineDot relative"
+            data-before-content="Silver"
+            data-after-content="2500"
+          ></div>
+          <div
+            className="bg-gold w-4 h-4 rounded-full lineDot relative"
+            data-before-content="Gold"
+            data-after-content="5000"
+          ></div>
         </div>
         <Line
           percent={calculateLevelPercentage()}
-          strokeWidth={1.5}
-          trailWidth={1.5}
+          strokeWidth={1.2}
+          trailWidth={1.2}
           strokeColor="#343434"
           className="-z-10 absolute w-[99%] right-1/2 left-1/2 -translate-x-1/2"
         />

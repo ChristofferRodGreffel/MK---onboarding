@@ -14,6 +14,15 @@ const HistoryCard = (props) => {
       case "earned":
         formattedType = "Køb af varer";
         break;
+      case "correctionUp":
+        formattedType = "Point tilføjet (kundeservice)";
+        break;
+      case "correctionDown":
+        formattedType = "Point slettet (kundeservice)";
+        break;
+      case "maulundDelete":
+        formattedType = "Nulstillet (kundeservice)";
+        break;
       default:
         break;
     }
@@ -31,9 +40,16 @@ const HistoryCard = (props) => {
             {formatType(props.object?.type)}
           </p>
         </div>
-        {props.object.type === "used" || props.object.type === "donate" ? (
+        {props.object.type === "used" ||
+        props.object.type === "donate" ||
+        props.object.type === "correctionDown" ||
+        props.object.type === "maulundDelete" ? (
           <p className="font-semibold text-customRed">
-            -{Math.floor(props.object.amount)} point
+            {Math.floor(props.object.amount) < 0 ? (
+              <>{Math.floor(props.object.amount)} point</>
+            ) : (
+              <>-{Math.floor(props.object.amount)} point</>
+            )}
           </p>
         ) : (
           <p className="font-semibold text-customGreen">

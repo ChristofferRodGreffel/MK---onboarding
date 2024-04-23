@@ -18,6 +18,7 @@ import DonateRecieved from "./customer/DonateRecieved";
 import Questions from "./customer/Questions";
 import ScrollToTop from "./helperfunctions/ScrollToTop";
 import Customer from "./admin/Customer";
+import CorrectPoints from "./admin/CorrectPoints";
 
 function App() {
   const [admin, setAdmin] = useState(false);
@@ -48,6 +49,7 @@ function App() {
           <>
             <Route path="/admin" element={<ControlPanel />} />
             <Route path="/customer/:id" element={<Customer />} />
+            <Route path="/correctpoints/:id" element={<CorrectPoints />} />
           </>
         )}
         <Route path="/signin" element={<SignIn />} />

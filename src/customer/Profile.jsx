@@ -79,7 +79,7 @@ const Profile = () => {
           levelColor: "bg-bronze",
           levelName: "Bronze",
           nextLevel: "Sølv",
-          nextLevelRequired: 1500,
+          nextLevelRequired: 2500,
         });
         break;
       case "silver":
@@ -87,7 +87,7 @@ const Profile = () => {
           levelColor: "bg-silver",
           levelName: "Sølv",
           nextLevel: "Guld",
-          nextLevelRequired: 3500,
+          nextLevelRequired: 5000,
         });
         break;
       case "gold":

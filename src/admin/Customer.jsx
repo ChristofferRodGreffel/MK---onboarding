@@ -1,11 +1,12 @@
-import { doc, onSnapshot } from "firebase/firestore";
+import { arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../firebaseConfig";
 import PageWrapper from "../components/PageWrapper";
 import BackButtonWithArrow from "../components/BackButtonWithArrow";
-import PointsBox from "../components/PointsBox";
 import HistoryCard from "../components/HistoryCard";
+import { toast } from "react-toastify";
+import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
 
 const Customer = () => {
   const { id } = useParams();
@@ -20,6 +21,23 @@ const Customer = () => {
     return onSnapshot(doc(db, "users", id), (doc) => {
       setUserData(doc.data());
     });
+  };
+
+  const handleDeleteAllPoints = async () => {
+    const userRef = doc(db, "users", id);
+
+    let historyObject = {
+      date: new Date(),
+      type: "maulundDelete",
+      amount: userData?.points,
+    };
+
+    await updateDoc(userRef, {
+      history: arrayUnion(historyObject),
+      points: 0,
+    });
+
+    toast.success("Point slettet", DefaultToastifySettings);
   };
 
   return (
@@ -39,23 +57,23 @@ const Customer = () => {
       </div>
       <div className="flex flex-col gap-2 mt-3">
         <Link
-          to={"/correctpoints"}
+          to={`/correctpoints/${id}`}
           className="bg-primaryGrey text-white py-2 px-8 text-center font-semibold rounded-md"
         >
           Ret antal point
         </Link>
-        <Link
-          to={"/correctpoints"}
+        <button
+          onClick={handleDeleteAllPoints}
           className="bg-customRed text-white py-2 px-8 text-center font-semibold rounded-md"
         >
           Slet alle point
-        </Link>
+        </button>
       </div>
       <div>
         <p className="font-semibold text-lg mt-10">Pointhistorik</p>
         <hr className="border-b-2 border-primaryGrey" />
         <div className="mt-3">
-          {userData?.history.length && userData?.history.length !== 0 ? (
+          {userData?.history?.length && userData?.history?.length !== 0 ? (
             <>
               {userData?.history?.toReversed().map((entry, key) => {
                 return (

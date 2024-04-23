@@ -50,12 +50,14 @@ const DonateCard = (props) => {
 
   return (
     <div className="w-full border-2 border-primaryGrey rounded-md p-3">
-      {/* <img
-        src={props.logo}
-        alt={`${props.organization} logo`}
-        className="w-1/3"
-      /> */}
-      <p className="font-bold text-lg">{props.organization}</p>
+      <div className="flex justify-between">
+        <p className="font-bold text-lg">{props.organization}</p>
+        {/* <img
+          src={props.logo}
+          alt={`${props.organization} logo`}
+          className="h-5 aspect-auto"
+        /> */}
+      </div>
       <p className="mt-2">{props.description}</p>
       <div className="mt-5 flex justify-between">
         {donateOptions.map((option, key) => {
@@ -87,7 +89,7 @@ const DonateCard = (props) => {
           onClick={handleDonatePoints}
           className="bg-primaryGrey w-full text-white font-medium p-2 rounded-md mt-3"
         >
-          Donér {selectedOption.toLocaleString().toLowerCase()} point
+          Donér {selectedOption.toLocaleString().toLowerCase()} point{" "}
         </button>
       ) : (
         <button
