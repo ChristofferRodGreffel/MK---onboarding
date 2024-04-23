@@ -44,6 +44,7 @@ const SignIn = () => {
       if (doc.id === user) {
         navigate("/admin");
         setLoading(false);
+        return;
       } else {
         if (state?.prevPath && state?.prevPath === "/cart") {
           navigate("/cart");

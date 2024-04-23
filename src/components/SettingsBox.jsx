@@ -5,7 +5,7 @@ const SettingsBox = (props) => {
     <div className="mb-5">
       <p className="font-bold leading-none mt-3">{props.title}</p>
       <input
-        step={0.1}
+        step={0.01}
         min={0.1}
         lang="en-GB"
         onChange={(e) => props.setState(Number(e.target.value))}

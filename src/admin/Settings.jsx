@@ -1,16 +1,12 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import PageWrapper from "../components/PageWrapper";
 import BackButtonWithArrow from "../components/BackButtonWithArrow";
 import { useGlobalState } from "../components/GlobalStateProvider";
 import SettingsBox from "../components/SettingsBox";
 import { db } from "../../firebaseConfig";
-import {
-  DocumentSnapshot,
-  arrayUnion,
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
+import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
 
 const Settings = () => {
   const { adminValues } = useGlobalState();
@@ -20,16 +16,16 @@ const Settings = () => {
   const [goldExchange, setGoldExchange] = useState(null);
 
   const handleChangeSetting = async (setting) => {
-    const adminRef = doc(db, "admin", "settings");
-    const docSnapshot = await getDoc(adminRef);
+    const settingsRef = doc(db, "general", "settings");
+    const docSnapshot = await getDoc(settingsRef);
     const currentSettings = docSnapshot.data();
-    console.log(currentSettings);
 
     let updateData = {};
 
     switch (setting) {
       case "earningsRate":
         updateData = { earnRate: earningsRate };
+        toast.success("Indstilling ændret", DefaultToastifySettings);
         break;
       case "exchangerateBronze":
         updateData = {
@@ -38,6 +34,7 @@ const Settings = () => {
             bronze: bronzeExchange,
           },
         };
+        toast.success("Indstilling ændret", DefaultToastifySettings);
         break;
       case "exchangerateSilver":
         updateData = {
@@ -46,6 +43,7 @@ const Settings = () => {
             silver: silverExchange,
           },
         };
+        toast.success("Indstilling ændret", DefaultToastifySettings);
         break;
       case "exchangerateGold":
         updateData = {
@@ -54,12 +52,15 @@ const Settings = () => {
             silver: goldExchange,
           },
         };
+        toast.success("Indstilling ændret", DefaultToastifySettings);
         break;
       default:
         break;
     }
 
-    await updateDoc(adminRef, updateData);
+    await updateDoc(settingsRef, updateData).catch(() =>
+      toast.error("Der er sket en fejl", DefaultToastifySettings)
+    );
   };
 
   return (

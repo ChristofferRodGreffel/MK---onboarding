@@ -13,11 +13,11 @@ const Questions = () => {
       </div>
       <div>
         <h1 className="font-bold text-2xl">Hvordan virker point?</h1>
-        <p className="mt-2">
+        <p className="mt-2 md:w-1/2">
           Hos Maulund A/S kan du optjene point når du handler. Sådan virker
           systemet.
         </p>
-        <div className="flex flex-col gap-3 mt-3">
+        <div className="flex flex-col gap-3 mt-3 md:grid md:grid-cols-3 md:mt-5">
           <div>
             <p className="font-bold mb-2">1. Optjen ved køb</p>
             <p className="mb-2">
@@ -56,17 +56,18 @@ const Questions = () => {
         </div>
         <div className="mt-10" id="levels">
           <h2 className="font-bold text-2xl">Hvad er klub niveauer?</h2>
-          <p className="mt-2">
+          <p className="mt-2 md:w-2/3">
             Når du bruger penge optjener du medlemspoint som bestemmer dit
             niveau i kundeklubben. Jo flere penge du bruger, desto højere niveau
             opnår du. <br />
+            <br />
             Dine point er mere værd når dit niveau er højt. Du starter som
             bronze kunde og kan arbejde dig op til guld, som er det højeste
             niveau.
             <br />
             Se oversigten herunder for det fulde overblik.
           </p>
-          <div className="flex flex-col gap-5 mt-3">
+          <div className="flex flex-col gap-5 mt-3 md:grid md:grid-cols-3 md:mt-5">
             <div>
               <p className="font-bold mb-1">Bronze kunde</p>
               <p className="mb-2">

@@ -19,7 +19,7 @@ export const GlobalStateProvider = ({ children }) => {
   }, []);
 
   const fetchDataFromFirestore = () => {
-    const unsub = onSnapshot(doc(db, "admin", "settings"), (doc) => {
+    const unsub = onSnapshot(doc(db, "general", "settings"), (doc) => {
       setAdminValues(doc.data());
     });
   };
