@@ -4,6 +4,7 @@ import { auth, db } from "../../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
 import { PulseLoader } from "react-spinners";
+import { useGlobalState } from "./GlobalStateProvider";
 
 const PointsBox = (props) => {
   const [loggedIn, setLoggedIn] = useState();
@@ -13,7 +14,8 @@ const PointsBox = (props) => {
   const [totalSavings, setTotalSavings] = useState();
   const [remainingPoints, setRemainingPoints] = useState();
   const [pointsUsed, setPointsUsed] = useState();
-  const [exchangeRate, setExchangeRate] = useState(0.25);
+  const [exchangeRate, setExchangeRate] = useState();
+  const { adminValues } = useGlobalState();
 
   useEffect(() => {
     const getUser = () => {
@@ -54,15 +56,16 @@ const PointsBox = (props) => {
     let exchangeRate;
     switch (userData?.level) {
       case "bronze":
-        exchangeRate = 0.25;
+        exchangeRate = adminValues.exchangeRates.bronze;
+        setExchangeRate(adminValues.exchangeRates.bronze);
         break;
       case "silver":
-        exchangeRate = 0.3;
-        setExchangeRate(0.3);
+        exchangeRate = adminValues.exchangeRates.silver;
+        setExchangeRate(adminValues.exchangeRates.silver);
         break;
       case "gold":
-        exchangeRate = 0.35;
-        setExchangeRate(0.35);
+        exchangeRate = adminValues.exchangeRates.gold;
+        setExchangeRate(adminValues.exchangeRates.gold);
         break;
 
       default:

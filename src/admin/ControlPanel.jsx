@@ -60,16 +60,16 @@ const ControlPanel = () => {
         <p className="text-xl">Kontrolpanel</p>
         <div className="flex justify-between mt-5">
           <Link
-            to={"/exchangerate"}
-            className="bg-primaryGrey text-white font-medium py-2 px-8 rounded-md flex items-center gap-2"
+            to={"/admin/settings"}
+            className="bg-primaryGrey text-white font-medium py-2 px-5 rounded-md flex items-center gap-2"
           >
-            Ret valuta <i className="fa-solid fa-coins"></i>
+            Indstillinger <i className="fa-solid fa-gear"></i>
           </Link>
           <button
             onClick={handleLogOut}
-            className="bg-customRed text-white font-medium py-2 px-8 rounded-md"
+            className="bg-customRed text-white font-medium py-2 px-5 rounded-md flex items-center gap-2"
           >
-            Log ud
+            Log ud <i className="fa-solid fa-right-from-bracket"></i>
           </button>
         </div>
         <div className="mt-5">

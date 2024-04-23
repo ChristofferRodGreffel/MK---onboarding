@@ -19,6 +19,7 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [savingsAmount, setSavingsAmount] = useState();
   const { globalState, setGlobalState } = useGlobalState();
+  const { adminValues } = useGlobalState();
 
   const navigate = useNavigate();
 
@@ -173,7 +174,7 @@ const Cart = () => {
   const handlePlaceOrder = async () => {
     if (auth.currentUser) {
       const userRef = doc(db, "users", auth.currentUser?.uid);
-      let pointsEarned = totalPrice * 0.1;
+      let pointsEarned = totalPrice * adminValues.earnRate;
 
       // If discount is applied add object to history
       if (localStorageBasket.discountApplied) {
@@ -327,8 +328,12 @@ const Cart = () => {
                     <>
                       {Math.floor(totalPrice * 0.1) > 0 ? (
                         <p className="text-sm mt-2 text-right">
-                          (Optjen <b>{Math.floor(totalPrice * 0.1)} point</b> på
-                          denne ordre)
+                          (Optjen{" "}
+                          <b>
+                            {Math.floor(totalPrice * adminValues.earnRate)}{" "}
+                            point
+                          </b>{" "}
+                          på denne ordre)
                         </p>
                       ) : (
                         <p className="text-sm mt-2 text-right">

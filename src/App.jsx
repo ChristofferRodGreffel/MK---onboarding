@@ -19,6 +19,7 @@ import Questions from "./customer/Questions";
 import ScrollToTop from "./helperfunctions/ScrollToTop";
 import Customer from "./admin/Customer";
 import CorrectPoints from "./admin/CorrectPoints";
+import Settings from "./admin/Settings";
 
 function App() {
   const [admin, setAdmin] = useState(false);
@@ -48,8 +49,12 @@ function App() {
         {admin && (
           <>
             <Route path="/admin" element={<ControlPanel />} />
-            <Route path="/customer/:id" element={<Customer />} />
-            <Route path="/correctpoints/:id" element={<CorrectPoints />} />
+            <Route path="/admin/customer/:id" element={<Customer />} />
+            <Route
+              path="/admin/customer/correctpoints/:id"
+              element={<CorrectPoints />}
+            />
+            <Route path="/admin/settings" element={<Settings />} />
           </>
         )}
         <Route path="/signin" element={<SignIn />} />

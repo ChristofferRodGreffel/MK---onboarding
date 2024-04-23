@@ -57,7 +57,7 @@ const Customer = () => {
       </div>
       <div className="flex flex-col gap-2 mt-3">
         <Link
-          to={`/correctpoints/${id}`}
+          to={`/admin/customer/correctpoints/${id}`}
           className="bg-primaryGrey text-white py-2 px-8 text-center font-semibold rounded-md"
         >
           Ret antal point

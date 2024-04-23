@@ -62,7 +62,7 @@ const CorrectPoints = () => {
       <div className="mt-10">
         <BackButtonWithArrow
           linkText="Tilbage til kundeprofil"
-          linkTo={`/customer/${id}`}
+          linkTo={`/admin/customer/${id}`}
         />
       </div>
       <h1 className="font-bold text-xl mb-2">Ret antal point</h1>
