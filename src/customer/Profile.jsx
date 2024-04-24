@@ -200,28 +200,32 @@ const Profile = () => {
                     </p>
                   )}
                 </div>
-                <div className="mt-5">
-                  <p className="font-semibold">Penge sparet med point</p>
-                  <div className="border-2 rounded-md border-primaryGrey px-5 py-5 mt-1">
-                    <p className="text-4xl font-bold text-primaryGrey">
-                      {formatter.format(amountSaved)}
-                    </p>
+                <div>
+                  <div className="mt-5">
+                    <p className="font-semibold">Penge sparet med point</p>
+                    <div className="border-2 rounded-md border-primaryGrey px-5 py-5 mt-1">
+                      <p className="text-4xl font-bold text-primaryGrey">
+                        {formatter.format(amountSaved)}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="mt-5">
-                  <p className="font-semibold">Point doneret i alt</p>
-                  <div className="border-2 rounded-md border-primaryGrey px-5 py-5 mt-1">
-                    <p className="text-5xl font-bold text-primaryGrey">
-                      {donatedPoints}
-                    </p>
-                    <p className="font-semibold">Maulund Point</p>
-                    <p>Svarende til {formatter.format(donatedPoints * 0.35)}</p>
+                  <div className="mt-5">
+                    <p className="font-semibold">Point doneret i alt</p>
+                    <div className="border-2 rounded-md border-primaryGrey px-5 py-5 mt-1">
+                      <p className="text-5xl font-bold text-primaryGrey">
+                        {donatedPoints}
+                      </p>
+                      <p className="font-semibold">Maulund Point</p>
+                      <p>
+                        Svarende til {formatter.format(donatedPoints * 0.35)}
+                      </p>
+                    </div>
+                    <Link to={"/donate"}>
+                      <button className="bg-primaryGrey text-white font-md w-full rounded-md mt-2 py-2">
+                        Donér point nu
+                      </button>
+                    </Link>
                   </div>
-                  <Link to={"/donate"}>
-                    <button className="bg-primaryGrey text-white font-md w-full rounded-md mt-2 py-2">
-                      Donér point nu
-                    </button>
-                  </Link>
                 </div>
                 <div className="mt-5">
                   <Link to={"/history"}>
@@ -252,7 +256,7 @@ const Profile = () => {
                   <CustomButton
                     disabled={true}
                     customColor="bg-customRed"
-                    customWidth="w-full"
+                    customWidth="w-full md:w-56"
                     title={
                       <PulseLoader color="#FFFFFF" size={11} className="p-1" />
                     }
@@ -263,7 +267,7 @@ const Profile = () => {
                   <CustomButton
                     title="Log ud"
                     customColor="bg-customRed"
-                    customWidth="w-full"
+                    customWidth="w-full md:w-72"
                     function={handleSignOut}
                   />
                 </div>

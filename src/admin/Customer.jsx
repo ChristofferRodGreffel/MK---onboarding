@@ -63,16 +63,16 @@ const Customer = () => {
           <p className="font-semibold">Medlemspoint</p>
         </div>
       </div>
-      <div className="flex flex-col gap-2 mt-3">
+      <div className="flex flex-col gap-2 mt-3 md:flex-row">
         <Link
           to={`/admin/customer/correctpoints/${id}`}
-          className="bg-primaryGrey text-white py-2 px-8 text-center font-semibold rounded-md"
+          className="bg-primaryGrey text-white py-2 px-8 text-center font-semibold rounded-md md:w-52"
         >
           Ret antal point
         </Link>
         <button
           onClick={handleDeleteAllPoints}
-          className="bg-customRed text-white py-2 px-8 text-center font-semibold rounded-md"
+          className="bg-customRed text-white py-2 px-8 text-center font-semibold rounded-md md:w-52"
         >
           Slet alle point
         </button>
