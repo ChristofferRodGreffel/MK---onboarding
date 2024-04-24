@@ -46,7 +46,9 @@ const PointsBox = (props) => {
 
   useEffect(() => {
     if (userData) {
-      calculatePointSavings();
+      if (!props.discountApplied) {
+        calculatePointSavings();
+      }
       setLoading(false);
     }
   }, [userData]);
@@ -54,6 +56,8 @@ const PointsBox = (props) => {
   const calculatePointSavings = async () => {
     let points = userData?.points;
     let exchangeRate;
+
+    // Calculate exchange rate based on the users level
     switch (userData?.level) {
       case "bronze":
         exchangeRate = adminValues.exchangeRates.bronze;
@@ -71,6 +75,8 @@ const PointsBox = (props) => {
       default:
         break;
     }
+
+    // Setting the total savings amount with points
     let savingsAmount = points * exchangeRate;
 
     // If discount is applied, the "real" order value with savings is saved in a variable
@@ -84,6 +90,7 @@ const PointsBox = (props) => {
         setRemainingPoints(0);
       }
     } else {
+      // Check if customer can save more than the order is worth
       if (props.orderValue < savingsAmount) {
         const pointsAmount = props.orderValue / exchangeRate;
         setRemainingPoints(Math.floor(points - pointsAmount));
@@ -93,7 +100,7 @@ const PointsBox = (props) => {
     }
 
     setTotalSavings(savingsAmount);
-    setPointsUsed(savingsAmount / exchangeRate);
+    setPointsUsed(Math.round(props.orderValue / exchangeRate));
   };
 
   const formatter = new Intl.NumberFormat("da-DK", {
@@ -166,14 +173,16 @@ const PointsBox = (props) => {
           <>
             {props.discountApplied !== true && props.buttonActive && (
               <>
-                <button
-                  onClick={() =>
-                    props.function(totalSavings, remainingPoints, pointsUsed)
-                  }
-                  className="bg-primaryGrey text-white w-full mt-2 rounded-md py-2 font-semibold"
-                >
-                  Anvend point
-                </button>
+                {userData?.points > 0 && (
+                  <button
+                    onClick={() =>
+                      props.function(totalSavings, remainingPoints, pointsUsed)
+                    }
+                    className="bg-primaryGrey text-white w-full mt-2 rounded-md py-2 font-semibold"
+                  >
+                    Anvend point
+                  </button>
+                )}
               </>
             )}
             {props.discountApplied === true && props.buttonActive && (

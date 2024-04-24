@@ -65,6 +65,7 @@ const Cart = () => {
     }
   };
 
+  // Increase product amount using localStorage
   const increaseAmount = (product) => {
     product.amount += 1;
     setGlobalState((prevState) => prevState + 1);
@@ -76,6 +77,7 @@ const Cart = () => {
     updateFromLocalStorage();
   };
 
+  // Decrease product amount using localStorage
   const decreaseAmount = (product) => {
     let current = product.amount;
     if (current > 1) {
@@ -112,6 +114,7 @@ const Cart = () => {
     }
   };
 
+  // Apply discount to order
   const handleApplyDiscount = async (
     savingsAmount,
     remainingPoints,
@@ -151,11 +154,11 @@ const Cart = () => {
 
     if (points) {
       await updateDoc(userRef, {
-        points: points,
+        points: increment(points),
       });
     } else {
       await updateDoc(userRef, {
-        points: pointsUsed,
+        points: increment(pointsUsed),
       });
     }
 
