@@ -46,9 +46,7 @@ const PointsBox = (props) => {
 
   useEffect(() => {
     if (userData) {
-      if (!props.discountApplied) {
-        calculatePointSavings();
-      }
+      calculatePointSavings();
       setLoading(false);
     }
   }, [userData]);
