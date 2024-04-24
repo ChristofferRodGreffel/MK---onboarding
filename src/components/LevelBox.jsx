@@ -45,12 +45,12 @@ const LevelBox = (props) => {
           ></div>
           <div
             className="bg-silver w-4 h-4 rounded-full lineDot relative"
-            data-before-content="Silver"
+            data-before-content="Sølv"
             data-after-content="2500"
           ></div>
           <div
             className="bg-gold w-4 h-4 rounded-full lineDot relative"
-            data-before-content="Gold"
+            data-before-content="Guld"
             data-after-content="5000"
           ></div>
         </div>

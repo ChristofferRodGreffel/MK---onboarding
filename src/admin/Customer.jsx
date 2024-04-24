@@ -49,11 +49,19 @@ const Customer = () => {
         />
       </div>
       <h1 className="font-bold text-xl mb-2">{userData?.name}</h1>
-      <div className="border-2 rounded-md border-primaryGrey px-5 py-5 mt-2">
-        <p className="text-5xl font-bold text-primaryGrey">
-          {userData?.points.toLocaleString()}
-        </p>
-        <p className="font-semibold">Maulund Point</p>
+      <div className="flex flex-col md:flex-row md:gap-5">
+        <div className="border-2 w-full rounded-md border-primaryGrey px-5 py-5 mt-2">
+          <p className="text-5xl font-bold text-primaryGrey">
+            {userData?.points.toLocaleString()}
+          </p>
+          <p className="font-semibold">Maulund Point</p>
+        </div>
+        <div className="border-2 w-full rounded-md border-primaryGrey px-5 py-5 mt-2">
+          <p className="text-5xl font-bold text-primaryGrey">
+            {userData?.memberPoints.toLocaleString()}
+          </p>
+          <p className="font-semibold">Medlemspoint</p>
+        </div>
       </div>
       <div className="flex flex-col gap-2 mt-3">
         <Link
