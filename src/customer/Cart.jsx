@@ -146,11 +146,11 @@ const Cart = () => {
 
     if (points) {
       await updateDoc(userRef, {
-        points: increment(points),
+        points: increment(Math.round(points)),
       });
     } else {
       await updateDoc(userRef, {
-        points: increment(pointsUsed),
+        points: increment(Math.round(pointsUsed)),
       });
     }
 
