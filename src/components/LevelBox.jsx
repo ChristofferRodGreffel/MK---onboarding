@@ -12,14 +12,11 @@ const LevelBox = (props) => {
   return (
     <div className="border-2 border-primaryGrey rounded-md mt-2 py-6 px-8">
       <div>
-        <p className="text-5xl font-bold text-primaryGrey">
-          {props.memberPoints.toLocaleString()}
-        </p>
+        <p className="text-5xl font-bold text-primaryGrey">{props.memberPoints.toLocaleString("da-DK")}</p>
         <p className="font-medium leading-none">Medlemspoint</p>
       </div>
       <p className="mt-3">
-        Jo flere medlems point jo højere status i kundeklubben. Du får bedre
-        tilbud og dine point er mere værd.
+        Jo flere medlems point jo højere status i kundeklubben. Du får bedre tilbud og dine point er mere værd.
       </p>
       <div className="mt-8 flex justify-between items-center w-full relative mb-5">
         {/* <div className="flex flex-col">
