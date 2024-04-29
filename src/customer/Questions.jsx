@@ -3,8 +3,12 @@ import PageWrapper from "../components/PageWrapper";
 import Header from "../components/Header";
 import BackButtonWithArrow from "../components/BackButtonWithArrow";
 import { Link } from "react-router-dom";
+import { useGlobalState } from "../components/GlobalStateProvider";
+import { formatter } from "../helperfunctions/Formatter";
 
 const Questions = () => {
+  const { adminValues } = useGlobalState();
+
   return (
     <PageWrapper>
       <Header />
@@ -21,8 +25,10 @@ const Questions = () => {
           <div>
             <p className="font-bold mb-2">1. Optjen ved køb</p>
             <p className="mb-2">
-              For hver krone du køber for i shoppen indsættes 0,1 point på din
-              pointkonto. Køber du f.eks. for 100 kr. vil 10 point blive indsat
+              For hver krone du køber for i shoppen indsættes{" "}
+              {formatter.format(adminValues?.earnRate)} point på din pointkonto.
+              Køber du f.eks. for 100 kr. vil{" "}
+              {formatter.format(100 * adminValues?.earnRate)} point blive indsat
               på din pointkonto.
             </p>
             <Link to={"/profile"}>
@@ -71,34 +77,46 @@ const Questions = () => {
             <div>
               <p className="font-bold mb-1">Bronze kunde</p>
               <p className="mb-2">
-                Du starter som bronze kunde og hvert point er 0,25 kr. værd. Du
-                er bronze kunde indtil du har optjent 2000 medlemspoint
+                Du starter som bronze kunde og hvert point er{" "}
+                {formatter.format(adminValues?.exchangeRates?.bronze)}
+                værd. Du er bronze kunde indtil du har optjent 2000 medlemspoint
               </p>
               <div className="flex flex-col justify-center items-center bg-bronze h-36 w-36 rounded-full">
                 <p className="font-bold text-xl leading-none">BRONZE</p>
-                <p>1 point = 0,25 kr.</p>
+                <p>
+                  1 point ={" "}
+                  {formatter.format(adminValues?.exchangeRates?.bronze)}
+                </p>
               </div>
             </div>
             <div>
               <p className="font-bold mb-1">Sølv kunde</p>
               <p className="mb-2">
-                Som sølv kunde stiger værdien af dine point fra 0,25 kr. til
-                0,30 kr. Næste trin er guld og kan opnås med 5000 medlemspoint.
+                Som sølv kunde stiger værdien af dine point fra{" "}
+                {formatter.format(adminValues?.exchangeRates?.bronze)} til{" "}
+                {formatter.format(adminValues?.exchangeRates?.silver)}. Næste
+                trin er guld og kan opnås med 5000 medlemspoint.
               </p>
               <div className="flex flex-col justify-center items-center bg-silver h-36 w-36 rounded-full">
                 <p className="font-bold text-xl leading-none">SØLV</p>
-                <p>1 point = 0,30 kr.</p>
+                <p>
+                  1 point ={" "}
+                  {formatter.format(adminValues?.exchangeRates?.silver)}
+                </p>
               </div>
             </div>
             <div>
               <p className="font-bold mb-1">Guld kunde</p>
               <p className="mb-2">
-                Som guld kunde for du mest ud af dine point. Her er hvert point
-                0,35 kr. værd og derved sparer du flest penge som guld kunde.
+                Som guld kunde for du mest ud af dine point. Her er hvert point{" "}
+                {formatter.format(adminValues?.exchangeRates?.gold)} værd og
+                derved sparer du flest penge som guld kunde.
               </p>
               <div className="flex flex-col justify-center items-center bg-gold h-36 w-36 rounded-full">
                 <p className="font-bold text-xl leading-none">GULD</p>
-                <p>1 point = 0,35 kr.</p>
+                <p>
+                  1 point = {formatter.format(adminValues?.exchangeRates?.gold)}
+                </p>
               </div>
             </div>
           </div>

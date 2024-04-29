@@ -47,7 +47,10 @@ const Frontpage = () => {
             </div>
           ) : (
             <>
-              <div className="mt-10 ml-0 grid grid-cols-2 gap-10 gap-y-12 md:grid-cols-3 lg:ml-0 lg:grid-cols-4 lg:gap-y-20 lg:gap-20">
+              <div
+                className="mt-10 ml-0 grid grid-cols-2 gap-10 gap-y-12 md:grid-cols-3 
+                lg:ml-0 lg:grid-cols-4 lg:gap-y-20 lg:gap-20"
+              >
                 {allProducts.length != 0 &&
                   allProducts.map((product, key) => {
                     return (
