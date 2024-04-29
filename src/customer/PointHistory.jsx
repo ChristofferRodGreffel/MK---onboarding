@@ -50,13 +50,19 @@ const PointHistory = () => {
           </div>
         ) : (
           <div className="flex flex-col gap-3 mt-5">
-            {userData?.history?.toReversed().map((entry, key) => {
-              return (
-                <div key={key}>
-                  <HistoryCard object={entry} />
-                </div>
-              );
-            })}
+            {userData?.history?.length && userData?.history?.length !== 0 ? (
+              <>
+                {userData?.history?.toReversed().map((entry, key) => {
+                  return (
+                    <div key={key}>
+                      <HistoryCard object={entry} />
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              <p>Der er endnu ingen historik</p>
+            )}
           </div>
         )}
       </div>

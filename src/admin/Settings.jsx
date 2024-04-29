@@ -7,6 +7,7 @@ import { db } from "../../firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
+import AdminHeader from "./AdminHeader";
 
 const Settings = () => {
   const { adminValues } = useGlobalState();
@@ -66,6 +67,9 @@ const Settings = () => {
   return (
     <PageWrapper>
       <div className="mt-10">
+        <AdminHeader />
+      </div>
+      <div className="mt-5">
         <BackButtonWithArrow
           linkText="Tilbage til kontrolpanel"
           linkTo={`/admin`}

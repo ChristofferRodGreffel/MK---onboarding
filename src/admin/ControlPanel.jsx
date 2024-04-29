@@ -8,6 +8,7 @@ import { auth, db } from "../../firebaseConfig";
 import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
 import { signOut } from "firebase/auth";
 import { toast } from "react-toastify";
+import AdminHeader from "./AdminHeader";
 
 const ControlPanel = () => {
   const [users, setUsers] = useState(null);
@@ -56,8 +57,7 @@ const ControlPanel = () => {
   return (
     <PageWrapper>
       <div className="mt-10">
-        <h1 className="font-bold text-2xl">Maulund Kundeklub</h1>
-        <p className="text-xl">Kontrolpanel</p>
+        <AdminHeader />
         <div className="flex justify-between mt-5">
           <Link
             to={"/admin/settings"}

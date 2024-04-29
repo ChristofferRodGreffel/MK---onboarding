@@ -7,6 +7,7 @@ import BackButtonWithArrow from "../components/BackButtonWithArrow";
 import HistoryCard from "../components/HistoryCard";
 import { toast } from "react-toastify";
 import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
+import AdminHeader from "./AdminHeader";
 
 const Customer = () => {
   const { id } = useParams();
@@ -43,6 +44,9 @@ const Customer = () => {
   return (
     <PageWrapper>
       <div className="mt-10">
+        <AdminHeader />
+      </div>
+      <div className="mt-5">
         <BackButtonWithArrow
           linkText="Tilbage til kontrolpanel"
           linkTo="/admin"

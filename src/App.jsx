@@ -20,6 +20,7 @@ import ScrollToTop from "./helperfunctions/ScrollToTop";
 import Customer from "./admin/Customer";
 import CorrectPoints from "./admin/CorrectPoints";
 import Settings from "./admin/Settings";
+import Statistics from "./customer/Statistics";
 
 function App() {
   const [admin, setAdmin] = useState(false);
@@ -61,6 +62,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/donate" element={<Donate />} />
+        <Route path="/statistics" element={<Statistics />} />
         <Route path="/questions" element={<Questions />} />
         <Route
           path="/orderrecieved/:totalPoints/:memberPoints"

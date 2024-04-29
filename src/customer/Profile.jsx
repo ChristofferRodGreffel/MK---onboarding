@@ -213,7 +213,7 @@ const Profile = () => {
                     <p className="font-semibold">Point doneret i alt</p>
                     <div className="border-2 rounded-md border-primaryGrey px-5 py-5 mt-1">
                       <p className="text-5xl font-bold text-primaryGrey">
-                        {donatedPoints}
+                        {donatedPoints.toLocaleString("da-DK")}
                       </p>
                       <p className="font-semibold">Maulund Point</p>
                       <p>
