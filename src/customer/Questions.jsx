@@ -26,9 +26,8 @@ const Questions = () => {
             <p className="font-bold mb-2">1. Optjen ved køb</p>
             <p className="mb-2">
               For hver krone du køber for i shoppen indsættes{" "}
-              {formatter.format(adminValues?.earnRate)} point på din pointkonto.
-              Køber du f.eks. for 100 kr. vil{" "}
-              {formatter.format(100 * adminValues?.earnRate)} point blive indsat
+              {adminValues?.earnRate} point på din pointkonto. Køber du f.eks.
+              for 100 kr. vil {100 * adminValues?.earnRate} point blive indsat
               på din pointkonto.
             </p>
             <Link to={"/profile"}>
