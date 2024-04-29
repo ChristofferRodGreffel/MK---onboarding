@@ -28,9 +28,6 @@ const DonateRecieved = () => {
             Tak fordi at du har valgt at støtte <b>{organization}</b> med{" "}
             <b>{amount} point</b>. Du er med til at gøre verden til et bedre
             sted.
-            <br />
-            <br /> Vi indsætter dine point i vores donationspulje som du kan se
-            her.
           </p>
           <div className="flex flex-col items-center gap-5 mt-5">
             <Link

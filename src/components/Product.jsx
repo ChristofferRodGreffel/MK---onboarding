@@ -2,6 +2,7 @@ import React from "react";
 import { toast } from "react-toastify";
 import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
 import localStorageBasket from "../helperfunctions/LocalStorageBasket";
+import { formatter } from "../helperfunctions/Formatter";
 
 const Product = (props) => {
   const handleAddToCart = (id) => {
@@ -19,11 +20,6 @@ const Product = (props) => {
     toast.success("Tilføjet til kurv!", DefaultToastifySettings);
   };
 
-  const formatter = new Intl.NumberFormat("da-DK", {
-    style: "currency",
-    currency: "DKK",
-  });
-
   return (
     <div className="w-36 flex flex-col lg:w-48">
       <img
@@ -33,7 +29,9 @@ const Product = (props) => {
         loading="lazy"
       />
       <p className="text-xs mt-3 line-clamp-4">{props.productTitle}</p>
-      <p className="font-bold mt-3 lg:text-md">{formatter.format(props.productPrice)}</p>
+      <p className="font-bold mt-3 lg:text-md">
+        {formatter.format(props.productPrice)}
+      </p>
       <button
         onClick={() => handleAddToCart(props.id)}
         className="bg-customGreen text-white font-semibold w-full py-[5px] rounded-sm mt-1 lg:font-bold"

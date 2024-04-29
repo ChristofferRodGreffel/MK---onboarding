@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, doc, onSnapshot, query } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig";
+import { formatter } from "../helperfunctions/Formatter";
 
 const Statistics = () => {
   const [userId, setUserId] = useState();
@@ -13,10 +14,6 @@ const Statistics = () => {
   const [totalSaved, setTotalSaved] = useState(0);
   const [totalDonated, setTotalDonated] = useState(0);
   const [membersAmount, setMembersAmount] = useState(0);
-  const formatter = new Intl.NumberFormat("da-DK", {
-    style: "currency",
-    currency: "DKK",
-  });
 
   useEffect(() => {
     const getUser = () => {

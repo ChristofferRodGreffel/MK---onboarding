@@ -5,6 +5,7 @@ import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
+import { formatter } from "../helperfunctions/Formatter";
 
 const donateOptions = [100, 200, 300, 500, "Alle"];
 
@@ -75,10 +76,13 @@ const DonateCard = (props) => {
       {selectedOption !== null && (
         <p className="mt-1">
           {selectedOption === "Alle" ? (
-            <>(Din donation svarer til {Math.floor(props.points * 0.35)} kr.)</>
+            <>
+              (Din donation svarer til {formatter.format(props.points * 0.35)})
+            </>
           ) : (
             <>
-              (Din donation svarer til {Math.floor(selectedOption * 0.35)} kr.)
+              (Din donation svarer til {formatter.format(selectedOption * 0.35)}
+              )
             </>
           )}
         </p>

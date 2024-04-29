@@ -12,6 +12,7 @@ import Header from "../components/Header";
 import { doc, onSnapshot } from "firebase/firestore";
 import BackButtonWithArrow from "../components/BackButtonWithArrow";
 import LevelBox from "../components/LevelBox";
+import { formatter } from "../helperfunctions/Formatter";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -121,11 +122,6 @@ const Profile = () => {
     });
     setAmountSaved(amountSaved);
   };
-
-  const formatter = new Intl.NumberFormat("da-DK", {
-    style: "currency",
-    currency: "DKK",
-  });
 
   return (
     <PageWrapper>
