@@ -60,15 +60,15 @@ const PointsBox = (props) => {
     switch (userData?.level) {
       case "bronze":
         exchangeRate = adminValues.exchangeRates.bronze;
-        setExchangeRate(adminValues.exchangeRates.bronze);
+        setExchangeRate(exchangeRate);
         break;
       case "silver":
         exchangeRate = adminValues.exchangeRates.silver;
-        setExchangeRate(adminValues.exchangeRates.silver);
+        setExchangeRate(exchangeRate);
         break;
       case "gold":
         exchangeRate = adminValues.exchangeRates.gold;
-        setExchangeRate(adminValues.exchangeRates.gold);
+        setExchangeRate(exchangeRate);
         break;
 
       default:
@@ -78,28 +78,17 @@ const PointsBox = (props) => {
     // Setting the total savings amount with points
     let savingsAmount = points * exchangeRate;
 
-    // If discount is applied, the "real" order value with savings is saved in a variable
-    // and used for calculation, if not then the normal order value is used.
-    if (props.discountApplied) {
-      const formerOrderValue = props.orderValue + savingsAmount;
-      if (formerOrderValue < savingsAmount) {
-        const pointsAmount = props.orderValue / exchangeRate;
-        setRemainingPoints(Math.floor(points - pointsAmount));
-        setPointsUsed(props.orderValue / exchangeRate);
-      } else {
-        setRemainingPoints(0);
-        setPointsUsed(points);
-      }
+    // Calculate the effective order value considering if discount is applied
+    const effectiveOrderValue = props.discountApplied ? props.orderValue + savingsAmount : props.orderValue;
+
+    // Check if customer can save more than the order is worth
+    if (effectiveOrderValue < savingsAmount) {
+      const pointsAmount = effectiveOrderValue / exchangeRate;
+      setRemainingPoints(Math.floor(points - pointsAmount));
+      setPointsUsed(effectiveOrderValue / exchangeRate);
     } else {
-      // Check if customer can save more than the order is worth
-      if (props.orderValue < savingsAmount) {
-        const pointsAmount = props.orderValue / exchangeRate;
-        setRemainingPoints(Math.floor(points - pointsAmount));
-        setPointsUsed(props.orderValue / exchangeRate);
-      } else {
-        setRemainingPoints(0);
-        setPointsUsed(points);
-      }
+      setRemainingPoints(0);
+      setPointsUsed(points);
     }
 
     setTotalSavings(savingsAmount);
@@ -117,9 +106,7 @@ const PointsBox = (props) => {
             <>
               {loggedIn && loggedIn == true ? (
                 <>
-                  <p className="text-5xl font-bold text-primaryGrey">
-                    {userData?.points.toLocaleString()}
-                  </p>
+                  <p className="text-5xl font-bold text-primaryGrey">{userData?.points.toLocaleString()}</p>
                   {!props?.profileText ? (
                     <>
                       {props.discountApplied !== true ? (
@@ -127,10 +114,7 @@ const PointsBox = (props) => {
                           {totalSavings < props.orderValue ? (
                             <>
                               {userData.points !== 0 ? (
-                                <p>
-                                  Spar {formatter.format(totalSavings)} med
-                                  point
-                                </p>
+                                <p>Spar {formatter.format(totalSavings)} med point</p>
                               ) : (
                                 <p>Du har ingen point...</p>
                               )}
@@ -138,8 +122,7 @@ const PointsBox = (props) => {
                           ) : (
                             <p>
                               Du har point nok til at få denne ordre gratis! (
-                              {Math.floor(props.orderValue / exchangeRate)}{" "}
-                              point)
+                              {Math.floor(props.orderValue / exchangeRate)} point)
                             </p>
                           )}
                         </>
@@ -153,9 +136,7 @@ const PointsBox = (props) => {
                 </>
               ) : (
                 <>
-                  <p>
-                    Log ind for at anvende point og spare penge på din ordre!
-                  </p>
+                  <p>Log ind for at anvende point og spare penge på din ordre!</p>
                   <Link to={"/signin"} state={{ prevPath: location.pathname }}>
                     <button className="bg-primaryGrey text-white py-1.5 px-10 rounded-sm font-semibold mt-3">
                       Log ind
@@ -172,9 +153,7 @@ const PointsBox = (props) => {
               <>
                 {userData?.points > 0 && (
                   <button
-                    onClick={() =>
-                      props.function(totalSavings, remainingPoints, pointsUsed)
-                    }
+                    onClick={() => props.function(totalSavings, remainingPoints, pointsUsed)}
                     className="bg-primaryGrey text-white w-full mt-2 rounded-md py-2 font-semibold"
                   >
                     Anvend point
