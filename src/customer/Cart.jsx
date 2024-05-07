@@ -170,6 +170,7 @@ const Cart = () => {
     }
   };
 
+  // Function runs when customer places order, and updates firestore accordingly
   const handlePlaceOrder = async () => {
     if (auth.currentUser) {
       const userRef = doc(db, "users", auth.currentUser?.uid);
