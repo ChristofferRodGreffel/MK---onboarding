@@ -31,7 +31,7 @@ const HistoryCard = (props) => {
 
   return (
     <>
-      <div className="flex items-center justify-between  w-full text-primaryGrey py-2.5 rounded-md">
+      <div className="flex items-center justify-between w-full text-primaryGrey py-2.5 rounded-md">
         <div className="flex flex-col">
           <p className="text-sm font-medium leading-tight">
             {timestampConvert(props.object.date.seconds, "stampToPreciseDate")}

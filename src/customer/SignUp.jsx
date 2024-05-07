@@ -94,6 +94,7 @@ const SignUp = () => {
           <form
             ref={formRef}
             onSubmit={userSignUp}
+            name="sign-up-form"
             className="flex flex-col gap-3"
           >
             <div className="flex flex-col">
