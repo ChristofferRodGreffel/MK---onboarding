@@ -13,7 +13,6 @@ exports.updateUserLevel = functions.firestore
       const userId = context.params.userId;
       const memberPoints = newData.memberPoints;
       const previousLevel = previousData.level;
-      const currentLevel = newData.level;
 
       // Define thresholds for leveling up
       const silverThreshold = 2499;
