@@ -56,7 +56,7 @@ const DonateCard = (props) => {
         {/* <img
           src={props.logo}
           alt={`${props.organization} logo`}
-          className="h-5 aspect-auto"
+          className="aspect-auto max-w-20 max-h-10"
         /> */}
       </div>
       <p className="mt-2">{props.description}</p>

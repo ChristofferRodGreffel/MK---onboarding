@@ -12,22 +12,40 @@ exports.updateUserLevel = functions.firestore
     if (newData.memberPoints !== previousData.memberPoints) {
       const userId = context.params.userId;
       const memberPoints = newData.memberPoints;
+      const previousLevel = previousData.level;
       const currentLevel = newData.level;
 
       // Define thresholds for leveling up
-      const bronzeThreshold = 2499;
-      const silverThreshold = 4999;
+      const silverThreshold = 2499;
+      const goldThreshold = 4999;
 
       let newLevel;
 
-      // Check if user meets criteria for leveling up
-      if (memberPoints >= silverThreshold && currentLevel === "silver") {
-        newLevel = "gold";
-      } else if (memberPoints >= bronzeThreshold && currentLevel === "bronze") {
-        newLevel = "silver";
-      } else {
-        // User does not meet criteria for leveling up
-        return null;
+      switch (previousLevel) {
+        case "bronze":
+          if (memberPoints >= goldThreshold) {
+            newLevel = "gold";
+          } else if (memberPoints >= silverThreshold) {
+            newLevel = "silver";
+          }
+          break;
+        case "silver":
+          if (memberPoints >= goldThreshold) {
+            newLevel = "gold";
+          } else if (memberPoints < silverThreshold) {
+            newLevel = "bronze";
+          }
+          break;
+        case "gold":
+          if (memberPoints < silverThreshold) {
+            newLevel = "bronze";
+          } else if (memberPoints < goldThreshold) {
+            newLevel = "silver";
+          }
+          break;
+        default:
+          // User's current level is not recognized, do nothing
+          return null;
       }
 
       // Update user's level
@@ -36,6 +54,10 @@ exports.updateUserLevel = functions.firestore
         .collection("users")
         .doc(userId)
         .update({ level: newLevel });
-      console.log(`User ${userId} leveled up to ${newLevel}`);
+      console.log(
+        `User ${userId} leveled ${newLevel ? "up" : "down"} to ${
+          newLevel || currentLevel
+        }`
+      );
     }
   });
