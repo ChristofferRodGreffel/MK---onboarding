@@ -54,10 +54,5 @@ exports.updateUserLevel = functions.firestore
         .collection("users")
         .doc(userId)
         .update({ level: newLevel });
-      console.log(
-        `User ${userId} leveled ${newLevel ? "up" : "down"} to ${
-          newLevel || currentLevel
-        }`
-      );
     }
   });
