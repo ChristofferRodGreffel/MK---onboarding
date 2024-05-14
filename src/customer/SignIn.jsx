@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import CustomButton from "../components/CustomButton";
 import PageWrapper from "../components/PageWrapper";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import BackButtonWithArrow from "../components/BackButtonWithArrow";
@@ -9,14 +9,76 @@ import { firebaseErrorsCodes } from "../../firebaseErrorCodes";
 import { toast } from "react-toastify";
 import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
 import maulundLogo from "../assets/maulund-logo.webp";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig";
+import { GoogleAuthProvider } from "firebase/auth";
+import GoogleLogo from "../assets/google-logo.svg";
 
 const SignIn = () => {
   const formRef = useRef(null);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const provider = new GoogleAuthProvider();
   let { state } = useLocation();
+
+  const googleSignIn = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        checkUserExists(user);
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorMessage = error.message;
+        toast.error(errorMessage, DefaultToastifySettings);
+      });
+  };
+
+  const checkUserExists = async (user) => {
+    const querySnapshot = await getDocs(collection(db, "users"));
+    querySnapshot.forEach((doc) => {
+      if (doc.id === user.uid) {
+        if (state?.prevPath && state?.prevPath === "/cart") {
+          navigate("/cart");
+          setLoading(false);
+        } else if (state?.prevPath && state?.prevPath === "/profile") {
+          navigate("/profile");
+          setLoading(false);
+        } else {
+          navigate("/");
+          setLoading(false);
+        }
+        setLoading(false);
+        return;
+      } else {
+        createUser(user);
+        return;
+      }
+    });
+  };
+
+  const createUser = async (user) => {
+    await setDoc(doc(db, "users", user.uid), {
+      history: [],
+      id: user.uid,
+      level: "bronze",
+      points: 0,
+      memberPoints: 0,
+      name: user.displayName,
+      phone: user.providerData[0].phoneNumber,
+    }).then(() => {
+      if (state?.prevPath && state?.prevPath === "/cart") {
+        navigate("/cart");
+        setLoading(false);
+      } else if (state?.prevPath && state?.prevPath === "/profile") {
+        navigate("/profile");
+        setLoading(false);
+      } else {
+        navigate("/");
+        setLoading(false);
+      }
+    });
+  };
 
   const userSignIn = async (e) => {
     e.preventDefault();
@@ -139,6 +201,13 @@ const SignIn = () => {
               </>
             )}
           </form>
+        </div>
+        <div
+          onClick={googleSignIn}
+          className="border-primaryGrey border-2 rounded-full flex items-center w-full justify-center text-center md:w-fit md:justify-start cursor-pointer mt-10 py-1 px-3"
+        >
+          <img className="w-10" src={GoogleLogo} alt="google logo" />
+          <p>Log ind med Google</p>
         </div>
         <p className="w-full mt-14">
           Har du ikke en bruger?{" "}

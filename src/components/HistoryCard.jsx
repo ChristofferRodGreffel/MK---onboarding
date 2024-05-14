@@ -31,7 +31,7 @@ const HistoryCard = (props) => {
 
   return (
     <>
-      <div className="flex items-center justify-between w-full text-primaryGrey py-2.5 rounded-md">
+      <div className="flex items-center w-full justify-between text-primaryGrey py-2.5">
         <div className="flex flex-col">
           <p className="text-sm font-medium leading-tight">
             {timestampConvert(props.object.date.seconds, "stampToPreciseDate")}
@@ -44,7 +44,7 @@ const HistoryCard = (props) => {
         props.object.type === "donate" ||
         props.object.type === "correctionDown" ||
         props.object.type === "maulundDelete" ? (
-          <p className="font-semibold text-customRed">
+          <p className="font-semibold text-customRed whitespace-nowrap">
             {Math.floor(props.object.amount) < 0 ? (
               <>{Math.floor(props.object.amount)} point</>
             ) : (
@@ -52,7 +52,7 @@ const HistoryCard = (props) => {
             )}
           </p>
         ) : (
-          <p className="font-semibold text-customGreen">
+          <p className="font-semibold text-customGreen whitespace-nowrap">
             +{Math.floor(props.object.amount)} point
           </p>
         )}
