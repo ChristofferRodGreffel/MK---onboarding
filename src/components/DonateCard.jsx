@@ -60,7 +60,7 @@ const DonateCard = (props) => {
         /> */}
       </div>
       <p className="mt-2">{props.description}</p>
-      <div className="mt-5 flex justify-between">
+      <div className="mt-5 flex justify-between gap-1 flex-wrap">
         {donateOptions.map((option, key) => {
           return (
             <div key={key}>

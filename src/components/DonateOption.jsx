@@ -4,7 +4,7 @@ const DonateOption = (props) => {
   return (
     <button
       onClick={() => props.onSelected(props.amount)}
-      className={`rounded-md border-[1px] border-primaryGrey px-2.5 py-1 w-fit md:px-5 md:py-1 ${
+      className={`rounded-md border-[1px] border-primaryGrey px-2.5 py-1 w-fit md:px-4 md:py-1 lg:px-3 ${
         props.selected && "bg-primaryGrey text-white"
       }`}
     >
