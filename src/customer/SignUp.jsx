@@ -80,70 +80,74 @@ const SignUp = () => {
   return (
     <>
       <PageWrapper>
-        <div className="mt-10">
-          <img
-            src={maulundLogo}
-            alt="Maulund Kundeklub logo"
-            className="w-52 m-auto"
-          />
-          <div className="mb-5 mt-8">
-            <h1 className="font-bold text-2xl">
-              Opret en konto i Maulund kundeklub
-            </h1>
-          </div>
-          <form
-            ref={formRef}
-            onSubmit={userSignUp}
-            name="sign-up-form"
-            className="flex flex-col gap-3"
-          >
-            <div className="flex flex-col">
-              <label htmlFor="name">Dit navn</label>
-              <input type="text" required name="name" />
+        <div className="lg:w-[600px] m-auto">
+          <div className="mt-10">
+            <img
+              src={maulundLogo}
+              alt="Maulund Kundeklub logo"
+              className="w-52 m-auto"
+            />
+            <div className="mb-5 mt-8">
+              <h1 className="font-bold text-2xl">
+                Opret en konto i Maulund kundeklub
+              </h1>
             </div>
-            <div className="flex flex-col">
-              <label htmlFor="phone">Dit telefonnr.</label>
-              <input type="tel" required name="phone" />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="email">Din email</label>
-              <input type="email" required name="email" />
-            </div>
-
-            <div className="flex flex-col">
-              <label htmlFor="password">Adgangskode*</label>
-              <div className="flex flex-col relative">
-                <input type="password" required name="password" />
-                <i
-                  id="eyeIcon"
-                  onClick={handleShowPassword}
-                  className="fa-solid fa-eye-slash absolute right-5 top-3.5 text-primaryGrey"
-                ></i>
+            <form
+              ref={formRef}
+              onSubmit={userSignUp}
+              name="sign-up-form"
+              className="flex flex-col gap-3"
+            >
+              <div className="flex flex-col">
+                <label htmlFor="name">Dit navn</label>
+                <input type="text" required name="name" />
               </div>
-              <p className="italic text-sm">*Skal være mindst (6) karakterer</p>
-            </div>
-            {loading ? (
-              <>
-                <CustomButton
-                  title={
-                    <PulseLoader color="#FFFFFF" size={11} className="p-2" />
-                  }
-                  function={userSignUp}
-                />
-              </>
-            ) : (
-              <>
-                <CustomButton title="Opret profil" function={userSignUp} />
-              </>
-            )}
-          </form>
+              <div className="flex flex-col">
+                <label htmlFor="phone">Dit telefonnr.</label>
+                <input type="tel" required name="phone" />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="email">Din email</label>
+                <input type="email" required name="email" />
+              </div>
+
+              <div className="flex flex-col">
+                <label htmlFor="password">Adgangskode*</label>
+                <div className="flex flex-col relative">
+                  <input type="password" required name="password" />
+                  <i
+                    id="eyeIcon"
+                    onClick={handleShowPassword}
+                    className="fa-solid fa-eye-slash absolute right-5 top-3.5 text-primaryGrey"
+                  ></i>
+                </div>
+                <p className="italic text-sm">
+                  *Skal være mindst (6) karakterer
+                </p>
+              </div>
+              {loading ? (
+                <>
+                  <CustomButton
+                    title={
+                      <PulseLoader color="#FFFFFF" size={11} className="p-2" />
+                    }
+                    function={userSignUp}
+                  />
+                </>
+              ) : (
+                <>
+                  <CustomButton title="Opret profil" function={userSignUp} />
+                </>
+              )}
+            </form>
+          </div>
+          <p className="text-center mt-10 w-full">
+            Har du allerede en profil?{" "}
+            <Link className="underline" to={"/signin"}>
+              Log ind her
+            </Link>
+          </p>
         </div>
-        <p className="text-center mt-10 w-full">
-          Har du allerede en profil?{" "}
-          <Link className="underline" to={"/signin"}>
-            Log ind her
-          </Link>
-        </p>
       </PageWrapper>
     </>
   );
