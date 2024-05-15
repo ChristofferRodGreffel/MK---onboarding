@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { DefaultToastifySettings } from "../helperfunctions/DefaultToastSettings";
 import { useGlobalState } from "../components/GlobalStateProvider";
 import { formatter } from "../helperfunctions/Formatter";
+import CountdownTimer from "../components/CountdownTimer";
 
 const Cart = () => {
   const [allProducts, setAllProducts] = useState([]);

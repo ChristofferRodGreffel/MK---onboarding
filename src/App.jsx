@@ -23,6 +23,8 @@ import Settings from "./admin/Settings";
 import Statistics from "./customer/Statistics";
 import PageWrapper from "./components/PageWrapper";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
+import ProductPage from "./customer/ProductPage";
 
 function App() {
   const [admin, setAdmin] = useState(false);
@@ -63,6 +65,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/product/:productId" element={<ProductPage />} />
         <Route path="/donate" element={<Donate />} />
         <Route path="/statistics" element={<Statistics />} />
         <Route path="/questions" element={<Questions />} />

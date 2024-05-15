@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const CountdownTimer = () => {
+const CountdownTimer = (props) => {
   const [time, setTime] = useState();
 
   useEffect(() => {
@@ -46,8 +46,11 @@ const CountdownTimer = () => {
   };
 
   return (
-    <div className="font-bold font-mono text-base border-[1.5px] border-primaryGrey px-2 rounded-md w-fit">
-      {formatTime(time)}
+    <div>
+      {props.text && <p className="font-medium">{props.text}</p>}
+      <p className="font-mono font-bold text-base border-[1.5px] border-primaryGrey px-2 rounded-md w-fit">
+        {formatTime(time)}
+      </p>
     </div>
   );
 };
