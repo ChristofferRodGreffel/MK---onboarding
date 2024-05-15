@@ -28,9 +28,8 @@ const SignIn = () => {
         checkUserExists(user);
       })
       .catch((error) => {
-        // Handle Errors here.
         const errorMessage = error.message;
-        toast.error(errorMessage, DefaultToastifySettings);
+        console.log(errorMessage);
       });
   };
 
