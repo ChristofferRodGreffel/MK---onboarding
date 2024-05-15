@@ -17,7 +17,7 @@ const CountdownTimer = (props) => {
     return () => clearInterval(timer);
   }, []);
 
-  function getTimeUntilNext17() {
+  const getTimeUntilNext17 = () => {
     const now = new Date();
     const currentHours = now.getHours();
     if (currentHours < 17) {
@@ -34,15 +34,15 @@ const CountdownTimer = (props) => {
       // Convert milliseconds to seconds and round down
       return Math.floor(timeUntil17Tomorrow / 1000);
     }
-  }
+  };
 
   const formatTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = seconds % 60;
-    return `${hours.toString().padStart(2, "0")}:${minutes
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${remainingSeconds
       .toString()
-      .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+      .padStart(2, "0")}`;
   };
 
   return (

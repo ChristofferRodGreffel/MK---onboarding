@@ -43,11 +43,7 @@ const ControlPanel = () => {
   const handleFilterUsers = async (e) => {
     const inputValue = e.target.value.toLowerCase();
     if (inputValue) {
-      const filtered = users.filter(
-        (user) =>
-          user.name.toLowerCase().includes(inputValue) ||
-          user.phone.toString().includes(inputValue)
-      );
+      const filtered = users.filter((user) => user.name.toLowerCase().includes(inputValue));
       setFilteredUsers(filtered);
     } else {
       setFilteredUsers(null);
@@ -82,29 +78,27 @@ const ControlPanel = () => {
             className="border-2 border-primaryGrey w-full rounded-md py-2 px-5"
           />
           <div className="flex flex-col gap-3 mt-5">
-            {filteredUsers
-              ? filteredUsers.map((user, key) => {
+            {filteredUsers ? (
+              filteredUsers.length > 1 ? (
+                filteredUsers.map((user, key) => {
                   return (
                     <div key={key}>
-                      <CustomerCard
-                        name={user.name}
-                        points={user.points}
-                        id={user.id}
-                      />
+                      <CustomerCard name={user.name} points={user.points} id={user.id} />
                     </div>
                   );
                 })
-              : users?.map((user, key) => {
-                  return (
-                    <div key={key}>
-                      <CustomerCard
-                        name={user.name}
-                        points={user.points}
-                        id={user.id}
-                      />
-                    </div>
-                  );
-                })}
+              ) : (
+                <p>Søgningen gav ingen resultater...</p>
+              )
+            ) : (
+              users?.map((user, key) => {
+                return (
+                  <div key={key}>
+                    <CustomerCard name={user.name} points={user.points} id={user.id} />
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
       </div>
