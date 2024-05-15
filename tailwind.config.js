@@ -4,6 +4,7 @@ export default {
   theme: {
     fontFamily: {
       sans: ["Montserrat", "sans-serif"],
+      mono: ["Ubuntu Mono"],
     },
     extend: {
       colors: {

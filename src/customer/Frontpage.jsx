@@ -41,6 +41,7 @@ const Frontpage = () => {
           <h1 className="mt-8 text-xl font-semibold">
             Se vores store udvalg af mobiltilbehør herunder!
           </h1>
+          <hr className="border-b-[1.5px] mt-1 border-primaryGrey" />
           {loading ? (
             <div className="m-auto mt-14">
               <PulseLoader color="#343434" size={11} />

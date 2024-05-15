@@ -21,6 +21,8 @@ import Customer from "./admin/Customer";
 import CorrectPoints from "./admin/CorrectPoints";
 import Settings from "./admin/Settings";
 import Statistics from "./customer/Statistics";
+import PageWrapper from "./components/PageWrapper";
+import Header from "./components/Header";
 
 function App() {
   const [admin, setAdmin] = useState(false);
