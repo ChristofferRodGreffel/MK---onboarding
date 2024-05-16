@@ -5,16 +5,13 @@ import Product from "../components/Product";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { PulseLoader } from "react-spinners";
-import { useGlobalState } from "../components/GlobalStateProvider";
 import TopBanner from "../components/TopBanner";
-import Footer from "../components/Footer";
 
 export const CartContext = createContext();
 
 const Frontpage = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { globalState, setGlobalState } = useGlobalState();
 
   useEffect(() => {
     const getAllProducts = async () => {
@@ -30,10 +27,6 @@ const Frontpage = () => {
     };
     getAllProducts();
   }, []);
-
-  const incrementCart = () => {
-    setGlobalState((prevState) => prevState + 1);
-  };
 
   return (
     <PageWrapper>
@@ -58,15 +51,9 @@ const Frontpage = () => {
                 {allProducts.length != 0 &&
                   allProducts.map((product, key) => {
                     return (
-                      <Product
-                        id={product.id}
-                        key={key}
-                        productTitle={product.title}
-                        imgSrc={product.imageSource}
-                        altText={product.title}
-                        productPrice={product.price.toLocaleString("da-DK")}
-                        function={incrementCart}
-                      />
+                      <div key={key}>
+                        <Product product={product} productPrice={product.price.toLocaleString("da-DK")} />
+                      </div>
                     );
                   })}
               </div>

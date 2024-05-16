@@ -24,7 +24,7 @@ const TopBanner = () => {
           {currentTime < 17 ? (
             <>Bestil inden kl. 17:00, så sender vi din ordre i dag</>
           ) : (
-            <>Levering i morgen, bestil inden:</>
+            <>Levering {futureDayName}, bestil inden:</>
           )}
         </p>
         <div>

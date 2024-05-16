@@ -7,10 +7,12 @@ import { useParams } from "react-router-dom";
 import { db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { formatter } from "../helperfunctions/Formatter";
+import useAddToCart from "../helperfunctions/AddToCart";
 
 const ProductPage = () => {
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState(null);
+  const addToCart = useAddToCart();
   const { productId } = useParams();
 
   useEffect(() => {
@@ -50,18 +52,28 @@ const ProductPage = () => {
                     alt={product?.title}
                   />
                 </div>
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-4">
                   <h2 className="font-bold text-lg">{product?.title}</h2>
-                  <p className="font-semibold text-xl">
-                    {formatter.format(product?.price)}
-                  </p>
-                  <button
-                    onClick={() => handleAddToCart(productId)}
-                    className="bg-customGreen text-white font-semibold w-full py-[8px] rounded-sm mt-1 lg:font-bold"
-                  >
-                    Læg i kurv
-                  </button>
-                  <p className="pt-5">{product?.description}</p>
+                  <div>
+                    <p className="font-semibold text-2xl mb-1">{formatter.format(product?.price)}</p>
+                    <button
+                      onClick={() => addToCart(product)}
+                      className="bg-customGreen text-white font-semibold w-full py-[8px] rounded-sm mt-1 lg:font-bold hover:bg-customDarkGreen transition-colors"
+                    >
+                      Læg i kurv
+                    </button>
+                  </div>
+                  <div>
+                    <p className="font-medium">Produktbeskrivelse</p>
+                    <hr className="border-b-1 border-primaryGrey" />
+                    <p className="pt-3 text-sm">{product?.description}</p>
+                  </div>
+                  <div>
+                    <hr className="border-b-1 border-primaryGrey mb-5" />
+                    <p>
+                      <b>SKU:</b> 1233462346
+                    </p>
+                  </div>
                 </div>
               </div>
             )}
