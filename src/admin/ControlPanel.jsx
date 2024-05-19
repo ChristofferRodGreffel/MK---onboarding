@@ -43,8 +43,12 @@ const ControlPanel = () => {
   const handleFilterUsers = async (e) => {
     const inputValue = e.target.value.toLowerCase();
     if (inputValue) {
-      const filtered = users.filter((user) => user.name.toLowerCase().includes(inputValue));
+      const filtered = users.filter((user) => {
+        const splitNames = user.name.toLowerCase().split(" ");
+        return splitNames.some((namePart) => namePart.includes(inputValue));
+      });
       setFilteredUsers(filtered);
+      console.log(filtered);
     } else {
       setFilteredUsers(null);
     }
@@ -55,12 +59,20 @@ const ControlPanel = () => {
       <div className="mt-10">
         <AdminHeader />
         <div className="flex justify-between mt-5">
-          <Link
-            to={"/admin/settings"}
-            className="bg-primaryGrey text-white font-medium py-2 px-5 rounded-md flex items-center gap-2"
-          >
-            Indstillinger <i className="fa-solid fa-gear"></i>
-          </Link>
+          <div className="flex gap-5">
+            <Link
+              to={"/admin/settings"}
+              className="bg-primaryGrey text-white font-medium py-2 px-5 rounded-md flex items-center gap-2"
+            >
+              Indstillinger <i className="fa-solid fa-gear"></i>
+            </Link>
+            <Link
+              to={"/frontpage"}
+              className="border-primaryGrey border-2 hover:bg-primaryGrey hover:text-white transition-colors text-primaryGrey font-medium py-2 px-5 rounded-md flex items-center gap-2"
+            >
+              Gå til shop <i className="fa-solid fa-shop"></i>
+            </Link>
+          </div>
           <button
             onClick={handleLogOut}
             className="bg-customRed text-white font-medium py-2 px-5 rounded-md flex items-center gap-2"
@@ -79,7 +91,7 @@ const ControlPanel = () => {
           />
           <div className="flex flex-col gap-3 mt-5">
             {filteredUsers ? (
-              filteredUsers.length > 1 ? (
+              filteredUsers.length >= 1 ? (
                 filteredUsers.map((user, key) => {
                   return (
                     <div key={key}>
