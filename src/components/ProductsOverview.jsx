@@ -20,14 +20,15 @@ const ProductsOverview = () => {
 
   return (
     <div className="mt-8 flex flex-col">
-      <div className="flex flex-col gap-2 justify-between md:items-end md:flex-row">
+      <div className="flex flex-col-reverse gap-5 justify-between md:items-end md:flex-row md:gap-2">
         <p className="font-semibold text-xl">Alle produkter</p>
-        <div className="flex gap-2 items-center w-fit bg-customDarkGreen text-white rounded-md px-4 py-2">
-          <Link to="/create-product" className="font-medium">
-            Tilføj produkt
-          </Link>
+        <Link
+          to="/create-product"
+          className="flex gap-2 items-center w-fit bg-customDarkGreen text-white rounded-md px-4 py-2"
+        >
+          <p className="font-medium">Tilføj produkt</p>
           <i className="fa-solid fa-pen-to-square text-lg"></i>
-        </div>
+        </Link>
       </div>
       <hr className="border-b-[1.5px] border-primaryGrey mt-2" />
       <div className="flex flex-col gap-5 mt-5">

@@ -58,7 +58,7 @@ const ControlPanel = () => {
     <PageWrapper>
       <div className="mt-10">
         <AdminHeader />
-        <div className="flex justify-between mt-5">
+        <div className="flex flex-col md:flex-row gap-5 justify-between mt-5">
           <div className="flex gap-5">
             <Link
               to={"/admin/settings"}
@@ -75,7 +75,7 @@ const ControlPanel = () => {
           </div>
           <button
             onClick={handleLogOut}
-            className="bg-customRed text-white font-medium py-2 px-5 rounded-md flex items-center gap-2"
+            className="bg-customRed text-white font-medium py-2 px-5 rounded-md flex items-center gap-2 w-fit"
           >
             Log ud <i className="fa-solid fa-right-from-bracket"></i>
           </button>

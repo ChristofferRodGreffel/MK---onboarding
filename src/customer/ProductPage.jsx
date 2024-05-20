@@ -8,6 +8,8 @@ import { db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { formatter } from "../helperfunctions/Formatter";
 import useAddToCart from "../helperfunctions/AddToCart";
+import noImage from "../assets/no_image.jpg";
+import { calculateDiscount } from "../helperfunctions/CalculateDiscount";
 
 const ProductPage = () => {
   const [loading, setLoading] = useState(true);
@@ -45,9 +47,15 @@ const ProductPage = () => {
             {product !== null && (
               <div className="grid grid-cols-1 gap-10 md:grid-cols-2 mt-10 md:mt-20">
                 <div>
+                  {product?.discountPrice && (
+                    <p className="bg-yellow-300 w-fit px-2 py-1 rounded-full font-semibold">
+                      Spar {calculateDiscount(Number(product.price), Number(product.discountPrice))}%
+                    </p>
+                  )}
                   <img
                     loading="lazy"
                     className="w-5/6 md:w-full m-auto"
+                    onError={(e) => (e.target.src = noImage)}
                     src={product?.imageSource}
                     alt={product?.title}
                   />
@@ -55,23 +63,45 @@ const ProductPage = () => {
                 <div className="flex flex-col gap-4">
                   <h2 className="font-bold text-lg">{product?.title}</h2>
                   <div>
-                    <p className="font-semibold text-2xl mb-1">{formatter.format(product?.price)}</p>
+                    <hr className="border-b-1 border-zinc-400" />
+                    {product.discountPrice ? (
+                      <div className="flex items-center gap-2">
+                        <p className="font-bold py-3 line-through text-sm text-zinc-600">
+                          {formatter.format(product.price)}
+                        </p>
+                        <p className="font-bold text-xl py-3 text-customRed">
+                          {formatter.format(product.discountPrice)}
+                        </p>
+                      </div>
+                    ) : (
+                      <>
+                        <p className="font-semibold text-xl py-3">{formatter.format(product?.price)}</p>
+                      </>
+                    )}
+
+                    <hr className="border-b-1 border-zinc-400 " />
                     <button
                       onClick={() => addToCart(product)}
-                      className="bg-customGreen text-white font-semibold w-full py-[8px] rounded-sm mt-1 lg:font-bold hover:bg-customDarkGreen transition-colors"
+                      className="bg-customGreen text-white font-semibold w-1/2 py-[8px] rounded-sm mt-8 lg:font-bold hover:bg-customDarkGreen transition-colors"
                     >
-                      Læg i kurv
+                      Køb nu
                     </button>
                   </div>
                   <div>
                     <p className="font-medium">Produktbeskrivelse</p>
                     <hr className="border-b-1 border-primaryGrey" />
-                    <p className="pt-3 text-sm">{product?.description}</p>
+                    <p className="pt-3 text-sm whitespace-pre-wrap">{product?.description}</p>
                   </div>
-                  <div>
+                  <div className="text-sm">
                     <hr className="border-b-1 border-primaryGrey mb-5" />
+                    <p className="mb-3 capitalize">
+                      <b>Farve:</b> {product?.color}
+                    </p>
                     <p>
-                      <b>SKU:</b> 1233462346
+                      <b>SKU:</b> {product?.sku}
+                    </p>
+                    <p>
+                      <b>EAN:</b> {product?.ean}
                     </p>
                   </div>
                 </div>

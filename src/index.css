@@ -59,9 +59,11 @@ input[type="number"],
 input[type="password"],
 input[type="email"],
 input[type="tel"],
-textarea {
+textarea,
+select {
   border: 1.5px solid var(--color-primaryGrey);
   padding: 10px 15px;
+  background: none;
   border-radius: 0.3rem;
   font-family: inherit !important;
 }
@@ -70,7 +72,8 @@ input[type="number"]:focus-within,
 input[type="password"]:focus-within,
 input[type="email"]:focus-within,
 input[type="tel"]:focus-within,
-textarea:focus-within {
+textarea:focus-within,
+select:focus-within {
   outline: none !important;
   border: 2px solid var(--color-primaryGrey);
 }
@@ -78,6 +81,19 @@ textarea:focus-within {
 input[type="checkbox"] {
   accent-color: var(--color-dark);
   width: 15px;
+}
+
+/* Removing arrows from input fields */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 /* Styling for dots on the progress line */
@@ -115,4 +131,19 @@ input[type="checkbox"] {
 }
 .lineDot:nth-child(3)::after {
   justify-content: end;
+}
+
+.showPopover {
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x))
+    skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+
+  opacity: 1;
+}
+
+@media screen and (max-width: 768px) {
+  #createProductPage {
+    grid-column: breakout;
+  }
 }
