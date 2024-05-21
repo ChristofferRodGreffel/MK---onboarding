@@ -10,11 +10,19 @@ const TopBanner = () => {
   const currentDate = new Date();
   const currentDay = currentDate.getDay();
   const futureDay = (currentDay + 2) % 7;
-  const daysOfWeek = ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"];
+  const daysOfWeek = [
+    "Søndag",
+    "Mandag",
+    "Tirsdag",
+    "Onsdag",
+    "Torsdag",
+    "Fredag",
+    "Lørdag",
+  ];
   const futureDayName = daysOfWeek[futureDay];
 
   return (
-    <div className="border-2 border-primaryGrey rounded-md px-5 mt-3 p-3 flex justify-between items-center flex-wrap">
+    <div className="border-[1px] border-primaryGrey rounded-md px-5 mt-3 p-3 flex justify-between items-center flex-wrap">
       <div className="flex gap-1">
         <img src={trustpilot} alt="trustpilot reviews" className="w-20" />
         <p className="font-medium text-sm">Trustpilot</p>

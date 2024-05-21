@@ -26,7 +26,7 @@ const Product = ({ product }) => {
         )}
         <img
           src={product?.imageSource}
-          alt={product.altText}
+          alt={product?.name}
           onError={(e) => (e.target.src = noImage)}
           onLoad={(e) => removeBlur(e.target)}
           className="w-28 aspect-square place-self-center lg:w-32 blur-sm"

@@ -38,7 +38,7 @@ const CreateProduct = () => {
         title: title,
         description: description,
         price: parseInt(price),
-        discountPrice: parseInt(discountPrice),
+        discountPrice: discountPrice,
         color: color,
         ean: parseInt(ean),
         sku: sku,
