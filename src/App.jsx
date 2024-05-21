@@ -23,6 +23,7 @@ import Settings from "./admin/Settings";
 import Statistics from "./customer/Statistics";
 import ProductPage from "./customer/ProductPage";
 import CreateProduct from "./admin/CreateProduct";
+import EditProduct from "./admin/EditProduct";
 
 function App() {
   const [admin, setAdmin] = useState(false);
@@ -53,9 +54,13 @@ function App() {
           <>
             <Route path="/admin" element={<ControlPanel />} />
             <Route path="/admin/customer/:id" element={<Customer />} />
-            <Route path="/admin/customer/correctpoints/:id" element={<CorrectPoints />} />
+            <Route
+              path="/admin/customer/correctpoints/:id"
+              element={<CorrectPoints />}
+            />
             <Route path="/admin/settings" element={<Settings />} />
             <Route path="/create-product" element={<CreateProduct />} />
+            <Route path="/edit-product/:id" element={<EditProduct />} />
           </>
         )}
         <Route path="/signin" element={<SignIn />} />
@@ -65,9 +70,15 @@ function App() {
         <Route path="/donate" element={<Donate />} />
         <Route path="/statistics" element={<Statistics />} />
         <Route path="/questions" element={<Questions />} />
-        <Route path="/orderrecieved/:totalPoints/:memberPoints" element={<OrderRecieved />} />
+        <Route
+          path="/orderrecieved/:totalPoints/:memberPoints"
+          element={<OrderRecieved />}
+        />
         <Route path="/orderrecieved" element={<OrderRecieved />} />
-        <Route path="/donationrecieved/:organization/:amount" element={<DonateRecieved />} />
+        <Route
+          path="/donationrecieved/:organization/:amount"
+          element={<DonateRecieved />}
+        />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/history" element={<PointHistory />} />
         <Route path="/" element={<Frontpage />} />

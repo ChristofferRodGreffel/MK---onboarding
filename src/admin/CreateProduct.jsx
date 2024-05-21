@@ -7,6 +7,11 @@ import { v4 } from "uuid";
 import { db, storage } from "../../firebaseConfig";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import LoadingScreen from "../components/LoadingScreen";
+import {
+  generateEAN,
+  generateSKU,
+  handleShowPopover,
+} from "../helperfunctions/ProductFunctions";
 
 const CreateProduct = () => {
   const [imageUpload, setImageUpload] = useState(null);
@@ -14,11 +19,6 @@ const CreateProduct = () => {
   const [loading, setLoading] = useState(false);
   const [loadingState, setLoadingState] = useState("adding");
   const formRef = useRef();
-
-  const handleShowPopover = () => {
-    const popover = document.querySelector("#popover");
-    popover.classList.toggle("showPopover");
-  };
 
   const handleAddNewProduct = async (e) => {
     e.preventDefault();
@@ -37,10 +37,10 @@ const CreateProduct = () => {
       let newProduct = {
         title: title,
         description: description,
-        price: price,
-        discountPrice: discountPrice,
+        price: parseInt(price),
+        discountPrice: parseInt(discountPrice),
         color: color,
-        ean: ean,
+        ean: parseInt(ean),
         sku: sku,
         imageSource: downloadURL,
       };
@@ -75,32 +75,10 @@ const CreateProduct = () => {
     }
     return null;
   };
-  const generateEAN = () => {
-    let randomNumber = Math.random();
-    let randomString = randomNumber.toString().slice(2, 15);
-
-    while (randomString.length < 13) {
-      randomString += Math.floor(Math.random() * 10).toString();
-    }
-
-    formRef.current.productEan.value = parseInt(randomString, 10);
-  };
-
-  const generateSKU = () => {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let sku = "";
-
-    while (sku.length < 10) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      sku += characters[randomIndex];
-    }
-
-    formRef.current.productSku.value = sku;
-  };
 
   const checkPrice = () => {
-    let regularPrice = Number(formRef.current.productPrice.value);
-    let discountPrice = Number(formRef.current.discountPrice.value);
+    let regularPrice = parseInt(formRef.current.productPrice.value);
+    let discountPrice = parseInt(formRef.current.discountPrice.value);
 
     if (regularPrice && discountPrice > regularPrice) {
       setPriceAlert(true);
@@ -113,19 +91,40 @@ const CreateProduct = () => {
     <PageWrapper>
       <Header />
       <div className="mt-8" id="createProductPage">
-        <BackButtonWithArrow linkText="Tilbage til produktoversigt" linkTo="/profile" />
+        <BackButtonWithArrow
+          linkText="Tilbage til produktoversigt"
+          linkTo="/profile"
+        />
         <h1 className="font-bold text-xl mb-1 font-mono">Opret produkt</h1>
-        <p className="font-mono mb-5">Udfyld felterne herunder for at oprette et nyt produkt i webshoppen.</p>
-        <form onSubmit={handleAddNewProduct} ref={formRef} className="flex flex-col gap-5 md:w-3/4 font-mono">
+        <p className="font-mono mb-5">
+          Udfyld felterne herunder for at oprette et nyt produkt i webshoppen.
+        </p>
+        <form
+          onSubmit={handleAddNewProduct}
+          ref={formRef}
+          className="flex flex-col gap-5 md:w-3/4 font-mono"
+        >
           <div className="flex flex-col gap-5 p-8 rounded-md border-[1px] shadow-sm border-slate-200">
             <div className="flex flex-col">
-              <label htmlFor="productTitle" className="text-zinc-700 font-medium">
+              <label
+                htmlFor="productTitle"
+                className="text-zinc-700 font-medium"
+              >
                 Titel
               </label>
-              <input type="text" name="productTitle" id="productTitle" placeholder="Titel på produktet" required />
+              <input
+                type="text"
+                name="productTitle"
+                id="productTitle"
+                placeholder="Titel på produktet"
+                required
+              />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="productDescription" className="text-zinc-700 font-medium">
+              <label
+                htmlFor="productDescription"
+                className="text-zinc-700 font-medium"
+              >
                 Beskrivelse
               </label>
               <textarea
@@ -140,7 +139,10 @@ const CreateProduct = () => {
             <p className="mb-5 font-semibold text-lg">Medier (billeder)</p>
             <div className="border-2 border-slate-300 border-dashed py-10 px-5 rounded-md">
               <div className="flex items-center gap-5">
-                <label htmlFor="productImage" className="cursor-pointer w-fit bg-zinc-700 text-white p-3 rounded-md">
+                <label
+                  htmlFor="productImage"
+                  className="cursor-pointer min-w-fit bg-zinc-700 text-white p-3 rounded-md"
+                >
                   Upload billeder
                 </label>
                 {imageUpload && (
@@ -149,7 +151,9 @@ const CreateProduct = () => {
                       <i className="fa-regular fa-circle-check  text-xl"></i>
                       <p>Billede uploadet!</p>
                     </div>
-                    <p className="italic text-zinc-600">{imageUpload && imageUpload.name}</p>
+                    <p className="italic text-zinc-600">
+                      {imageUpload && imageUpload.name}
+                    </p>
                   </div>
                 )}
               </div>
@@ -171,7 +175,10 @@ const CreateProduct = () => {
             <p className="mb-5 font-semibold text-lg">Prissætning</p>
             <div className="flex flex-col gap-5 md:flex-row">
               <div>
-                <label htmlFor="productPrice" className="text-zinc-700 font-medium">
+                <label
+                  htmlFor="productPrice"
+                  className="text-zinc-700 font-medium"
+                >
                   Normalpris
                 </label>
                 <div className="relative md:w-fit">
@@ -189,18 +196,22 @@ const CreateProduct = () => {
               </div>
               <div>
                 <div className="flex gap-1 items-center">
-                  <label htmlFor="discountPrice" className="text-zinc-700 font-medium">
+                  <label
+                    htmlFor="discountPrice"
+                    className="text-zinc-700 font-medium"
+                  >
                     Tilbudspris
                   </label>
-                  <div onClick={handleShowPopover} className="flex items-center relative group">
+                  <div
+                    onClick={handleShowPopover}
+                    className="flex items-center relative group"
+                  >
                     <div className="flex justify-center items-center rounded-full transition-all ease-in-out duration-100">
                       <i className="fa-regular fa-circle-question text-zinc-700"></i>
                     </div>
-                    <div
-                      id="popover"
-                      className="absolute w-56 -translate-y-[60%] -translate-x-1/2 md:-translate-x-0 text-sm bg-primaryGrey bg-opacity-90 text-white rounded-md p-3 opacity-0 transition-all duration-75 transform scale-0 origin-center md:origin-left md:group-hover:opacity-100 md:group-hover:scale-100"
-                    >
-                      For at vise et afslag i prisen, skal du indtaste en værdi som er lavere end normalprisen.
+                    <div className="absolute w-56 -translate-y-[60%] -translate-x-1/2 md:-translate-x-0 text-sm bg-primaryGrey bg-opacity-90 text-white rounded-md p-3 opacity-0 transition-all duration-75 transform scale-0 origin-center md:origin-left md:group-hover:opacity-100 md:group-hover:scale-100 popover">
+                      For at vise et afslag i prisen, skal du indtaste en værdi
+                      som er lavere end normalprisen.
                     </div>
                   </div>
                 </div>
@@ -227,10 +238,18 @@ const CreateProduct = () => {
             <p className="mb-5 font-semibold text-lg">Diverse</p>
             <div className="flex flex-col gap-5">
               <div className="flex flex-col">
-                <label htmlFor="productColor" className="text-zinc-700 font-medium">
+                <label
+                  htmlFor="productColor"
+                  className="text-zinc-700 font-medium"
+                >
                   Farve
                 </label>
-                <select name="productColor" id="productColor" className="p-3.5" required>
+                <select
+                  name="productColor"
+                  id="productColor"
+                  className="p-3.5"
+                  required
+                >
                   <option value="default" defaultChecked>
                     Vælg farve
                   </option>
@@ -255,24 +274,34 @@ const CreateProduct = () => {
                 </select>
               </div>
               <div className="flex flex-col">
-                <label htmlFor="productEan" className="text-zinc-700 font-medium">
+                <label
+                  htmlFor="productEan"
+                  className="text-zinc-700 font-medium"
+                >
                   EAN
                 </label>
                 <input type="text" name="productEan" id="productEan" />
                 <p
-                  onClick={generateEAN}
+                  onClick={() =>
+                    (formRef.current.productEan.value = generateEAN())
+                  }
                   className="bg-zinc-700 text-white w-fit px-2 py-1 mt-2 rounded-md cursor-pointer select-none flex items-center gap-2"
                 >
                   Tilfældig EAN
                 </p>
               </div>
               <div className="flex flex-col">
-                <label htmlFor="productSku" className="text-zinc-700 font-medium">
+                <label
+                  htmlFor="productSku"
+                  className="text-zinc-700 font-medium"
+                >
                   SKU
                 </label>
                 <input type="text" name="productSku" id="productSku" />
                 <p
-                  onClick={generateSKU}
+                  onClick={() =>
+                    (formRef.current.productSku.value = generateSKU())
+                  }
                   className="bg-zinc-700 text-white w-fit px-2 py-1 mt-2 rounded-md cursor-pointer select-none flex items-center gap-2"
                 >
                   Tilfældig SKU

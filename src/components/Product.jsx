@@ -14,11 +14,14 @@ const Product = ({ product }) => {
   };
 
   return (
-    <div className="w-full flex flex-col lg:w-48">
-      <div onClick={() => navigate(`/product/${product.id}`)} className="w-36 flex flex-col lg:w-48 cursor-pointer">
+    <div className="relative w-full flex flex-col lg:w-48">
+      <div
+        onClick={() => navigate(`/product/${product.id}`)}
+        className="w-full flex flex-col lg:w-48 cursor-pointer"
+      >
         {product?.discountPrice && (
-          <p className="bg-yellow-300 w-fit px-2 py-1 rounded-full font-semibold text-sm">
-            Spar {calculateDiscount(Number(product.price), Number(product.discountPrice))}%
+          <p className="absolute top-0 z-10 bg-yellow-300 w-fit px-2 py-1 rounded-full font-medium text-xs md:text-sm">
+            Spar {calculateDiscount(product.price, product.discountPrice)}%
           </p>
         )}
         <img
@@ -31,15 +34,17 @@ const Product = ({ product }) => {
         />
         <p className="text-xs mt-3 line-clamp-4">{product.title}</p>
         {product.discountPrice ? (
-          <div className="flex items-center gap-2">
-            <p className="font-bold mt-3 lg:text-md line-through text-sm text-zinc-600">
+          <div className="flex flex-col md:flex-row md:items-center md:gap-2">
+            <p className="font-bold mt-3 line-through text-xs text-zinc-600">
               {formatter.format(product.price)}
             </p>
-            <p className="font-bold mt-3 lg:text-md text-customRed">{formatter.format(product.discountPrice)}</p>
+            <p className="font-bold md:mt-3 text-customRed">
+              {formatter.format(product.discountPrice)}
+            </p>
           </div>
         ) : (
           <>
-            <p className="font-bold mt-3 lg:text-md">{formatter.format(product.price)}</p>
+            <p className="font-bold mt-3">{formatter.format(product.price)}</p>
           </>
         )}
       </div>

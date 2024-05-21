@@ -24,7 +24,6 @@ const ProductPage = () => {
 
       if (docSnap.exists()) {
         setProduct(docSnap.data());
-        console.log(docSnap.data());
         setLoading(false);
       } else {
         // docSnap.data() will be undefined in this case
@@ -49,7 +48,12 @@ const ProductPage = () => {
                 <div>
                   {product?.discountPrice && (
                     <p className="bg-yellow-300 w-fit px-2 py-1 rounded-full font-semibold">
-                      Spar {calculateDiscount(Number(product.price), Number(product.discountPrice))}%
+                      Spar{" "}
+                      {calculateDiscount(
+                        Number(product.price),
+                        Number(product.discountPrice)
+                      )}
+                      %
                     </p>
                   )}
                   <img
@@ -75,7 +79,9 @@ const ProductPage = () => {
                       </div>
                     ) : (
                       <>
-                        <p className="font-semibold text-xl py-3">{formatter.format(product?.price)}</p>
+                        <p className="font-semibold text-xl py-3">
+                          {formatter.format(product?.price)}
+                        </p>
                       </>
                     )}
 
@@ -90,7 +96,9 @@ const ProductPage = () => {
                   <div>
                     <p className="font-medium">Produktbeskrivelse</p>
                     <hr className="border-b-1 border-primaryGrey" />
-                    <p className="pt-3 text-sm whitespace-pre-wrap">{product?.description}</p>
+                    <p className="pt-3 text-sm whitespace-pre-wrap">
+                      {product?.description}
+                    </p>
                   </div>
                   <div className="text-sm">
                     <hr className="border-b-1 border-primaryGrey mb-5" />

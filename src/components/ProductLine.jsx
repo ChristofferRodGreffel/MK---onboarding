@@ -15,10 +15,13 @@ const ProductLine = ({ product }) => {
         </div>
         <p className="text-sm">{product.title}</p>
       </Link>
-      <div className="flex items-center gap-2 text-md">
-        <Link to={`/edit-product/${product.id}`}>Redigér</Link>
+      <Link
+        to={`/edit-product/${product.id}`}
+        className="flex items-center gap-2 text-md"
+      >
+        <p>Redigér</p>
         <i className="fa-regular fa-pen-to-square text-lg"></i>
-      </div>
+      </Link>
     </div>
   );
 };
