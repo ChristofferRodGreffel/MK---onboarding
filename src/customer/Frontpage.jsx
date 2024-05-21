@@ -38,6 +38,15 @@ const Frontpage = () => {
             Se vores store udvalg af mobiltilbehør herunder!
           </h1>
           <hr className="border-b-[1.5px] mt-1 border-primaryGrey" /> */}
+          <div className="relative flex justify-center items-center bg-[url('/src/assets/banner.webp')] bg-top bg-cover text-white h-[200px] rounded-md mt-5 p-10 text-center">
+            <div className="absolute bg-black bg-opacity-20 h-full w-full rounded-md"></div>
+            <div className="flex flex-col gap-1 z-10">
+              <h2 className="leading-tight font-bold text-[1.8rem]">
+                Velkommen til MAULUND.COM
+              </h2>
+              <p>Her finder du et stort udvalg af tilbehør til din mobil!</p>
+            </div>
+          </div>
           {loading ? (
             <div className="m-auto mt-14">
               <PulseLoader color="#343434" size={11} />
