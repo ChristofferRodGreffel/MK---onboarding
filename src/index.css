@@ -20,13 +20,18 @@ body {
   --content-max-width: 90%;
   --breakout-max-width: 95%;
 
-  --breakout-size: calc((var(--breakout-max-width) - var(--content-max-width)) / 2);
+  --breakout-size: calc(
+    (var(--breakout-max-width) - var(--content-max-width)) / 2
+  );
 
   display: grid;
   grid-template-columns:
     [full-width-start] minmax(var(--padding-inline), 1fr)
     [breakout-start] minmax(0, var(--breakout-size))
-    [content-start] min(90% - (var(--padding-inline) * 2), var(--content-max-width))
+    [content-start] min(
+      90% - (var(--padding-inline) * 2),
+      var(--content-max-width)
+    )
     [content-end]
     minmax(0, var(--breakout-size)) [breakout-end]
     minmax(var(--padding-inline), 1fr) [full-width-end];
@@ -136,14 +141,9 @@ input[type="number"] {
 .showPopover {
   --tw-scale-x: 1;
   --tw-scale-y: 1;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x))
-    skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 
   opacity: 1;
-}
-
-@media screen and (max-width: 768px) {
-  #createProductPage {
-    grid-column: breakout;
-  }
 }

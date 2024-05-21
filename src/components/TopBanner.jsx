@@ -22,7 +22,7 @@ const TopBanner = () => {
   const futureDayName = daysOfWeek[futureDay];
 
   return (
-    <div className="border-[1px] border-primaryGrey rounded-md px-5 mt-3 p-3 flex justify-between items-center flex-wrap">
+    <div className="hidden border-[1px] border-primaryGrey rounded-md px-5 mt-3 p-3 md:flex justify-between items-center flex-wrap">
       <div className="flex gap-1">
         <img src={trustpilot} alt="trustpilot reviews" className="w-20" />
         <p className="font-medium text-sm">Trustpilot</p>
