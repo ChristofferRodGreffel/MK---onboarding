@@ -6,7 +6,7 @@ const ProductLine = ({ product }) => {
   return (
     <div className="flex flex-wrap gap-3 justify-between items-center border-b-[1px] pb-5 border-gray-400 border-dashed">
       <Link to={`/product/${product.id}`} className="flex items-center">
-        <div className="min-w-12 w-12 h-12 border-[1px] rounded-md p-1 mr-5 border-gray-400">
+        <div className="min-w-12 w-12 h-12 rounded-md p-1 mr-5 ">
           <img
             src={product.imageSource}
             onError={(e) => (e.target.src = noImage)}
