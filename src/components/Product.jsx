@@ -14,10 +14,10 @@ const Product = ({ product }) => {
   };
 
   return (
-    <div className="relative w-full flex flex-col lg:w-48">
+    <div className="relative w-full flex flex-col lg:min-w-44">
       <div
         onClick={() => navigate(`/product/${product.id}`)}
-        className="w-full flex flex-col lg:w-48 cursor-pointer"
+        className="w-full flex flex-col cursor-pointer"
       >
         {product?.discountPrice && (
           <p className="absolute top-0 z-10 bg-yellow-300 w-fit px-2 py-1 rounded-full font-medium text-xs md:text-sm">

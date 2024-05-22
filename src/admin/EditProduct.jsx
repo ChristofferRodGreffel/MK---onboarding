@@ -123,16 +123,16 @@ const EditProduct = () => {
           linkText="Tilbage til produktoversigt"
           linkTo="/profile"
         />
-        <h1 className="font-bold text-xl mb-1 font-mono">Redigér produkt</h1>
-        <p className="font-mono mb-5">
+        <h1 className="font-bold text-xl mb-1">Redigér produkt</h1>
+        <p className="mb-5">
           Udfyld felterne herunder for at opdatere produktinformationerne.
         </p>
         <form
           onSubmit={handleUpdateProduct}
           ref={formRef}
-          className="flex flex-col gap-5 md:w-3/4 font-mono"
+          className="flex flex-col gap-5 md:w-3/4"
         >
-          <div className="flex flex-col gap-5 p-8 rounded-md border-[1px] shadow-sm border-slate-200">
+          <div className="flex flex-col gap-5 p-8 rounded-md border-[1px] shadow-md">
             <div className="flex flex-col">
               <label
                 htmlFor="productTitle"
@@ -166,8 +166,8 @@ const EditProduct = () => {
               ></textarea>
             </div>
           </div>
-          <div className="flex flex-col p-8 rounded-md border-[1px] shadow-sm border-slate-200">
-            <p className="mb-5 font-semibold text-lg">Medier (billeder)</p>
+          <div className="flex flex-col p-8 rounded-md border-[1px] shadow-md">
+            <p className="mb-5 font-semibold text-lg">Medie (billede)</p>
             <div className="border-2 border-slate-300 border-dashed py-10 px-5 rounded-md">
               <div className="flex flex-col md:flex-row items-center gap-5">
                 <label
@@ -206,7 +206,7 @@ const EditProduct = () => {
             </div>
           </div>
           <div
-            className={`p-8 rounded-md border-[1px] shadow-sm border-slate-200 ${
+            className={`p-8 rounded-md border-[1px] shadow-md ${
               priceAlert && "!border-customRed border-[2px]"
             }`}
           >
@@ -277,7 +277,7 @@ const EditProduct = () => {
               </p>
             )}
           </div>
-          <div className="p-8 rounded-md border-[1px] shadow-sm border-slate-200">
+          <div className="p-8 rounded-md border-[1px] shadow-md">
             <p className="mb-5 font-semibold text-lg">Diverse</p>
             <div className="flex flex-col gap-5">
               <div className="flex flex-col">
