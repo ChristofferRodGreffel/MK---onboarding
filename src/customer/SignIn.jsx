@@ -144,7 +144,7 @@ const SignIn = () => {
     <>
       <PageWrapper>
         <div className="lg:w-[600px] m-auto">
-          <div className="mt-10">
+          <div className="mt-10 md:mt-40">
             <img
               src={maulundLogo}
               alt="Maulund Kundeklub logo"
