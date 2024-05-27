@@ -57,10 +57,7 @@ const Frontpage = () => {
                   allProducts.map((product, key) => {
                     return (
                       <div key={key}>
-                        <Product
-                          product={product}
-                          productPrice={product.price.toLocaleString("da-DK")}
-                        />
+                        <Product product={product} />
                       </div>
                     );
                   })}
