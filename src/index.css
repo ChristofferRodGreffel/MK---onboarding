@@ -147,3 +147,17 @@ input[type="number"] {
 
   opacity: 1;
 }
+
+@media screen and (max-width: 768px) {
+  .banner {
+    grid-column: full-width !important;
+  }
+  .topBanner {
+    grid-column: full-width !important;
+    border: none;
+    border-radius: 0;
+    background-color: rgb(16, 155, 101);
+    text-shadow: rgb(1, 103, 1) 1px 1px 2px;
+    color: white;
+  }
+}

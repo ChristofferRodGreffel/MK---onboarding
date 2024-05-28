@@ -34,13 +34,15 @@ const Frontpage = () => {
         <>
           <Header />
           <TopBanner />
-          <div className="relative flex justify-center items-center bg-[url('/src/assets/banner.webp')] bg-top bg-cover text-white h-[200px] rounded-md mt-4 p-10 text-center">
+          <div className="banner relative flex justify-center items-center bg-[url('/src/assets/banner.webp')] bg-top bg-cover text-white h-[200px] md:rounded-md md:mt-4 p-10 text-center">
             <div className="absolute bg-black bg-opacity-30 h-full w-full rounded-md"></div>
             <div className="flex flex-col gap-1 z-10">
-              <h2 className="leading-tight font-bold text-[1.8rem]">
+              <h2 className="leading-tight font-bold text-2xl">
                 Velkommen til MAULUND.COM
               </h2>
-              <p>Her finder du et stort udvalg af tilbehør til din mobil!</p>
+              <p className="text-sm md:text-base">
+                Her finder du et stort udvalg af tilbehør til din mobil!
+              </p>
             </div>
           </div>
           {loading ? (

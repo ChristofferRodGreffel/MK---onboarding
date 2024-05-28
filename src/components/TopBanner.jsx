@@ -22,7 +22,7 @@ const TopBanner = () => {
   const futureDayName = daysOfWeek[futureDay];
 
   return (
-    <div className="border-[1px] border-primaryGrey rounded-md px-5 mt-3 p-3 flex justify-between items-center flex-wrap">
+    <div className="topBanner border-[1px] border-primaryGrey rounded-md mt-3 p-2 flex justify-between items-center flex-wrap">
       <div className="hidden md:flex gap-1">
         <img src={trustpilot} alt="trustpilot reviews" className="w-20" />
         <p className="font-medium text-sm">Trustpilot</p>
@@ -44,7 +44,7 @@ const TopBanner = () => {
         <p className="font-medium text-sm md:block">E-mærket</p>
       </div>
       <div className="flex flex-col items-center m-auto gap-1 md:hidden">
-        <p className="font-medium md:mt-2 text-sm text-center">
+        <p className="font-medium md:mt-2 text-[0.8rem] text-center">
           {currentTime < 17 ? (
             <>Bestil inden kl. 17:00, så sender vi din ordre i dag</>
           ) : (

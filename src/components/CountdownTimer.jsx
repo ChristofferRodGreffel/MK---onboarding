@@ -40,15 +40,15 @@ const CountdownTimer = (props) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = seconds % 60;
-    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${remainingSeconds
+    return `${hours.toString().padStart(2, "0")}:${minutes
       .toString()
-      .padStart(2, "0")}`;
+      .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
   return (
     <div>
       {props.text && <p className="font-medium">{props.text}</p>}
-      <p className="font-mono font-bold text-base border-[1.5px] border-primaryGrey px-2 rounded-md w-fit">
+      <p className="font-medium tabular-nums text-sm border-[1.5px] border-white md:border-primaryGrey px-2 rounded-md w-fit">
         {formatTime(time)}
       </p>
     </div>
