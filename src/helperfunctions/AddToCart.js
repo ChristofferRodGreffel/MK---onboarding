@@ -1,9 +1,11 @@
 import localStorageBasket from "./LocalStorageBasket";
 import { useGlobalState } from "../components/GlobalStateProvider";
 
+// Custom hook allows for using React and JS together
 const useAddToCart = () => {
   const { setGlobalState } = useGlobalState();
 
+  // Adds a new product to the cart in localStorage using the 'localStorageBasket' function
   const addToCart = (product, setAdding) => {
     setAdding("processing");
 
@@ -17,6 +19,7 @@ const useAddToCart = () => {
 
     localStorageBasket(completeProduct);
 
+    // Timeouts are added for the state of the add button
     setTimeout(() => {
       setAdding("completed");
       setGlobalState((prevState) => prevState + 1);

@@ -48,12 +48,6 @@ const Product = ({ product }) => {
         )}
       </div>
       <AddToCartBtn product={product} />
-      {/* <button
-        onClick={() => addToCart(product)}
-        className="bg-customGreen text-white font-semibold w-full py-[5px] rounded-sm mt-1 lg:font-bold hover:bg-customDarkGreen transition-colors"
-      >
-        Læg i kurv
-      </button> */}
     </div>
   );
 };

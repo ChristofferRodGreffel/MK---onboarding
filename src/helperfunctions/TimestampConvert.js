@@ -16,7 +16,7 @@ export function timestampConvert(stamp, type) {
   // Get seconds part from the timestamp
   let seconds = dateObj.getSeconds();
 
-  // Formaterer til det resultat, som vi ønsker
+  // Formatting to desired output using switch
   switch (type) {
     case "stampToHourMinute":
       return (

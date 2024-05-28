@@ -1,3 +1,4 @@
+// Generates a random EAN number with 13 digits
 export const generateEAN = () => {
   let randomNumber = Math.random();
   let randomString = randomNumber.toString().slice(2, 15);
@@ -8,6 +9,7 @@ export const generateEAN = () => {
   return parseInt(randomString, 10);
 };
 
+// Generates a random SKU using the defined characters
 export const generateSKU = () => {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let sku = "";
@@ -20,6 +22,7 @@ export const generateSKU = () => {
   return sku;
 };
 
+// Function to show the popover element
 export const handleShowPopover = () => {
   const popover = document.querySelector(".popover");
   popover.classList.toggle("showPopover");

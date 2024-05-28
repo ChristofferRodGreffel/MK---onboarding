@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import MaulundLogo from "../assets/maulund-logo.webp";
 import { Link } from "react-router-dom";
 import { useGlobalState } from "./GlobalStateProvider";
@@ -22,7 +22,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="flex justify-between items-center content mt-10 md:mt-8">
+      <header className="bg-white z-10 flex justify-between items-center content mt-5 md:mt-8">
         <Link to={"/"}>
           <img src={MaulundLogo} alt="logo" className="w-40 md:w-52" />
         </Link>
