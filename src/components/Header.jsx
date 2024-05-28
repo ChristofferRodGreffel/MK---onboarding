@@ -13,9 +13,7 @@ const Header = () => {
 
     if (basketFromStorage) {
       let totalAmountFromBasket = 0;
-      basketFromStorage.products.forEach(
-        (subData) => (totalAmountFromBasket += subData.amount)
-      );
+      basketFromStorage.products.forEach((subData) => (totalAmountFromBasket += subData.amount));
       setGlobalState(totalAmountFromBasket);
     }
   }, []);
@@ -46,7 +44,7 @@ const Header = () => {
             ) : (
               <Link to={"/profile"}>
                 <div className="flex flex-col items-center">
-                  <i className="fa-solid fa-user text-[1.35rem] px-3 text-primaryGrey"></i>
+                  <i className="fa-solid fa-circle-user text-[1.35rem] px-3 text-primaryGrey"></i>
                   <p className="hidden md:block">Profil</p>
                 </div>
               </Link>
@@ -54,7 +52,7 @@ const Header = () => {
           ) : (
             <Link to={"/signin"}>
               <div className="flex flex-col items-center">
-                <i className="fa-solid fa-arrow-right-to-bracket px-3 text-[1.35rem] text-primaryGrey"></i>
+                <i className="fa-solid fa-circle-user px-3 text-[1.35rem] text-primaryGrey"></i>
                 <p className="hidden md:block">Log ind</p>
               </div>
             </Link>
