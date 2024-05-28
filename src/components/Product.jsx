@@ -1,13 +1,12 @@
 import React from "react";
 import { formatter } from "../helperfunctions/Formatter";
 import { useNavigate } from "react-router-dom";
-import useAddToCart from "../helperfunctions/AddToCart";
 import noImage from "../assets/no_image.jpg";
 import { calculateDiscount } from "../helperfunctions/CalculateDiscount";
+import AddToCartBtn from "./AddToCartBtn";
 
 const Product = ({ product }) => {
   const navigate = useNavigate();
-  const addToCart = useAddToCart();
 
   const removeBlur = (img) => {
     img.style.filter = "blur(0px)";
@@ -48,12 +47,13 @@ const Product = ({ product }) => {
           </>
         )}
       </div>
-      <button
+      <AddToCartBtn product={product} />
+      {/* <button
         onClick={() => addToCart(product)}
         className="bg-customGreen text-white font-semibold w-full py-[5px] rounded-sm mt-1 lg:font-bold hover:bg-customDarkGreen transition-colors"
       >
         Læg i kurv
-      </button>
+      </button> */}
     </div>
   );
 };

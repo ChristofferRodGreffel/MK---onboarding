@@ -67,7 +67,7 @@ const Header = () => {
                 <p className="hidden md:block">Kurv</p>
               </div>
               {globalState !== 0 && (
-                <div className="absolute -top-3 right-0 bg-white border-[2.5px] border-primaryGrey text-primaryGrey font-semibold h-[22px] w-[22px] flex justify-center items-center rounded-full">
+                <div className="absolute -top-3 right-0  bg-white border-[2px] border-primaryGrey text-primaryGrey font-semibold h-[22px] w-[22px] flex justify-center items-center rounded-full">
                   <p className="text-sm text-center font-bold">{globalState}</p>
                 </div>
               )}

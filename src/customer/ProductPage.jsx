@@ -10,6 +10,7 @@ import { formatter } from "../helperfunctions/Formatter";
 import useAddToCart from "../helperfunctions/AddToCart";
 import noImage from "../assets/no_image.jpg";
 import { calculateDiscount } from "../helperfunctions/CalculateDiscount";
+import AddToCartBtn from "../components/AddToCartBtn";
 
 const ProductPage = () => {
   const [loading, setLoading] = useState(true);
@@ -86,14 +87,11 @@ const ProductPage = () => {
                     )}
 
                     <hr className="border-b-1 border-zinc-400 " />
-                    <button
-                      onClick={() => addToCart(product)}
-                      className="bg-customGreen text-white font-semibold w-1/2 py-[8px] rounded-sm mt-8 lg:font-bold hover:bg-customDarkGreen transition-colors"
-                    >
-                      Køb nu
-                    </button>
+                    <div className="mt-3 w-1/2">
+                      <AddToCartBtn product={product} />
+                    </div>
                   </div>
-                  <div>
+                  <div className="mt-5">
                     <p className="font-medium">Produktbeskrivelse</p>
                     <hr className="border-b-1 border-primaryGrey" />
                     <p className="pt-3 text-sm whitespace-pre-wrap">
