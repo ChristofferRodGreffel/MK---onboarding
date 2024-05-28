@@ -30,44 +30,38 @@ const Frontpage = () => {
 
   return (
     <PageWrapper>
-      {!loading && (
-        <>
-          <Header />
-          <TopBanner />
-          <div className="banner relative flex justify-center items-center bg-[url('/src/assets/banner.webp')] bg-top bg-cover text-white h-[200px] md:rounded-md md:mt-4 p-10 text-center">
-            <div className="absolute bg-black bg-opacity-30 h-full w-full rounded-md"></div>
-            <div className="flex flex-col gap-1 z-10">
-              <h2 className="leading-tight font-bold text-2xl">
-                Velkommen til MAULUND.COM
-              </h2>
-              <p className="text-sm md:text-base">
-                Her finder du et stort udvalg af tilbehør til din mobil!
-              </p>
-            </div>
+      <Header />
+      <TopBanner />
+      <>
+        <div className="banner relative flex justify-center items-center bg-[url('/src/assets/banner.webp')] bg-top bg-cover text-white h-[200px] md:rounded-md md:mt-4 p-10 text-center">
+          <div className="absolute bg-black bg-opacity-30 h-full w-full rounded-md"></div>
+          <div className="flex flex-col gap-1 z-10">
+            <h2 className="leading-tight font-bold text-2xl">Velkommen til MAULUND.COM</h2>
+            <p className="text-sm md:text-base">Her finder du et stort udvalg af tilbehør til din mobil!</p>
           </div>
-          {loading ? (
-            <div className="m-auto mt-14">
-              <PulseLoader color="#343434" size={11} />
-            </div>
-          ) : (
-            <>
-              <div
-                className="mt-10 ml-0 grid grid-cols-2 gap-8 gap-y-12 md:grid-cols-3 
+        </div>
+        {loading ? (
+          <div className="m-auto mt-14">
+            <PulseLoader color="#343434" size={11} />
+          </div>
+        ) : (
+          <>
+            <div
+              className="mt-10 ml-0 grid grid-cols-2 gap-8 gap-y-12 md:grid-cols-3 
                 lg:ml-0 lg:grid-cols-4 lg:gap-y-20 lg:gap-20"
-              >
-                {allProducts.length != 0 &&
-                  allProducts.map((product, key) => {
-                    return (
-                      <div key={key}>
-                        <Product product={product} />
-                      </div>
-                    );
-                  })}
-              </div>
-            </>
-          )}
-        </>
-      )}
+            >
+              {allProducts.length != 0 &&
+                allProducts.map((product, key) => {
+                  return (
+                    <div key={key}>
+                      <Product product={product} />
+                    </div>
+                  );
+                })}
+            </div>
+          </>
+        )}
+      </>
     </PageWrapper>
   );
 };
