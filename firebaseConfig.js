@@ -1,4 +1,5 @@
 // Import the functions you need from the SDKs you need
+import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
@@ -15,11 +16,13 @@ const firebaseConfig = {
   storageBucket: "maulund-kundeklub.appspot.com",
   messagingSenderId: "918874351877",
   appId: "1:918874351877:web:2394e95f5912d9d3492f6c",
+  measurementId: "G-G2THPB6EJF",
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+export const db = getFirestore(app, "onboarding");
 export const storage = getStorage();
 export const storageRef = ref(storage);
+export const analytics = getAnalytics(app);
