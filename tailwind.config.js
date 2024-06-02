@@ -15,6 +15,7 @@ export default {
         bronze: "#CD7F32",
         silver: "#C0C0C0",
         gold: "#FFD700",
+        lightGrey: "#D9D9D9",
       },
       screens: {
         "-md": { max: "768px" },
