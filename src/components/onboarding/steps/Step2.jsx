@@ -1,8 +1,10 @@
 import React from "react";
 import StepContent from "../StepContent";
 import InfoBox from "../InfoBox";
+import { useGlobalState } from "../../GlobalStateProvider";
 
 const Step2 = () => {
+  const { adminValues } = useGlobalState();
   return (
     <div>
       <StepContent
@@ -12,10 +14,10 @@ For hver 10 kr., du bruger, optjener du 1 point. Det betyder, at hvis du f.eks. 
       />
       <InfoBox>
         <p>
-          <b>1 kr.</b> = 0,1 point
+          <b>1 kr.</b> = {adminValues?.earnRate} point
         </p>
         <p>
-          <b>10 kr.</b> = 1 point
+          <b>10 kr.</b> = {Number(adminValues?.earnRate) * 10} point
         </p>
       </InfoBox>
     </div>

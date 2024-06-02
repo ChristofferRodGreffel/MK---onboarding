@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import StepProgress from "./StepProgress";
@@ -10,17 +10,35 @@ import Step6 from "./steps/Step6";
 const Onboarding = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
+  useEffect(() => {
+    const localStep = JSON.parse(localStorage.getItem("onboarding"));
+
+    if (localStep) {
+      setCurrentStep(localStep);
+    }
+  }, []);
+
   const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />, <Step6 />];
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
+      if (currentStep > 0) {
+        let oldLocalStep = JSON.parse(localStorage.getItem("onboarding"));
+        let newLocalStep = oldLocalStep + 1;
+        localStorage.setItem("onboarding", newLocalStep);
+      } else {
+        localStorage.setItem("onboarding", 1);
+      }
     }
   };
 
   const prevStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
+      let oldLocalStep = JSON.parse(localStorage.getItem("onboarding"));
+      let newLocalStep = oldLocalStep - 1;
+      localStorage.setItem("onboarding", newLocalStep);
     }
   };
 
