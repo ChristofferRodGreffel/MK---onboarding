@@ -66,43 +66,45 @@ function App() {
 
   return (
     <>
-      <ToastContainer stacked />
       {showOnboarding && <Onboarding setShowOnboarding={setShowOnboarding} />}
-      <Routes>
-        {admin && (
-          <>
-            <Route path="/admin" element={<ControlPanel />} />
-            <Route path="/admin/customer/:id" element={<Customer />} />
-            <Route
-              path="/admin/customer/correctpoints/:id"
-              element={<CorrectPoints />}
-            />
-            <Route path="/admin/settings" element={<Settings />} />
-            <Route path="/create-product" element={<CreateProduct />} />
-            <Route path="/edit-product/:id" element={<EditProduct />} />
-          </>
-        )}
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/product/:productId" element={<ProductPage />} />
-        <Route path="/donate" element={<Donate />} />
-        <Route path="/statistics" element={<Statistics />} />
-        <Route path="/questions" element={<Questions />} />
-        <Route
-          path="/orderrecieved/:totalPoints/:memberPoints"
-          element={<OrderRecieved />}
-        />
-        <Route path="/orderrecieved" element={<OrderRecieved />} />
-        <Route
-          path="/donationrecieved/:organization/:amount"
-          element={<DonateRecieved />}
-        />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/history" element={<PointHistory />} />
-        <Route path="/" element={<Frontpage />} />
-        <Route path="*" element={<Frontpage />} />
-      </Routes>
+      <ToastContainer stacked />
+      <div className={showOnboarding ? "hidden" : "block"}>
+        <Routes>
+          {admin && (
+            <>
+              <Route path="/admin" element={<ControlPanel />} />
+              <Route path="/admin/customer/:id" element={<Customer />} />
+              <Route
+                path="/admin/customer/correctpoints/:id"
+                element={<CorrectPoints />}
+              />
+              <Route path="/admin/settings" element={<Settings />} />
+              <Route path="/create-product" element={<CreateProduct />} />
+              <Route path="/edit-product/:id" element={<EditProduct />} />
+            </>
+          )}
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/product/:productId" element={<ProductPage />} />
+          <Route path="/donate" element={<Donate />} />
+          <Route path="/statistics" element={<Statistics />} />
+          <Route path="/questions" element={<Questions />} />
+          <Route
+            path="/orderrecieved/:totalPoints/:memberPoints"
+            element={<OrderRecieved />}
+          />
+          <Route path="/orderrecieved" element={<OrderRecieved />} />
+          <Route
+            path="/donationrecieved/:organization/:amount"
+            element={<DonateRecieved />}
+          />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/history" element={<PointHistory />} />
+          <Route path="/" element={<Frontpage />} />
+          <Route path="*" element={<Frontpage />} />
+        </Routes>
+      </div>
       <ScrollToTop />
     </>
   );

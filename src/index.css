@@ -148,10 +148,6 @@ input[type="number"] {
   opacity: 1;
 }
 
-.no-scroll {
-  overflow: hidden;
-}
-
 @keyframes fromCenter {
   from {
     transform: scale(0);

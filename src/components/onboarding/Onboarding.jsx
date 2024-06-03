@@ -15,6 +15,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { shootStars } from "../../helperfunctions/StarConfetti";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Onboarding = ({ setShowOnboarding }) => {
   const [currentStep, setCurrentStep] = useState(0);
