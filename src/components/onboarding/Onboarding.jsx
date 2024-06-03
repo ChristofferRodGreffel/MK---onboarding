@@ -15,7 +15,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { shootStars } from "../../helperfunctions/StarConfetti";
-import { onAuthStateChanged } from "firebase/auth";
 
 const Onboarding = ({ setShowOnboarding }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -113,7 +112,7 @@ const Onboarding = ({ setShowOnboarding }) => {
         <div className="flex justify-between gap-4 font-semibold mt-12">
           {currentStep !== 0 && (
             <button
-              className="border-primaryGrey border-2 rounded-full py-2 px-5 flex items-center gap-1 hover:bg-primaryGrey hover:text-white transition-all duration-150 select-none"
+              className="border-primaryGrey border-2 rounded-full py-2 px-5 flex items-center gap-1 md:hover:bg-primaryGrey md:hover:text-white transition-all duration-150 select-none"
               onClick={prevStep}
             >
               <i className="fa-solid fa-arrow-left text-lg"></i>
@@ -122,7 +121,7 @@ const Onboarding = ({ setShowOnboarding }) => {
           )}
 
           <button
-            className="bg-primaryGrey rounded-full py-2 w-full text-white flex items-center justify-center hover:bg-black transition-all duration-150 select-none"
+            className="bg-primaryGrey rounded-full py-2 w-full text-white flex items-center justify-center md:hover:bg-black transition-all duration-150 select-none"
             onClick={currentStep !== 5 ? nextStep : completeOnboarding}
           >
             {currentStep !== 5 ? (
