@@ -7,13 +7,17 @@ import Step4 from "./steps/Step4";
 import Step5 from "./steps/Step5";
 import Step6 from "./steps/Step6";
 import { auth, db } from "../../../firebaseConfig";
-import { doc, increment, updateDoc } from "firebase/firestore";
-import ConfettiExplosion from "react-confetti-explosion";
+import {
+  arrayUnion,
+  doc,
+  getDoc,
+  increment,
+  updateDoc,
+} from "firebase/firestore";
 import { shootStars } from "../../helperfunctions/StarConfetti";
 
 const Onboarding = ({ setShowOnboarding }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isExploding, setIsExploding] = useState(false);
 
   useEffect(() => {
     const localStep = JSON.parse(localStorage.getItem("onboarding"));
@@ -56,11 +60,32 @@ const Onboarding = ({ setShowOnboarding }) => {
 
   const completeOnboarding = async () => {
     setShowOnboarding(false);
-    let currentUser = auth.currentUser.uid;
+    const currentUser = auth.currentUser.uid;
     if (currentUser) {
       const userRef = doc(db, "users", currentUser);
+      const userDoc = await getDoc(userRef);
+
+      if (!userDoc.exists()) {
+        console.error("User does not exist");
+        setShowOnboarding(false);
+        return;
+      }
+
+      const userData = userDoc.data();
+      if (userData.onboarded) {
+        console.warn("User has already completed onboarding");
+        setShowOnboarding(false);
+        return;
+      }
+
+      const historyObject = {
+        date: new Date(),
+        type: "onboarded",
+        amount: 50,
+      };
 
       await updateDoc(userRef, {
+        history: arrayUnion(historyObject),
         onboarded: true,
         points: increment(50),
       }).then(() => {

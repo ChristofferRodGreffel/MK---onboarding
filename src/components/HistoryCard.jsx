@@ -23,6 +23,9 @@ const HistoryCard = (props) => {
       case "maulundDelete":
         formattedType = "Nulstillet (kundeservice)";
         break;
+      case "onboarded":
+        formattedType = "Velkommen i klubben";
+        break;
       default:
         break;
     }
