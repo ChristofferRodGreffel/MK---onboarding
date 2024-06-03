@@ -53,7 +53,9 @@ export const GlobalStateProvider = ({ children }) => {
   };
 
   return (
-    <GlobalStateContext.Provider value={{ globalState, setGlobalState, adminValues, isAdmin }}>
+    <GlobalStateContext.Provider
+      value={{ globalState, setGlobalState, adminValues, isAdmin }}
+    >
       {children}
     </GlobalStateContext.Provider>
   );

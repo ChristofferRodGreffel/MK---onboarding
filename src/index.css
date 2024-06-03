@@ -148,6 +148,19 @@ input[type="number"] {
   opacity: 1;
 }
 
+.no-scroll {
+  overflow: hidden;
+}
+
+@keyframes fromCenter {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
 @media screen and (max-width: 768px) {
   .banner {
     grid-column: full-width !important;

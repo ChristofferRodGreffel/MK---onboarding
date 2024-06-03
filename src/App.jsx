@@ -6,7 +6,7 @@ import Cart from "./customer/Cart";
 import { useEffect, useState } from "react";
 import { auth, db } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { ToastContainer } from "react-toastify";
 import ControlPanel from "./admin/ControlPanel";
 import "react-toastify/dist/ReactToastify.css";
@@ -24,15 +24,18 @@ import Statistics from "./customer/Statistics";
 import ProductPage from "./customer/ProductPage";
 import CreateProduct from "./admin/CreateProduct";
 import EditProduct from "./admin/EditProduct";
+import Onboarding from "./components/onboarding/Onboarding";
 
 function App() {
   const [admin, setAdmin] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid;
         checkAdminStatus(uid);
+        checkOnboardingStatus(uid);
       }
     });
   }, []);
@@ -46,9 +49,25 @@ function App() {
     });
   };
 
+  const checkOnboardingStatus = async (uid) => {
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      if (docSnap.data().onboarded === false) {
+        setShowOnboarding(true);
+      } else {
+        setShowOnboarding(false);
+      }
+    } else {
+      console.log("Error getting user document.");
+    }
+  };
+
   return (
     <>
       <ToastContainer stacked />
+      {showOnboarding && <Onboarding setShowOnboarding={setShowOnboarding} />}
       <Routes>
         {admin && (
           <>

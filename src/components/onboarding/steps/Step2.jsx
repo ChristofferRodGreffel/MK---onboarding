@@ -8,9 +8,9 @@ const Step2 = () => {
   return (
     <div>
       <StepContent
-        title="Sådan optjener du point"
-        description="Når du handler i vores webshop, optjener du point for hver krone, du bruger. 
-For hver 10 kr., du bruger, optjener du 1 point. Det betyder, at hvis du f.eks. bruger 100 kr., får du 10 point."
+        title="Sådan optjener du Maulund point"
+        description="Når du handler i vores webshop, optjener du Maulund point for hver krone, du bruger. 
+For hver 10 kr., du bruger, optjener du 1 Maulund point. Det betyder, at hvis du f.eks. bruger 100 kr., modtager du 10 Maulund point."
       />
       <InfoBox>
         <p>

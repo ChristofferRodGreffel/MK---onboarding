@@ -14,19 +14,19 @@ const Step3 = () => {
       />
       <InfoBox>
         <p>
-          <span className="text-bronze font-bold">Bronze</span>{" "}
-          <i className="fa-solid fa-arrow-right text-sm text-primaryGrey"></i> 1 point ={" "}
-          {formatter.format(adminValues?.exchangeRates?.bronze)}
+          <span className="font-bold">Bronze</span>{" "}
+          <i className="fa-solid fa-arrow-right text-sm text-primaryGrey"></i> 1
+          point = {formatter.format(adminValues?.exchangeRates?.bronze)}
         </p>
         <p>
-          <span className="text-silver font-bold">Sølv</span>{" "}
-          <i className="fa-solid fa-arrow-right text-sm text-primaryGrey"></i> 1 point ={" "}
-          {formatter.format(adminValues?.exchangeRates?.silver)}
+          <span className="font-bold">Sølv</span>{" "}
+          <i className="fa-solid fa-arrow-right text-sm text-primaryGrey"></i> 1
+          point = {formatter.format(adminValues?.exchangeRates?.silver)}
         </p>
         <p>
-          <span className="text-gold font-bold">Guld</span>{" "}
-          <i className="fa-solid fa-arrow-right text-sm text-primaryGrey"></i> 1 point ={" "}
-          {formatter.format(adminValues?.exchangeRates?.gold)}
+          <span className="font-bold">Guld</span>{" "}
+          <i className="fa-solid fa-arrow-right text-sm text-primaryGrey"></i> 1
+          point = {formatter.format(adminValues?.exchangeRates?.gold)}
         </p>
       </InfoBox>
     </div>

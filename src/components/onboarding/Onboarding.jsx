@@ -6,9 +6,13 @@ import Step3 from "./steps/Step3";
 import Step4 from "./steps/Step4";
 import Step5 from "./steps/Step5";
 import Step6 from "./steps/Step6";
+import { auth, db } from "../../../firebaseConfig";
+import { doc, increment, updateDoc } from "firebase/firestore";
+import ConfettiExplosion from "react-confetti-explosion";
 
-const Onboarding = () => {
+const Onboarding = ({ setShowOnboarding }) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [isExploding, setIsExploding] = useState(false);
 
   useEffect(() => {
     const localStep = JSON.parse(localStorage.getItem("onboarding"));
@@ -18,7 +22,14 @@ const Onboarding = () => {
     }
   }, []);
 
-  const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />, <Step6 />];
+  const steps = [
+    <Step1 />,
+    <Step2 />,
+    <Step3 />,
+    <Step4 />,
+    <Step5 />,
+    <Step6 />,
+  ];
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
@@ -42,9 +53,30 @@ const Onboarding = () => {
     }
   };
 
+  const completeOnboarding = async () => {
+    setShowOnboarding(false);
+    let currentUser = auth.currentUser.uid;
+    if (currentUser) {
+      const userRef = doc(db, "users", currentUser);
+
+      await updateDoc(userRef, {
+        onboarded: true,
+        points: increment(50),
+      });
+    }
+  };
+
+  useEffect(() => {
+    document.querySelector(".content-grid").style.display = "none";
+
+    return () => {
+      document.querySelector(".content-grid").style.display = "grid";
+    };
+  }, []);
+
   return (
-    <div className="bg-white z-10 absolute top-0 flex justify-center w-screen h-[100%]">
-      <div className="w-[85%]">
+    <div className="bg-white z-50 absolute top-0 flex justify-center md:items-center w-screen min-h-screen">
+      <div className="w-[85%] md:w-2/3 lg:w-2/5 max-w-2xl animate-expandFromCenter">
         <div className="mt-14">
           <StepProgress currentStep={currentStep} />
         </div>
@@ -52,7 +84,7 @@ const Onboarding = () => {
         <div className="flex justify-between gap-4 font-semibold mt-12">
           {currentStep !== 0 && (
             <button
-              className="border-primaryGrey border-2 rounded-full py-2 px-5 flex items-center gap-1"
+              className="border-primaryGrey border-2 rounded-full py-2 px-5 flex items-center gap-1 hover:bg-primaryGrey hover:text-white transition-all duration-150 select-none"
               onClick={prevStep}
             >
               <i className="fa-solid fa-arrow-left text-lg"></i>
@@ -61,8 +93,8 @@ const Onboarding = () => {
           )}
 
           <button
-            className="bg-primaryGrey rounded-full py-2 w-full text-white flex items-center justify-center"
-            onClick={nextStep}
+            className="bg-primaryGrey rounded-full py-2 w-full text-white flex items-center justify-center hover:bg-black transition-all duration-150 select-none"
+            onClick={currentStep !== 5 ? nextStep : completeOnboarding}
           >
             {currentStep !== 5 ? (
               <div className="flex items-center gap-2">
@@ -71,12 +103,18 @@ const Onboarding = () => {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <p>Afslut</p>
+                <p>Få 50 gratis point</p>
+                <i className="fa-solid fa-coins"></i>
               </div>
             )}
           </button>
         </div>
-        <p className="underline mt-24">Spring introduktion over</p>
+        <p
+          onClick={() => setShowOnboarding(false)}
+          className="underline mt-24 cursor-pointer w-fit"
+        >
+          Spring introduktion over
+        </p>
       </div>
     </div>
   );

@@ -20,6 +20,9 @@ export default {
       screens: {
         "-md": { max: "768px" },
       },
+      animation: {
+        expandFromCenter: "fromCenter .7s ease-in-out",
+      },
     },
   },
   plugins: [],
