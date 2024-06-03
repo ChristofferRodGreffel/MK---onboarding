@@ -9,6 +9,7 @@ import Step6 from "./steps/Step6";
 import { auth, db } from "../../../firebaseConfig";
 import { doc, increment, updateDoc } from "firebase/firestore";
 import ConfettiExplosion from "react-confetti-explosion";
+import { shootStars } from "../../helperfunctions/StarConfetti";
 
 const Onboarding = ({ setShowOnboarding }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -62,6 +63,8 @@ const Onboarding = ({ setShowOnboarding }) => {
       await updateDoc(userRef, {
         onboarded: true,
         points: increment(50),
+      }).then(() => {
+        shootStars();
       });
     }
   };
