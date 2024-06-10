@@ -7,13 +7,7 @@ import Step4 from "./steps/Step4";
 import Step5 from "./steps/Step5";
 import Step6 from "./steps/Step6";
 import { auth, db } from "../../../firebaseConfig";
-import {
-  arrayUnion,
-  doc,
-  getDoc,
-  increment,
-  updateDoc,
-} from "firebase/firestore";
+import { arrayUnion, doc, getDoc, increment, updateDoc } from "firebase/firestore";
 import { shootStars } from "../../helperfunctions/StarConfetti";
 
 const Onboarding = ({ setShowOnboarding }) => {
@@ -27,14 +21,7 @@ const Onboarding = ({ setShowOnboarding }) => {
     }
   }, []);
 
-  const steps = [
-    <Step1 />,
-    <Step2 />,
-    <Step3 />,
-    <Step4 />,
-    <Step5 />,
-    <Step6 />,
-  ];
+  const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />, <Step6 />];
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
@@ -94,6 +81,11 @@ const Onboarding = ({ setShowOnboarding }) => {
     }
   };
 
+  const skipOnboarding = () => {
+    setShowOnboarding(false);
+    localStorage.setItem("skippedOnboarding", true);
+  };
+
   useEffect(() => {
     document.querySelector(".content-grid").style.display = "none";
 
@@ -137,10 +129,7 @@ const Onboarding = ({ setShowOnboarding }) => {
             )}
           </button>
         </div>
-        <p
-          onClick={() => setShowOnboarding(false)}
-          className="underline mt-24 cursor-pointer w-fit"
-        >
+        <p onClick={skipOnboarding} className="underline mt-24 cursor-pointer w-fit">
           Spring introduktion over
         </p>
       </div>

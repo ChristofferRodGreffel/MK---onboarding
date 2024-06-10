@@ -50,6 +50,11 @@ function App() {
   };
 
   const checkOnboardingStatus = async (uid) => {
+    let skipped = localStorage.getItem("skippedOnboarding");
+    if (skipped) {
+      setShowOnboarding(false);
+      return;
+    }
     const docRef = doc(db, "users", uid);
     const docSnap = await getDoc(docRef);
 
@@ -74,10 +79,7 @@ function App() {
             <>
               <Route path="/admin" element={<ControlPanel />} />
               <Route path="/admin/customer/:id" element={<Customer />} />
-              <Route
-                path="/admin/customer/correctpoints/:id"
-                element={<CorrectPoints />}
-              />
+              <Route path="/admin/customer/correctpoints/:id" element={<CorrectPoints />} />
               <Route path="/admin/settings" element={<Settings />} />
               <Route path="/create-product" element={<CreateProduct />} />
               <Route path="/edit-product/:id" element={<EditProduct />} />
@@ -90,15 +92,9 @@ function App() {
           <Route path="/donate" element={<Donate />} />
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/questions" element={<Questions />} />
-          <Route
-            path="/orderrecieved/:totalPoints/:memberPoints"
-            element={<OrderRecieved />}
-          />
+          <Route path="/orderrecieved/:totalPoints/:memberPoints" element={<OrderRecieved />} />
           <Route path="/orderrecieved" element={<OrderRecieved />} />
-          <Route
-            path="/donationrecieved/:organization/:amount"
-            element={<DonateRecieved />}
-          />
+          <Route path="/donationrecieved/:organization/:amount" element={<DonateRecieved />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/history" element={<PointHistory />} />
           <Route path="/" element={<Frontpage />} />
